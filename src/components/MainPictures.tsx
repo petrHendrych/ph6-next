@@ -28,7 +28,7 @@ const MainPictures = ({ posts }: { posts: string[] }) => {
 			gsap.delayedCall(next, crossfade);
 		};
 
-		gsap.delayedCall(next, crossfade);
+		// gsap.delayedCall(next, crossfade);
 	});
 
 	return (
@@ -39,7 +39,7 @@ const MainPictures = ({ posts }: { posts: string[] }) => {
 			{posts.map((post, index) => (
 				<div
 					key={index}
-					className="motiv absolute left-0 top-12 h-screen w-full opacity-0 first:opacity-100"
+					className="motiv absolute left-0 top-0 h-screen w-full opacity-0 first:opacity-100"
 				>
 					<Image
 						src={`/main/${post}`}
