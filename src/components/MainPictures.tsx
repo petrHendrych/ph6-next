@@ -34,12 +34,12 @@ const MainPictures = ({ posts }: { posts: string[] }) => {
 	return (
 		<div
 			id="imgContainer"
-			className="relative h-screen w-full overflow-hidden pt-10"
+			className="relative h-screen w-full overflow-hidden pt-12"
 		>
 			{posts.map((post, index) => (
 				<div
 					key={index}
-					className="motiv absolute left-0 top-0 h-screen w-full opacity-0 first:opacity-100"
+					className="motiv absolute left-0 top-12 h-screen w-full opacity-0 first:opacity-100"
 				>
 					<Image
 						src={`/main/${post}`}
@@ -47,7 +47,7 @@ const MainPictures = ({ posts }: { posts: string[] }) => {
 						width={0}
 						height={0}
 						sizes="100vw"
-						className="absolute"
+						className="absolute left-1/2 max-w-[2048] -translate-x-1/2 "
 						priority
 						style={{ width: '100%', height: 'auto' }}
 					/>
