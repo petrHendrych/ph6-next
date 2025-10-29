@@ -12,7 +12,7 @@ gsap.registerPlugin(useGSAP, TextPlugin);
 const next = 5; // time to change
 const fade = 1.5; // fade time
 
-const MainPictures = () => {
+const MainPictures = ({ posts }: { posts: string[] }) => {
 	useGSAP(() => {
 		const imgs: TweenTarget[] = gsap.utils.toArray('#imgContainer .motiv');
 
@@ -36,42 +36,23 @@ const MainPictures = () => {
 			id="imgContainer"
 			className="relative h-screen w-full overflow-hidden pt-10"
 		>
-			<div className="motiv absolute left-0 top-0 h-screen w-full">
-				<Image
-					src="/main/uvod_1.avif"
-					alt="tmp"
-					width={0}
-					height={0}
-					sizes="100vw"
-					className="absolute"
-					priority
-					style={{ width: '100%', height: 'auto' }}
-				/>
-			</div>
-
-			<div className="motiv absolute left-0 top-0 h-screen w-full opacity-0">
-				<Image
-					src="/main/uvod_2.avif"
-					alt="tmp"
-					width={0}
-					height={0}
-					sizes="100vw"
-					className="absolute"
-					style={{ width: '100%', height: 'auto' }}
-				/>
-			</div>
-
-			<div className="motiv absolute left-0 top-0 h-screen w-full opacity-0">
-				<Image
-					src="/main/uvod_3.avif"
-					alt="tmp"
-					width={0}
-					height={0}
-					sizes="100vw"
-					className="absolute"
-					style={{ width: '100%', height: 'auto' }}
-				/>
-			</div>
+			{posts.map((post, index) => (
+				<div
+					key={index}
+					className="motiv absolute left-0 top-0 h-screen w-full opacity-0 first:opacity-100"
+				>
+					<Image
+						src={`/main/${post}`}
+						alt="tmp"
+						width={0}
+						height={0}
+						sizes="100vw"
+						className="absolute"
+						priority
+						style={{ width: '100%', height: 'auto' }}
+					/>
+				</div>
+			))}
 		</div>
 	);
 };
