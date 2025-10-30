@@ -13,6 +13,7 @@ const Home = () => (
 	<>
 		<Header />
 		<MainPictures posts={posts} />
+		<div style={{ height: '3000px' }} />
 	</>
 );
 
