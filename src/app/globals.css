@@ -17,4 +17,6 @@
 body {
   color: var(--foreground);
   background: var(--background);
+  font-family: var(--font-raleway), sans-serif;
+  font-size: 15px;
 }

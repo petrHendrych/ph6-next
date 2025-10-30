@@ -23,6 +23,7 @@
     "@eslint/eslintrc": "^3",
     "@haaxor1689/eslint-config": "^3.0.0",
     "@haaxor1689/prettier-config": "^3.0.0",
+    "@tailwindcss/postcss": "^4.1.16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
