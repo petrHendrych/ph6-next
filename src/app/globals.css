@@ -3,6 +3,7 @@
 @config '../../tailwind.config.ts';
 
 :root {
+  --font-raleway: sans-serif; /* fallback, overridden by Next.js */
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -17,5 +18,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
+  background-image: url('/crossword.png');
+  background-repeat: repeat;
   font-family: var(--font-raleway), sans-serif;
 }

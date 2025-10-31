@@ -38,9 +38,9 @@ const Header = () => {
 	return (
 		<header
 			ref={headerRef}
-			className="fixed z-10 w-full bg-white/60 shadow-sm transition-colors duration-500"
+			className="fixed top-0 z-10 w-full bg-white/60 shadow-sm transition-colors duration-500"
 		>
-			<div className="container mx-auto flex items-center justify-between py-3">
+			<div className="container mx-auto flex items-center justify-between px-6 py-3">
 				<Image
 					src="/logo.png"
 					alt="Logo image"
