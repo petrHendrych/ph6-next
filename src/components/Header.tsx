@@ -19,7 +19,28 @@ const Header = () => {
 		});
 	};
 
+	const scrollToProjects = () => {
+		gsap.to(window, {
+			duration: 0.8,
+			scrollTo: {
+				y: '#preview-container',
+				offsetY: +150
+			},
+			ease: 'power2.inOut'
+		});
+	};
+
 	useGSAP(() => {
+		gsap.to('#filter-container', {
+			scrollTrigger: {
+				trigger: '#preview-container',
+				start: 'top top+=160px',
+				toggleActions: 'play none none reverse'
+			},
+			opacity: 1,
+			duration: 0.2
+		});
+
 		ScrollTrigger.create({
 			trigger: 'body',
 			start: '80px top',
@@ -50,19 +71,34 @@ const Header = () => {
 					onClick={scrollToTop}
 					className="cursor-pointer"
 				/>
-				<nav>
-					<ol className="flex select-none flex-row gap-8 uppercase">
-						<li className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full">
-							Projekty
-						</li>
-						<li className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full">
-							Ateliér
-						</li>
-						<li className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full">
-							Kontakt
-						</li>
-					</ol>
-				</nav>
+				<div className="flex flex-row items-center gap-10">
+					<div
+						id="filter-container"
+						className="flex flex-row gap-6 text-sm text-gray-400 opacity-0"
+					>
+						<span>one</span>
+						<span>two</span>
+						<span>three</span>
+						<div className="ml-4 h-5 w-[1px] bg-gray-300" />
+					</div>
+					<nav>
+						<ol className="flex select-none flex-row gap-8 uppercase">
+							<li
+								role="presentation"
+								className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full"
+								onClick={scrollToProjects}
+							>
+								Projekty
+							</li>
+							<li className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full">
+								Ateliér
+							</li>
+							<li className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full">
+								Kontakt
+							</li>
+						</ol>
+					</nav>
+				</div>
 			</div>
 		</header>
 	);

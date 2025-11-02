@@ -3,6 +3,7 @@ import fs from 'fs';
 
 import MainPictures from '@/components/MainPictures';
 import Header from '@/components/Header';
+import PreviewGrid from '@/components/PreviewGrid';
 
 const MAIN_PICTURES_DIRECTORY = 'main';
 const MAIN_PICTURES = path.join(
@@ -22,9 +23,10 @@ const Home = () => (
 			className="container mx-auto my-16 px-6"
 			style={{ height: '3000px' }}
 		>
-			<h1 className="border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
+			<h1 className="mb-8 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
 				PROJEKTY
 			</h1>
+			<PreviewGrid />
 		</section>
 	</>
 );
