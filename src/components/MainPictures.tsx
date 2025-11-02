@@ -28,7 +28,7 @@ const MainPictures = ({ posts }: { posts: string[] }) => {
 			gsap.delayedCall(next, crossfade);
 		};
 
-		// gsap.delayedCall(next, crossfade);
+		gsap.delayedCall(next, crossfade);
 	});
 
 	return (
