@@ -6,36 +6,21 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
+import { useScrollTo } from '@/hooks/useScrollTo';
+
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const Header = () => {
 	const headerRef = useRef<HTMLDivElement>(null);
-
-	const scrollToTop = () => {
-		gsap.to(window, {
-			duration: 0.8,
-			scrollTo: 0,
-			ease: 'power2.inOut'
-		});
-	};
-
-	const scrollToProjects = () => {
-		gsap.to(window, {
-			duration: 0.8,
-			scrollTo: {
-				y: '#preview-container',
-				offsetY: +150
-			},
-			ease: 'power2.inOut'
-		});
-	};
+	const { scrollToProjects, scrollToTop, scrollToAtelier } = useScrollTo();
 
 	useGSAP(() => {
 		gsap.to('#filter-container', {
 			scrollTrigger: {
-				trigger: '#preview-container',
-				start: 'top top+=160px',
-				toggleActions: 'play none none reverse'
+				trigger: '#preview-section',
+				start: 'top top+=110px',
+				end: 'bottom top+=110px',
+				toggleActions: 'play reverse play reverse'
 			},
 			opacity: 1,
 			duration: 0.2
@@ -90,7 +75,11 @@ const Header = () => {
 							>
 								Projekty
 							</li>
-							<li className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full">
+							<li
+								role="presentation"
+								className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full"
+								onClick={scrollToAtelier}
+							>
 								Ateliér
 							</li>
 							<li className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full">
