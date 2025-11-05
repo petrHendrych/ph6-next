@@ -5,6 +5,7 @@ import MainPictures from '@/components/MainPictures';
 import Header from '@/components/Header';
 import PreviewGrid from '@/components/PreviewGrid';
 import AtelierContent from '@/components/AtelierContent';
+import RewardsContent from '@/components/RewardsContent';
 
 const MAIN_PICTURES_DIRECTORY = 'main';
 const MAIN_PICTURES = path.join(
@@ -41,6 +42,7 @@ const Home = () => (
 			<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
 				OCENĚNÍ
 			</h1>
+			<RewardsContent />
 		</section>
 	</>
 );

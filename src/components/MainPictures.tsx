@@ -48,6 +48,9 @@ const MainPictures = ({ posts }: { posts: string[] }) => {
 						priority
 						style={{ width: '100%', height: 'auto' }}
 					/>
+					{/*<p className="absolute bottom-5 left-5 px-6 py-3 text-2xl font-bold uppercase tracking-widest text-gray-50">*/}
+					{/*	hello text*/}
+					{/*</p>*/}
 				</div>
 			))}
 		</div>
