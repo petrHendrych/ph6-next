@@ -1,14 +1,25 @@
-type PreviewImage = {
-	src: string;
-	title: string;
-};
+import { type Image, type Reward } from '@/types';
 
-type Reward = {
-	title: string;
-	description: string;
-};
+export const mainImages: Image[] = [
+	{
+		src: 'uvod_1',
+		title: 'First image title'
+	},
+	{
+		src: 'uvod_2',
+		title: 'Second image title'
+	},
+	{
+		src: 'uvod_3',
+		title: 'Third image title'
+	},
+	{
+		src: 'uvod_4',
+		title: 'Fourth image title'
+	}
+];
 
-export const previewImages: PreviewImage[] = [
+export const previewImages: Image[] = [
 	{
 		src: 'al_tit',
 		title: 'Title text for hover'
