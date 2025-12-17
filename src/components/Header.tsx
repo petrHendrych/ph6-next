@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
@@ -7,15 +7,17 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 
 import { useScrollTo } from '@/hooks/useScrollTo';
+import { usePreviewFilter } from '@/hooks/usePreviewFilter';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const Header = () => {
 	const headerRef = useRef<HTMLDivElement>(null);
-	const [activeFilter, setActiveFilter] = useState<
-		null | 'one' | 'two' | 'three'
-	>(null);
 	const { scrollToProjects, scrollToTop, scrollToAtelier } = useScrollTo();
+
+	const { activeFilter, handleFilterClick } = usePreviewFilter({
+		scopeSelector: '#preview-section'
+	});
 
 	useGSAP(() => {
 		gsap.to('#filter-container', {
@@ -44,22 +46,7 @@ const Header = () => {
 		});
 	});
 
-	const handleFilterClick = (className: 'one' | 'two' | 'three') => {
-		const scope = '#preview-section';
-		const allSelector = `${scope} .one, ${scope} .two, ${scope} .three`;
-
-		// Toggle behavior: clicking the same filter shows all again
-		if (activeFilter === className) {
-			gsap.set(allSelector, { display: 'block' });
-			setActiveFilter(null);
-			return;
-		}
-
-		// Switch to the selected filter: hide all, then show only the selected
-		gsap.set(allSelector, { display: 'none' });
-		gsap.set(`${scope} .${className}`, { display: 'block' });
-		setActiveFilter(className);
-	};
+	// moved into usePreviewFilter
 
 	return (
 		<header

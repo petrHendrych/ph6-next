@@ -63,7 +63,7 @@ export const previewImages: Image[] = [
 	{
 		src: 'ambasada_tit',
 		title: 'Title text for hover',
-		className: 'three'
+		className: 'one'
 	},
 	{
 		src: 'cer_tit',
