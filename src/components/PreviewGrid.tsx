@@ -28,7 +28,7 @@ const PreviewGrid = () => {
 			{previewImages.map((image, index) => (
 				<div
 					key={index}
-					className="group relative cursor-pointer overflow-hidden"
+					className={`group relative cursor-pointer overflow-hidden ${image.className}`}
 				>
 					<Image
 						src={`/preview/${image.src}.jpg`}

@@ -1,5 +1,5 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
 import { gsap } from 'gsap';
@@ -12,6 +12,9 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const Header = () => {
 	const headerRef = useRef<HTMLDivElement>(null);
+	const [activeFilter, setActiveFilter] = useState<
+		null | 'one' | 'two' | 'three'
+	>(null);
 	const { scrollToProjects, scrollToTop, scrollToAtelier } = useScrollTo();
 
 	useGSAP(() => {
@@ -41,6 +44,23 @@ const Header = () => {
 		});
 	});
 
+	const handleFilterClick = (className: 'one' | 'two' | 'three') => {
+		const scope = '#preview-section';
+		const allSelector = `${scope} .one, ${scope} .two, ${scope} .three`;
+
+		// Toggle behavior: clicking the same filter shows all again
+		if (activeFilter === className) {
+			gsap.set(allSelector, { display: 'block' });
+			setActiveFilter(null);
+			return;
+		}
+
+		// Switch to the selected filter: hide all, then show only the selected
+		gsap.set(allSelector, { display: 'none' });
+		gsap.set(`${scope} .${className}`, { display: 'block' });
+		setActiveFilter(className);
+	};
+
 	return (
 		<header
 			ref={headerRef}
@@ -61,28 +81,49 @@ const Header = () => {
 						id="filter-container"
 						className="flex flex-row gap-6 text-sm text-gray-400 opacity-0"
 					>
-						<span>one</span>
-						<span>two</span>
-						<span>three</span>
-						<div className="ml-4 h-5 w-[1px] bg-gray-300" />
+						<button
+							className={`cursor-pointer transition-colors duration-75 hover:text-black${
+								activeFilter === 'one' ? ' text-black' : ''
+							}`}
+							onClick={() => handleFilterClick('one')}
+						>
+							one
+						</button>
+						<button
+							className={`cursor-pointer transition-colors duration-75 hover:text-black${
+								activeFilter === 'two' ? ' text-black' : ''
+							}`}
+							onClick={() => handleFilterClick('two')}
+						>
+							two
+						</button>
+						<button
+							className={`cursor-pointer transition-colors duration-75 hover:text-black${
+								activeFilter === 'three' ? ' text-black' : ''
+							}`}
+							onClick={() => handleFilterClick('three')}
+						>
+							three
+						</button>
+						<div className="ml-4 h-5 w-px bg-gray-300" />
 					</div>
 					<nav>
 						<ol className="flex select-none flex-row gap-8 uppercase">
 							<li
 								role="presentation"
-								className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full"
+								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:ease-out hover:after:left-0 hover:after:w-full"
 								onClick={scrollToProjects}
 							>
 								Projekty
 							</li>
 							<li
 								role="presentation"
-								className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full"
+								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:ease-out hover:after:left-0 hover:after:w-full"
 								onClick={scrollToAtelier}
 							>
 								Ateliér
 							</li>
-							<li className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:duration-[400ms] after:ease-out hover:after:left-0 hover:after:w-full">
+							<li className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:ease-out hover:after:left-0 hover:after:w-full">
 								Kontakt
 							</li>
 						</ol>
