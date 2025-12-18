@@ -28,7 +28,7 @@ const AtelierContent = () => (
 
 		<p className="text-base/relaxed">Těšíme se na spolupráci</p>
 
-		<div className="mx-auto mt-10 flex flex-row gap-24">
+		<div className="mx-auto mt-10 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-20 sm:gap-y-12 lg:grid-cols-3 lg:gap-24">
 			<figure className="flex flex-col items-center gap-4">
 				<Image
 					src="/people/simon.jpg"
@@ -55,7 +55,7 @@ const AtelierContent = () => (
 				</figcaption>
 			</figure>
 
-			<figure className="flex flex-col items-center gap-4">
+			<figure className="col-span-1 flex flex-col items-center gap-4 sm:col-span-2 lg:col-span-1">
 				<Image
 					src="/people/pavel.jpg"
 					alt="Pavel Hendrych"
