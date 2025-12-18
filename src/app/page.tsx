@@ -23,10 +23,7 @@ const Home = () => (
 			<AtelierContent />
 		</section>
 
-		<section
-			className="container mx-auto my-16 px-6"
-			style={{ height: '2000px' }}
-		>
+		<section className="container mx-auto my-16 px-6">
 			<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
 				OCENĚNÍ
 			</h1>

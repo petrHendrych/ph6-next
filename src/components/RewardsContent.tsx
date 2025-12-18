@@ -3,7 +3,7 @@ import React from 'react';
 import { rewards } from '@/data';
 
 const RewardsContent = () => (
-	<div className="container mx-auto my-20 flex flex-row justify-center gap-20">
+	<div className="container mx-auto my-20 flex flex-wrap justify-center gap-12">
 		{rewards.map((reward, index) => (
 			<div
 				key={index}
