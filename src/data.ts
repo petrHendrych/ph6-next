@@ -85,22 +85,27 @@ export const previewImages: Image[] = [
 export const rewards: Reward[] = [
 	{
 		title: 'interiér roku 2011',
-		description: 'Návštěvnické centrum pivovaru staropramen'
+		description: 'Návštěvnické centrum pivovaru staropramen',
+		hoverColor: 'gold'
 	},
 	{
 		title: 'soutěž 1. místo',
-		description: 'zimní stadion praha letňany'
+		description: 'zimní stadion praha letňany',
+		hoverColor: 'gold'
 	},
 	{
 		title: 'soutěž 1. místo',
-		description: 'zahradní čtvrť praha-zbraslav'
+		description: 'zahradní čtvrť praha-zbraslav',
+		hoverColor: 'gold'
 	},
 	{
 		title: 'soutěž 2. místo',
-		description: 'sos dětská vesnička brno mendlánky'
+		description: 'sos dětská vesnička brno mendlánky',
+		hoverColor: 'silver'
 	},
 	{
 		title: 'český interiér',
-		description: 'ambiente pizzanuova praha'
+		description: 'ambiente pizzanuova praha',
+		hoverColor: 'bronze'
 	}
 ];
