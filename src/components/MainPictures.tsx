@@ -50,7 +50,10 @@ const MainPictures = () => {
 	});
 
 	return (
-		<div id="imgContainer" className="relative w-full overflow-hidden">
+		<div
+			id="imgContainer"
+			className="relative mt-14 w-full overflow-hidden xl:mt-0"
+		>
 			{mainImages.map((image, index) => (
 				<div
 					key={index}
@@ -66,7 +69,7 @@ const MainPictures = () => {
 						priority
 						style={{ width: '100%', height: 'auto' }}
 					/>
-					<p className="text-shadow-lg absolute bottom-5 left-2 px-6 py-3 text-2xl font-bold uppercase tracking-widest text-gray-50">
+					<p className="text-shadow-lg xs:text-base absolute bottom-1 left-1 px-6 py-3 text-xs font-bold uppercase tracking-widest text-gray-50 sm:text-lg lg:bottom-5 lg:left-2 lg:text-2xl">
 						{image.title}
 					</p>
 				</div>

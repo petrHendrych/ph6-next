@@ -46,8 +46,6 @@ const Header = () => {
 		});
 	});
 
-	// moved into usePreviewFilter
-
 	return (
 		<header
 			ref={headerRef}
@@ -63,7 +61,7 @@ const Header = () => {
 					onClick={scrollToTop}
 					className="cursor-pointer"
 				/>
-				<div className="flex flex-row items-center gap-10">
+				<div className="hidden flex-row items-center gap-10 md:flex">
 					<div
 						id="filter-container"
 						className="flex flex-row gap-6 text-sm text-gray-400 opacity-0"

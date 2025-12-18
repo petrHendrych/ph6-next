@@ -9,21 +9,27 @@ const Home = () => (
 		<Header />
 		<MainPictures />
 
-		<section id="preview-section" className="container mx-auto my-16 px-6">
+		<section
+			id="preview-section"
+			className="container mx-auto my-10 px-6 md:my-16"
+		>
 			<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
 				PROJEKTY
 			</h1>
 			<PreviewGrid />
 		</section>
 
-		<section id="atelier-section" className="container mx-auto my-16 px-6">
+		<section
+			id="atelier-section"
+			className="container mx-auto my-10 px-6 md:my-16"
+		>
 			<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
 				ATELIÉR
 			</h1>
 			<AtelierContent />
 		</section>
 
-		<section className="container mx-auto my-16 px-6">
+		<section className="container mx-auto my-10 hidden px-6 sm:block md:my-16">
 			<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
 				OCENĚNÍ
 			</h1>
