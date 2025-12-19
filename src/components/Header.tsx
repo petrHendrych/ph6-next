@@ -34,7 +34,7 @@ const Header = () => {
 				end: 'bottom top+=110px',
 				toggleActions: 'play reverse play reverse'
 			},
-			opacity: 1,
+			autoAlpha: 1,
 			duration: 0.2
 		});
 
@@ -72,7 +72,7 @@ const Header = () => {
 				<div className="flex flex-row items-center gap-4 md:hidden">
 					<button
 						id="mobile-filter-icon"
-						className="cursor-pointer text-sm font-medium uppercase opacity-0"
+						className="invisible cursor-pointer text-sm font-medium uppercase opacity-0"
 						onClick={toggleFilter}
 					>
 						filter
@@ -91,7 +91,7 @@ const Header = () => {
 				<div className="hidden flex-row items-center gap-10 md:flex">
 					<div
 						id="filter-container"
-						className="flex flex-row gap-6 text-sm text-gray-400 opacity-0"
+						className="invisible flex flex-row gap-6 text-sm text-gray-400 opacity-0"
 					>
 						<button
 							className={`cursor-pointer transition-colors duration-75 hover:text-black${
