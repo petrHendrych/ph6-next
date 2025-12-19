@@ -26,35 +26,32 @@ const Header = () => {
 		filterDropdownRef
 	});
 
-	useGSAP(
-		() => {
-			gsap.to(['#filter-container', '#mobile-filter-icon'], {
-				scrollTrigger: {
-					trigger: '#preview-section',
-					start: 'top+=110px top+=110px',
-					end: 'bottom top+=110px',
-					toggleActions: 'play reverse play reverse'
-				},
-				opacity: 1,
-				duration: 0.2
-			});
+	useGSAP(() => {
+		gsap.to(['#filter-container', '#mobile-filter-icon'], {
+			scrollTrigger: {
+				trigger: '#preview-section',
+				start: 'top top+=110px',
+				end: 'bottom top+=110px',
+				toggleActions: 'play reverse play reverse'
+			},
+			opacity: 1,
+			duration: 0.2
+		});
 
-			ScrollTrigger.create({
-				trigger: 'body',
-				start: '80px top',
-				end: '80px top',
-				onEnter: () => {
-					headerRef.current?.classList.remove('md:bg-white/60');
-					headerRef.current?.classList.add('md:bg-white');
-				},
-				onLeaveBack: () => {
-					headerRef.current?.classList.remove('md:bg-white');
-					headerRef.current?.classList.add('md:bg-white/60');
-				}
-			});
-		},
-		{ scope: headerRef }
-	);
+		ScrollTrigger.create({
+			trigger: 'body',
+			start: '80px top',
+			end: '80px top',
+			onEnter: () => {
+				headerRef.current?.classList.remove('md:bg-white/60');
+				headerRef.current?.classList.add('md:bg-white');
+			},
+			onLeaveBack: () => {
+				headerRef.current?.classList.remove('md:bg-white');
+				headerRef.current?.classList.add('md:bg-white/60');
+			}
+		});
+	});
 
 	return (
 		<header
@@ -73,13 +70,13 @@ const Header = () => {
 				/>
 
 				<div className="flex flex-row items-center gap-4 md:hidden">
-					<div
+					<button
 						id="mobile-filter-icon"
 						className="cursor-pointer text-sm font-medium uppercase opacity-0"
 						onClick={toggleFilter}
 					>
 						filter
-					</div>
+					</button>
 					<button
 						className="flex h-6 w-6 flex-col justify-center gap-1.5"
 						onClick={toggleMenu}
