@@ -35,7 +35,7 @@ const AtelierContent = () => (
 					alt="Simon Brnada"
 					width={220}
 					height={220}
-					className="rounded-full drop-shadow-2xl transition-transform duration-300 hover:scale-110"
+					className="rounded-full drop-shadow-2xl motion-safe:transition-transform motion-safe:duration-300 motion-safe:hover:scale-110"
 				/>
 				<figcaption className="text-center text-sm text-black">
 					Ing. arch. Šimon Brnada
@@ -48,7 +48,7 @@ const AtelierContent = () => (
 					alt="Kristina Hanzlova"
 					width={220}
 					height={220}
-					className="rounded-full drop-shadow-2xl transition-transform duration-300 hover:scale-110"
+					className="rounded-full drop-shadow-2xl motion-safe:transition-transform motion-safe:duration-300 motion-safe:hover:scale-110"
 				/>
 				<figcaption className="text-center text-sm text-black">
 					Ing. arch. Kristina Hanzlová
@@ -61,7 +61,7 @@ const AtelierContent = () => (
 					alt="Pavel Hendrych"
 					width={220}
 					height={220}
-					className="rounded-full drop-shadow-2xl transition-transform duration-300 hover:scale-110"
+					className="rounded-full drop-shadow-2xl motion-safe:transition-transform motion-safe:duration-300 motion-safe:hover:scale-110"
 				/>
 				<figcaption className="text-center text-sm text-black">
 					Ing. arch. Pavel Hendrych
