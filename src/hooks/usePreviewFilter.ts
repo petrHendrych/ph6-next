@@ -1,5 +1,8 @@
 import { useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+
+gsap.registerPlugin(ScrollToPlugin);
 
 type FilterClass = 'one' | 'two' | 'three';
 
@@ -257,6 +260,15 @@ export const usePreviewFilter = (options: Options = {}) => {
 		// - If toggling off: show all
 		// - Else: directly apply the new filter (no intermediate show-all phase)
 		runTransition(className, togglingOff);
+
+		gsap.to(window, {
+			duration: 0.8,
+			scrollTo: {
+				y: scopeSelector,
+				offsetY: 100
+			},
+			ease: 'power2.inOut'
+		});
 	};
 
 	return { activeFilter, handleFilterClick } as const;

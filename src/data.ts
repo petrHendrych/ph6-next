@@ -79,6 +79,66 @@ export const previewImages: Image[] = [
 		src: 'gr0',
 		title: 'Title text for hover',
 		className: 'three'
+	},
+	{
+		src: 'al_tit',
+		title: 'Title text for hover',
+		className: 'one'
+	},
+	{
+		src: 'alb_tit',
+		title: 'Title text for hover',
+		className: 'one'
+	},
+	{
+		src: 'aluvod',
+		title: 'Title text for hover',
+		className: 'two'
+	},
+	{
+		src: 'ambasada_tit',
+		title: 'Title text for hover',
+		className: 'three'
+	},
+	{
+		src: 'cer_tit',
+		title: 'Title text for hover',
+		className: 'two'
+	},
+	{
+		src: 'gfuvod',
+		title: 'Title text for hover',
+		className: 'one'
+	},
+	{
+		src: 'gr0',
+		title: 'Title text for hover',
+		className: 'two'
+	},
+	{
+		src: 'aluvod',
+		title: 'Title text for hover',
+		className: 'two'
+	},
+	{
+		src: 'ambasada_tit',
+		title: 'Title text for hover',
+		className: 'one'
+	},
+	{
+		src: 'cer_tit',
+		title: 'Title text for hover',
+		className: 'three'
+	},
+	{
+		src: 'gfuvod',
+		title: 'Title text for hover',
+		className: 'one'
+	},
+	{
+		src: 'gr0',
+		title: 'Title text for hover',
+		className: 'three'
 	}
 ];
 
