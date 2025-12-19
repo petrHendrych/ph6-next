@@ -31,5 +31,16 @@ export const useScrollTo = () => {
 		});
 	};
 
-	return { scrollToTop, scrollToProjects, scrollToAtelier };
+	const scrollToContact = () => {
+		gsap.to(window, {
+			duration: 0.8,
+			scrollTo: {
+				y: '#kontakt-section',
+				offsetY: +100
+			},
+			ease: 'power2.inOut'
+		});
+	};
+
+	return { scrollToTop, scrollToProjects, scrollToAtelier, scrollToContact };
 };

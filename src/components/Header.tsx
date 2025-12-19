@@ -16,7 +16,8 @@ const Header = () => {
 	const headerRef = useRef<HTMLDivElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
 	const filterDropdownRef = useRef<HTMLDivElement>(null);
-	const { scrollToProjects, scrollToTop, scrollToAtelier } = useScrollTo();
+	const { scrollToProjects, scrollToTop, scrollToAtelier, scrollToContact } =
+		useScrollTo();
 	const { activeFilter, handleFilterClick } = usePreviewFilter({
 		scopeSelector: '#preview-section'
 	});
@@ -43,12 +44,12 @@ const Header = () => {
 				start: '80px top',
 				end: '80px top',
 				onEnter: () => {
-					headerRef.current?.classList.remove('bg-white/60');
-					headerRef.current?.classList.add('bg-white');
+					headerRef.current?.classList.remove('md:bg-white/60');
+					headerRef.current?.classList.add('md:bg-white');
 				},
 				onLeaveBack: () => {
-					headerRef.current?.classList.remove('bg-white');
-					headerRef.current?.classList.add('bg-white/60');
+					headerRef.current?.classList.remove('md:bg-white');
+					headerRef.current?.classList.add('md:bg-white/60');
 				}
 			});
 		},
@@ -137,7 +138,11 @@ const Header = () => {
 							>
 								Ateliér
 							</li>
-							<li className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:ease-out hover:after:left-0 hover:after:w-full">
+							<li
+								role="presentation"
+								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:ease-out hover:after:left-0 hover:after:w-full"
+								onClick={scrollToContact}
+							>
 								Kontakt
 							</li>
 						</ol>
@@ -172,6 +177,7 @@ const Header = () => {
 					<button
 						className="w-full py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50"
 						onClick={() => {
+							scrollToContact();
 							toggleMenu();
 						}}
 					>
