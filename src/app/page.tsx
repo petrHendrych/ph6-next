@@ -4,6 +4,7 @@ import PreviewGrid from '@/components/PreviewGrid';
 import AtelierContent from '@/components/AtelierContent';
 import RewardsContent from '@/components/RewardsContent';
 import ContactContent from '@/components/ContactContent';
+import Footer from '@/components/Footer';
 
 const Home = () => (
 	<>
@@ -30,22 +31,23 @@ const Home = () => (
 			<AtelierContent />
 		</section>
 
-		<section className="container mx-auto my-10 hidden px-6 sm:block md:my-16">
+		<section className="container mx-auto mt-10 hidden px-6 sm:block md:mt-16">
 			<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
 				OCENĚNÍ
 			</h1>
 			<RewardsContent />
 		</section>
 
-		<section
-			id="kontakt-section"
-			className="container mx-auto my-10 px-6 md:my-16"
-		>
-			<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
-				KONTAKT
-			</h1>
-			<ContactContent />
+		<section id="kontakt-section">
+			<div className="container mx-auto px-6">
+				<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
+					KONTAKT
+				</h1>
+				<ContactContent />
+			</div>
 		</section>
+
+		<Footer />
 	</>
 );
 
