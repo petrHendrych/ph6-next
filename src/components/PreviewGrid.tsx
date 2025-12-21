@@ -39,9 +39,9 @@ const PreviewGrid = () => {
 						className={`preview-image-${index} invisible h-auto w-full`}
 						priority
 					/>
-					<div className="absolute inset-x-0 bottom-0 h-0 bg-black/80 transition-all duration-300 ease-in group-hover:h-full">
-						<div className="flex h-full items-center justify-center opacity-0 transition-opacity delay-100 duration-300 group-hover:opacity-100">
-							<h3 className="text-center text-xl font-bold text-white">
+					<div className="absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-200 ease-in group-hover:opacity-100">
+						<div className="flex h-full translate-y-4 items-center justify-center transition-transform duration-200 ease-out group-hover:translate-y-0">
+							<h3 className="text-center text-lg font-bold text-white">
 								{image.title}
 							</h3>
 						</div>
