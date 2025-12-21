@@ -11,16 +11,32 @@ import { previewImages } from '@/data';
 
 const PreviewGrid = () => {
 	useGSAP(() => {
-		for (let i = 0; i < previewImages.length; i++) {
-			gsap.to(`.preview-image-${i}`, {
-				scrollTrigger: {
-					trigger: `.preview-image-${i}`,
-					toggleActions: 'play none none none'
-				},
-				autoAlpha: 1,
-				duration: 0.5
-			});
-		}
+		const mm = gsap.matchMedia();
+
+		mm.add('(prefers-reduced-motion: no-preference)', () => {
+			for (let i = 0; i < previewImages.length; i++) {
+				gsap.to(`.preview-image-${i}`, {
+					scrollTrigger: {
+						trigger: `.preview-image-${i}`,
+						toggleActions: 'play none none none'
+					},
+					autoAlpha: 1,
+					duration: 0.5
+				});
+			}
+		});
+
+		mm.add('(prefers-reduced-motion: reduce)', () => {
+			for (let i = 0; i < previewImages.length; i++) {
+				gsap.set(`.preview-image-${i}`, {
+					scrollTrigger: {
+						trigger: `.preview-image-${i}`,
+						toggleActions: 'play none none none'
+					},
+					autoAlpha: 1
+				});
+			}
+		});
 	});
 
 	return (
@@ -39,8 +55,8 @@ const PreviewGrid = () => {
 						className={`preview-image-${index} invisible h-auto w-full`}
 						priority
 					/>
-					<div className="absolute inset-0 bg-black/70 opacity-0 transition-opacity duration-200 ease-in group-hover:opacity-100">
-						<div className="flex h-full translate-y-4 items-center justify-center transition-transform duration-200 ease-out group-hover:translate-y-0">
+					<div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 motion-safe:transition-opacity motion-safe:duration-200 motion-safe:ease-in">
+						<div className="flex h-full translate-y-4 items-center justify-center group-hover:translate-y-0 motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out">
 							<h3 className="text-center text-lg font-bold text-white">
 								{image.title}
 							</h3>

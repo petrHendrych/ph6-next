@@ -27,15 +27,31 @@ const Header = () => {
 	});
 
 	useGSAP(() => {
-		gsap.to(['#filter-container', '#mobile-filter-icon'], {
-			scrollTrigger: {
-				trigger: '#preview-section',
-				start: 'top top+=110px',
-				end: 'bottom top+=110px',
-				toggleActions: 'play reverse play reverse'
-			},
-			autoAlpha: 1,
-			duration: 0.2
+		const mm = gsap.matchMedia();
+
+		mm.add('(prefers-reduced-motion: no-preference)', () => {
+			gsap.to(['#filter-container', '#mobile-filter-icon'], {
+				scrollTrigger: {
+					trigger: '#preview-section',
+					start: 'top top+=110px',
+					end: 'bottom top+=110px',
+					toggleActions: 'play reverse play reverse'
+				},
+				autoAlpha: 1,
+				duration: 0.2
+			});
+		});
+
+		mm.add('(prefers-reduced-motion: reduce)', () => {
+			gsap.set(['#filter-container', '#mobile-filter-icon'], {
+				scrollTrigger: {
+					trigger: '#preview-section',
+					start: 'top top+=110px',
+					end: 'bottom top+=110px',
+					toggleActions: 'play reverse play reverse'
+				},
+				autoAlpha: 1
+			});
 		});
 
 		ScrollTrigger.create({
@@ -56,7 +72,7 @@ const Header = () => {
 	return (
 		<header
 			ref={headerRef}
-			className="fixed top-0 z-10 w-full bg-white shadow-sm transition-colors duration-500 md:bg-white/60"
+			className="fixed top-0 z-10 w-full bg-white shadow-sm motion-safe:transition-colors motion-safe:duration-500 md:bg-white/60"
 		>
 			<div className="container mx-auto flex items-center justify-between px-6 py-3 shadow-sm md:shadow-none">
 				<Image
@@ -94,7 +110,7 @@ const Header = () => {
 						className="invisible flex flex-row gap-6 text-sm text-gray-400 opacity-0"
 					>
 						<button
-							className={`cursor-pointer transition-colors duration-75 hover:text-black${
+							className={`cursor-pointer motion-safe:transition-colors motion-safe:duration-75 hover:text-black${
 								activeFilter === 'one' ? ' text-black' : ''
 							}`}
 							onClick={() => handleFilterClick('one')}
@@ -102,7 +118,7 @@ const Header = () => {
 							one
 						</button>
 						<button
-							className={`cursor-pointer transition-colors duration-75 hover:text-black${
+							className={`cursor-pointer motion-safe:transition-colors motion-safe:duration-75 hover:text-black${
 								activeFilter === 'two' ? ' text-black' : ''
 							}`}
 							onClick={() => handleFilterClick('two')}
@@ -110,7 +126,7 @@ const Header = () => {
 							two
 						</button>
 						<button
-							className={`cursor-pointer transition-colors duration-75 hover:text-black${
+							className={`cursor-pointer motion-safe:transition-colors motion-safe:duration-75 hover:text-black${
 								activeFilter === 'three' ? ' text-black' : ''
 							}`}
 							onClick={() => handleFilterClick('three')}
@@ -123,21 +139,21 @@ const Header = () => {
 						<ol className="flex select-none flex-row gap-8 uppercase">
 							<li
 								role="presentation"
-								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:ease-out hover:after:left-0 hover:after:w-full"
+								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black hover:after:left-0 hover:after:w-full motion-safe:after:transition-all motion-safe:after:ease-out"
 								onClick={scrollToProjects}
 							>
 								Projekty
 							</li>
 							<li
 								role="presentation"
-								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:ease-out hover:after:left-0 hover:after:w-full"
+								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black hover:after:left-0 hover:after:w-full motion-safe:after:transition-all motion-safe:after:ease-out"
 								onClick={scrollToAtelier}
 							>
 								Ateliér
 							</li>
 							<li
 								role="presentation"
-								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black after:transition-all after:ease-out hover:after:left-0 hover:after:w-full"
+								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black hover:after:left-0 hover:after:w-full motion-safe:after:transition-all motion-safe:after:ease-out"
 								onClick={scrollToContact}
 							>
 								Kontakt
