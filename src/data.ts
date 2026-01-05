@@ -50,272 +50,272 @@ export const rewards: Reward[] = [
 export const previewImages: Image[] = [
 	{
 		src: 'preview1',
-		title: 'Project title 9',
+		title: 'Restaurace Garden&Pub - Brno',
 		className: 'one'
 	},
 	{
 		src: 'preview2',
-		title: 'Project title 12',
+		title: 'Restaurace Semmering - Hlubočepy',
 		className: 'one'
 	},
 	{
 		src: 'preview3',
-		title: 'Project title 16',
+		title: 'Penzion Kovárna - Český Krumlov',
 		className: 'one'
 	},
 	{
 		src: 'preview4',
-		title: 'Project title 39',
+		title: 'Restaurace Modrý dveře',
 		className: 'one'
 	},
 	{
 		src: 'preview5',
-		title: 'Project title 40',
+		title: 'Ocean`s bistro - Brno',
 		className: 'two'
 	},
 	{
 		src: 'preview6',
-		title: 'Project title 48',
+		title: 'Restaurace Steakgrill - Kralupy',
 		className: 'two'
 	},
 	{
 		src: 'preview7',
-		title: 'Project title 14',
+		title: 'Apartmány Harrachov',
 		className: 'three'
 	},
 	{
 		src: 'preview8',
-		title: 'Project title 6',
+		title: 'Bistro GOOD FOOD',
 		className: 'three'
 	},
 	{
 		src: 'preview9',
-		title: 'Project title 44',
+		title: 'Pizzerie Michalengelo',
 		className: 'two'
 	},
 	{
 		src: 'preview10',
-		title: 'Project title 46',
+		title: 'Rodinný dům u Prahy',
 		className: 'one'
 	},
 	{
 		src: 'preview11',
-		title: 'Project title 3',
+		title: 'Rodinný dům Albrechtice',
 		className: 'one'
 	},
 	{
 		src: 'preview12',
-		title: 'Project title 47',
+		title: 'Srdcovka Spálená',
 		className: 'one'
 	},
 	{
 		src: 'preview13',
-		title: 'Project title 2',
+		title: 'Apartmány Albrechtice v Jizerských horách',
 		className: 'two'
 	},
 	{
 		src: 'preview14',
-		title: 'Project title 5',
+		title: 'Rodinná vila - Černošice',
 		className: 'one'
 	},
 	{
 		src: 'preview15',
-		title: 'Project title 19',
+		title: 'Lokál - Korunní',
 		className: 'three'
 	},
 	{
 		src: 'preview16',
-		title: 'Project title 42',
+		title: 'Restaurace Passberg',
 		className: 'three'
 	},
 	{
 		src: 'preview17',
-		title: 'Project title 43',
+		title: 'pekárna PANNE NUOVO',
 		className: 'two'
 	},
 	{
 		src: 'preview18',
-		title: 'Project title 45',
+		title: 'Restaurace Solnice',
 		className: 'one'
 	},
 	{
 		src: 'preview19',
-		title: 'Project title 21',
+		title: 'Food story tržnice',
 		className: 'one'
 	},
 	{
 		src: 'preview20',
-		title: 'Project title 29',
+		title: 'Savoy Ambiente',
 		className: 'three'
 	},
 	{
 		src: 'preview21',
-		title: 'Project title 10',
+		title: 'Srdcovka Gurmanie = Praha Smíchov',
 		className: 'one'
 	},
 	{
 		src: 'preview22',
-		title: 'Project title 31',
+		title: 'Pizzanuova Ambiente',
 		className: 'two'
 	},
 	{
 		src: 'preview23',
-		title: 'Project title 38',
+		title: 'Budova společnosti MND',
 		className: 'one'
 	},
 	{
 		src: 'preview24',
-		title: 'Project title 33',
+		title: 'Naše maso - řeznictví',
 		className: 'three'
 	},
 	{
 		src: 'preview25',
-		title: 'Project title 34',
+		title: 'Lokál Pod Divadlem - Plzeň',
 		className: 'one'
 	},
 	{
 		src: 'preview26',
-		title: 'Project title 27',
+		title: 'Bytové domy Jesenice',
 		className: 'three'
 	},
 	{
 		src: 'preview27',
-		title: 'Project title 36',
+		title: 'Kampus park Hodkovičky',
 		className: 'one'
 	},
 	{
 		src: 'preview28',
-		title: 'Project title 26',
+		title: 'Cantineta Florentina - Pařížská',
 		className: 'two'
 	},
 	{
 		src: 'preview29',
-		title: 'Project title 41',
+		title: 'Srdcovka Otrokovice',
 		className: 'three'
 	},
 	{
 		src: 'preview30',
-		title: 'Project title 24',
+		title: 'Restaurace Havelák',
 		className: 'two'
 	},
 	{
 		src: 'preview31',
-		title: 'Project title 25',
+		title: 'Restaurace GOOD FOOD',
 		className: 'three'
 	},
 	{
 		src: 'preview32',
-		title: 'Project title 22',
+		title: 'Areál bydlení a služeb pro seniory Chářovice',
 		className: 'two'
 	},
 	{
 		src: 'preview33',
-		title: 'Project title 35',
+		title: 'Lokál U Caipla - Brno',
 		className: 'two'
 	},
 	{
 		src: 'preview34',
-		title: 'Project title 28',
+		title: 'Bytové domy Letňany',
 		className: 'three'
 	},
 	{
 		src: 'preview35',
-		title: 'Project title 4',
+		title: 'Ambasada Saudské Arabie',
 		className: 'three'
 	},
 	{
 		src: 'preview36',
-		title: 'Project title 51',
+		title: 'XL restaurant - Praha',
 		className: 'two'
 	},
 	{
 		src: 'preview37',
-		title: 'Project title 7',
+		title: 'Golfový klub - Ropice',
 		className: 'one'
 	},
 	{
 		src: 'preview38',
-		title: 'Project title 30',
+		title: 'Wellness Reitenberger',
 		className: 'two'
 	},
 	{
 		src: 'preview39',
-		title: 'Project title 32',
+		title: 'Naše maso - prodejna',
 		className: 'two'
 	},
 	{
 		src: 'preview40',
-		title: 'Project title 23',
+		title: 'Nádraží Mladá Boleslav',
 		className: 'one'
 	},
 	{
 		src: 'preview41',
-		title: 'Project title 17',
+		title: 'Rodinné domy Kunratice',
 		className: 'two'
 	},
 	{
 		src: 'preview42',
-		title: 'Project title 8',
+		title: 'Koncept prodejen Gorenje',
 		className: 'two'
 	},
 	{
 		src: 'preview43',
-		title: 'Project title 1',
+		title: 'Koncept prodejen Alpine',
 		className: 'three'
 	},
 	{
 		src: 'preview44',
-		title: 'Project title 20',
+		title: 'Rodinné domy - Lučany',
 		className: 'three'
 	},
 	{
 		src: 'preview45',
-		title: 'Project title 13',
+		title: 'Obytný soubor Hostavice',
 		className: 'one'
 	},
 	{
 		src: 'preview46',
-		title: 'Project title 18',
+		title: 'Restaurant La Degustation',
 		className: 'one'
 	},
 	{
 		src: 'preview47',
-		title: 'Project title 49',
+		title: 'Bytový dům Stodůlky',
 		className: 'one'
 	},
 	{
 		src: 'preview48',
-		title: 'Project title 52',
+		title: 'Bytové domy - Zbraslav',
 		className: 'three'
 	},
 	{
 		src: 'preview49',
-		title: 'Project title 53',
+		title: 'Bytový dům - Zbraslav',
 		className: 'two'
 	},
 	{
 		src: 'preview50',
-		title: 'Project title 11',
+		title: 'Fresh Gyros - Praha',
 		className: 'three'
 	},
 	{
 		src: 'preview51',
-		title: 'Project title 37',
+		title: 'Rodinné domy - Makotřasy',
 		className: 'two'
 	},
 	{
 		src: 'preview52',
-		title: 'Project title 15',
+		title: 'Restaurace Klobásovna',
 		className: 'one'
 	},
 	{
 		src: 'preview53',
-		title: 'Project title 54',
+		title: 'Restaurace Zvonařka - Praha',
 		className: 'three'
 	},
 	{
 		src: 'preview54',
-		title: 'Project title 50',
+		title: 'T-Mobile administrativní objekt',
 		className: 'one'
 	}
 ];
