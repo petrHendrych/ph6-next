@@ -19,7 +19,7 @@ const SectionHeading = ({ index, title, note }: Props) => (
 				<span className="label-micro text-neutral-500">{note}</span>
 			) : null}
 		</div>
-		<h2 className="mt-6 text-2xl uppercase leading-none tracking-[0.24em] text-neutral-900 sm:text-3xl md:text-5xl md:tracking-[0.2em]">
+		<h2 className="mt-6 text-2xl leading-none tracking-[0.24em] text-neutral-900 uppercase sm:text-3xl md:text-5xl md:tracking-[0.2em]">
 			{title}
 		</h2>
 	</Reveal>

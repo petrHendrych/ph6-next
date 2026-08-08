@@ -130,7 +130,7 @@ const PreviewGrid = ({ images, showAllTile, mobileLimit }: Props) => {
 						<FloorPlan className="pointer-events-none absolute inset-0 h-full w-full" />
 
 						<div className="relative flex items-center justify-between gap-4">
-							<span className="text-sm uppercase leading-tight tracking-[0.18em] md:text-base">
+							<span className="text-sm leading-tight tracking-[0.18em] uppercase md:text-base">
 								Všechny
 								<br />
 								projekty

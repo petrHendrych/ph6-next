@@ -78,7 +78,7 @@ const ProjectDetail = ({ project }: { project: Project }) => (
 				Zpět na projekty
 			</Link>
 
-			<h1 className="mt-6 text-3xl uppercase leading-none tracking-[0.24em] text-neutral-900 sm:text-4xl md:text-5xl md:tracking-[0.2em]">
+			<h1 className="mt-6 text-3xl leading-none tracking-[0.24em] text-neutral-900 uppercase sm:text-4xl md:text-5xl md:tracking-[0.2em]">
 				{project.title}
 			</h1>
 

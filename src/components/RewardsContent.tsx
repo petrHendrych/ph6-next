@@ -38,7 +38,7 @@ const RewardsContent = () => (
 					<span className="label-micro w-8 shrink-0 text-neutral-500">
 						{String(index + 1).padStart(2, '0')}
 					</span>
-					<h3 className="text-base uppercase tracking-[0.16em] text-neutral-900 sm:w-2/5 sm:shrink-0 md:text-lg">
+					<h3 className="text-base tracking-[0.16em] text-neutral-900 uppercase sm:w-2/5 sm:shrink-0 md:text-lg">
 						{reward.title}
 					</h3>
 					<p className="flex-1 text-sm text-neutral-600 sm:text-right">
