@@ -3,18 +3,17 @@ import { useGSAP } from '@gsap/react';
 import Image from 'next/image';
 import React, { useRef } from 'react';
 
+import HeaderProgress from '@/components/HeaderProgress';
 import { navLinks } from '@/data';
 import { useMobileMenu } from '@/hooks/useMobileMenu';
 import { useScrollTo } from '@/hooks/useScrollTo';
-import { useReducedMotion } from '@/hooks/useReducedMotion';
-import { gsap, ScrollTrigger } from '@/lib/gsap';
+import { ScrollTrigger } from '@/lib/gsap';
 
 const Header = () => {
 	const headerRef = useRef<HTMLElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
 	const hamburgerRef = useRef<HTMLButtonElement>(null);
 
-	const reduced = useReducedMotion();
 	const { scrollTo, scrollToTop } = useScrollTo();
 	const { isMenuOpen, toggleMenu } = useMobileMenu({
 		menuRef,
@@ -23,31 +22,17 @@ const Header = () => {
 
 	useGSAP(
 		() => {
-			if (headerRef.current) {
-				// Built-in toggleClass instead of hand-rolled classList juggling.
-				ScrollTrigger.create({
-					trigger: document.body,
-					start: '80px top',
-					end: 'max',
-					toggleClass: { targets: headerRef.current, className: 'is-scrolled' }
-				});
-			}
+			if (!headerRef.current) return;
 
-			// Scroll-linked, so it stays under reduced motion — only the scrub
-			// smoothing is dropped, otherwise the bar lags behind the wheel.
-			gsap.to('.header-progress', {
-				scaleX: 1,
-				transformOrigin: 'left center',
-				ease: 'none',
-				scrollTrigger: {
-					trigger: document.body,
-					start: 'top top',
-					end: 'max',
-					scrub: reduced ? true : 0.3
-				}
+			// Built-in toggleClass instead of hand-rolled classList juggling.
+			ScrollTrigger.create({
+				trigger: document.body,
+				start: '80px top',
+				end: 'max',
+				toggleClass: { targets: headerRef.current, className: 'is-scrolled' }
 			});
 		},
-		{ scope: headerRef, dependencies: [reduced], revertOnUpdate: true }
+		{ scope: headerRef }
 	);
 
 	const goTo = (hash: string) => (event: React.MouseEvent) => {
@@ -102,7 +87,7 @@ const Header = () => {
 						</nav>
 					</div>
 				</div>
-				<span className="header-progress" aria-hidden="true" />
+				<HeaderProgress />
 			</div>
 
 			<div
