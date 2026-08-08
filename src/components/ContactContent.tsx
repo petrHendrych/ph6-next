@@ -1,9 +1,12 @@
 import React from 'react';
 
+const MAP_URL =
+	'https://mapy.com/en/zakladni?q=narodni%20obrany%2031&source=firm&id=13622813&x=14.3965261&y=50.1012649&z=16';
+
 const ContactContent = () => (
 	<div className="relative h-[215px] w-full overflow-hidden">
 		<a
-			href="https://mapy.com/en/zakladni?q=narodni%20obrany%2031&source=firm&id=13622813&x=14.3965261&y=50.1012649&z=16"
+			href={MAP_URL}
 			target="_blank"
 			rel="noopener noreferrer"
 			aria-label="Otevřít mapu v novém okně"
@@ -17,7 +20,7 @@ const ContactContent = () => (
 						Adresa
 					</span>
 					<a
-						href="https://mapy.com/en/zakladni?q=narodni%20obrany%2031&source=firm&id=13622813&x=14.3965261&y=50.1012649&z=16"
+						href={MAP_URL}
 						target="_blank"
 						rel="noopener noreferrer"
 						aria-label="Otevřít mapu v novém okně"

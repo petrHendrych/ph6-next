@@ -1,46 +1,26 @@
-import { gsap } from 'gsap';
+'use client';
+import { gsap } from '@/lib/gsap';
+
+import { useReducedMotion } from './useReducedMotion';
+
+/** Height reserved for the fixed header when scrolling to a section. */
+export const HEADER_OFFSET = 100;
+
+const SCROLL_DURATION = 0.8;
 
 export const useScrollTo = () => {
-	const scrollToTop = () => {
+	const reduced = useReducedMotion();
+
+	const scrollTo = (target: string | number) => {
 		gsap.to(window, {
-			duration: 0.8,
-			scrollTo: 0,
+			duration: reduced ? 0 : SCROLL_DURATION,
+			scrollTo:
+				typeof target === 'number'
+					? target
+					: { y: target, offsetY: HEADER_OFFSET },
 			ease: 'power2.inOut'
 		});
 	};
 
-	const scrollToProjects = () => {
-		gsap.to(window, {
-			duration: 0.8,
-			scrollTo: {
-				y: '#preview-section',
-				offsetY: +100
-			},
-			ease: 'power2.inOut'
-		});
-	};
-
-	const scrollToAtelier = () => {
-		gsap.to(window, {
-			duration: 0.8,
-			scrollTo: {
-				y: '#atelier-section',
-				offsetY: +100
-			},
-			ease: 'power2.inOut'
-		});
-	};
-
-	const scrollToContact = () => {
-		gsap.to(window, {
-			duration: 0.8,
-			scrollTo: {
-				y: '#kontakt-section',
-				offsetY: +100
-			},
-			ease: 'power2.inOut'
-		});
-	};
-
-	return { scrollToTop, scrollToProjects, scrollToAtelier, scrollToContact };
+	return { scrollTo, scrollToTop: () => scrollTo(0) };
 };

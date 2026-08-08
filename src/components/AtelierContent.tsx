@@ -1,5 +1,7 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
+
+import { team } from '@/data';
 
 const AtelierContent = () => (
 	<div className="mx-auto flex max-w-7xl flex-col gap-3">
@@ -29,50 +31,30 @@ const AtelierContent = () => (
 		<p className="text-base/relaxed">Těšíme se na spolupráci</p>
 
 		<div className="mx-auto mt-10 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-20 sm:gap-y-12 lg:grid-cols-3 lg:gap-24">
-			<figure className="group flex flex-col items-center gap-4">
-				<div className="overflow-hidden rounded-full drop-shadow-2xl">
-					<Image
-						src="/people/simon.jpg"
-						alt="Simon Brnada"
-						width={220}
-						height={220}
-						className="motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-110"
-					/>
-				</div>
-				<figcaption className="text-center text-sm text-black">
-					Ing. arch. Šimon Brnada
-				</figcaption>
-			</figure>
-
-			<figure className="group flex flex-col items-center gap-4">
-				<div className="overflow-hidden rounded-full drop-shadow-2xl">
-					<Image
-						src="/people/kristina.jpg"
-						alt="Kristina Hanzlova"
-						width={220}
-						height={220}
-						className="motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-110"
-					/>
-				</div>
-				<figcaption className="text-center text-sm text-black">
-					Ing. arch. Kristina Hanzlová
-				</figcaption>
-			</figure>
-
-			<figure className="group col-span-1 flex flex-col items-center gap-4 sm:col-span-2 lg:col-span-1">
-				<div className="overflow-hidden rounded-full drop-shadow-2xl">
-					<Image
-						src="/people/pavel.jpg"
-						alt="Pavel Hendrych"
-						width={220}
-						height={220}
-						className="motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-110"
-					/>
-				</div>
-				<figcaption className="text-center text-sm text-black">
-					Ing. arch. Pavel Hendrych
-				</figcaption>
-			</figure>
+			{team.map((member, index) => (
+				<figure
+					key={member.src}
+					className={`group flex flex-col items-center gap-4 ${
+						// Last of three: full width on the two-column layout.
+						index === team.length - 1
+							? 'col-span-1 sm:col-span-2 lg:col-span-1'
+							: ''
+					}`}
+				>
+					<div className="overflow-hidden rounded-full drop-shadow-2xl">
+						<Image
+							src={`/people/${member.src}.jpg`}
+							alt={member.name}
+							width={220}
+							height={220}
+							className="motion-safe:transition-transform motion-safe:duration-300 motion-safe:group-hover:scale-110"
+						/>
+					</div>
+					<figcaption className="text-center text-sm text-black">
+						{member.name}
+					</figcaption>
+				</figure>
+			))}
 		</div>
 	</div>
 );

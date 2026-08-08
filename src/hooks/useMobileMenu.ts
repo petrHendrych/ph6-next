@@ -1,138 +1,103 @@
 'use client';
-import { useState, type RefObject } from 'react';
 import { useGSAP } from '@gsap/react';
-import { gsap } from 'gsap';
+import { useState, type RefObject } from 'react';
+
+import { gsap } from '@/lib/gsap';
+
+import { useReducedMotion } from './useReducedMotion';
 
 type UseMobileMenuProps = {
 	menuRef: RefObject<HTMLDivElement | null>;
-	filterDropdownRef: RefObject<HTMLDivElement | null>;
+	/** Button holding the three `.hamburger-line` bars. */
+	hamburgerRef: RefObject<HTMLButtonElement | null>;
+	/** Optional — subpages have no filter dropdown. */
+	filterRef?: RefObject<HTMLDivElement | null>;
 };
+
+const PANEL_DURATION = 0.3;
 
 export const useMobileMenu = ({
 	menuRef,
-	filterDropdownRef
+	hamburgerRef,
+	filterRef
 }: UseMobileMenuProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isFilterOpen, setIsFilterOpen] = useState(false);
-
+	const reduced = useReducedMotion();
 	const { contextSafe } = useGSAP();
 
-	const toggleMenu = contextSafe(() => {
-		const newState = !isMenuOpen;
-		setIsMenuOpen(newState);
+	const duration = reduced ? 0 : PANEL_DURATION;
 
-		const mm = gsap.matchMedia();
+	const animateHamburger = (tl: gsap.core.Timeline, open: boolean) => {
+		const lines = gsap.utils.toArray<HTMLElement>(
+			'.hamburger-line',
+			hamburgerRef.current
+		);
+		if (lines.length < 3) return;
+
+		tl.to(
+			lines[0],
+			{ rotation: open ? 45 : 0, y: open ? 8 : 0, duration: duration * 0.7 },
+			0
+		)
+			.to(lines[1], { opacity: open ? 0 : 1, duration: duration * 0.7 }, 0)
+			.to(
+				lines[2],
+				{
+					rotation: open ? -45 : 0,
+					y: open ? -8 : 0,
+					duration: duration * 0.7
+				},
+				0
+			);
+	};
+
+	const animatePanel = (
+		tl: gsap.core.Timeline,
+		el: HTMLElement | null | undefined,
+		open: boolean
+	) => {
+		if (!el) return;
+
+		if (open) {
+			tl.fromTo(
+				el,
+				{ height: 0, opacity: 0 },
+				{ height: 'auto', opacity: 1, duration, ease: 'power2.out' },
+				0
+			);
+		} else {
+			tl.to(el, { height: 0, opacity: 0, duration, ease: 'power2.in' }, 0);
+		}
+	};
+
+	const toggleMenu = contextSafe(() => {
+		const open = !isMenuOpen;
 		const tl = gsap.timeline();
 
-		mm.add('(prefers-reduced-motion: reduce)', () => {
-			if (newState) {
-				if (isFilterOpen) {
-					setIsFilterOpen(false);
-					gsap.set(filterDropdownRef.current, { height: 0, opacity: 0 });
-				}
+		setIsMenuOpen(open);
+		animateHamburger(tl, open);
+		animatePanel(tl, menuRef.current, open);
 
-				gsap.set('#hamburger-line-1', { rotation: 45, y: 8 });
-				gsap.set('#hamburger-line-2', { opacity: 0 });
-				gsap.set('#hamburger-line-3', { rotation: -45, y: -8 });
-				gsap.set(menuRef.current, { height: 'auto', opacity: 1 });
-			} else {
-				gsap.set('#hamburger-line-1', { rotation: 0, y: 0 });
-				gsap.set('#hamburger-line-2', { opacity: 1 });
-				gsap.set('#hamburger-line-3', { rotation: 0, y: 0 });
-				gsap.set(menuRef.current, { height: 0, opacity: 0 });
-			}
-		});
-
-		mm.add('(prefers-reduced-motion: no-preference)', () => {
-			if (newState) {
-				if (isFilterOpen) {
-					setIsFilterOpen(false);
-					tl.to(
-						filterDropdownRef.current,
-						{ height: 0, opacity: 0, duration: 0.2, ease: 'power2.in' },
-						0
-					);
-				}
-
-				tl.to('#hamburger-line-1', { rotation: 45, y: 8, duration: 0.2 }, 0)
-					.to('#hamburger-line-2', { opacity: 0, duration: 0.2 }, 0)
-					.to('#hamburger-line-3', { rotation: -45, y: -8, duration: 0.2 }, 0)
-					.fromTo(
-						menuRef.current,
-						{ height: 0, opacity: 0 },
-						{ height: 'auto', opacity: 1, duration: 0.3, ease: 'power2.out' },
-						0
-					);
-			} else {
-				tl.to('#hamburger-line-1', { rotation: 0, y: 0, duration: 0.2 }, 0)
-					.to('#hamburger-line-2', { opacity: 1, duration: 0.2 }, 0)
-					.to('#hamburger-line-3', { rotation: 0, y: 0, duration: 0.2 }, 0)
-					.to(
-						menuRef.current,
-						{ height: 0, opacity: 0, duration: 0.3, ease: 'power2.in' },
-						0
-					);
-			}
-		});
+		if (open && isFilterOpen) {
+			setIsFilterOpen(false);
+			animatePanel(tl, filterRef?.current, false);
+		}
 	});
 
 	const toggleFilter = contextSafe(() => {
-		const newState = !isFilterOpen;
-		setIsFilterOpen(newState);
-
-		const mm = gsap.matchMedia();
+		const open = !isFilterOpen;
 		const tl = gsap.timeline();
 
-		mm.add('(prefers-reduced-motion: reduce)', () => {
-			if (newState) {
-				if (isMenuOpen) {
-					setIsMenuOpen(false);
-					gsap.set('#hamburger-line-1', { rotation: 0, y: 0 });
-					gsap.set('#hamburger-line-2', { opacity: 1 });
-					gsap.set('#hamburger-line-3', { rotation: 0, y: 0 });
-					gsap.set(menuRef.current, { height: 0, opacity: 0 });
-				}
+		setIsFilterOpen(open);
+		animatePanel(tl, filterRef?.current, open);
 
-				gsap.set(filterDropdownRef.current, { height: 'auto', opacity: 1 });
-			} else {
-				gsap.set(filterDropdownRef.current, { height: 0, opacity: 0 });
-			}
-		});
-
-		mm.add('(prefers-reduced-motion: no-preference)', () => {
-			if (newState) {
-				if (isMenuOpen) {
-					setIsMenuOpen(false);
-					tl.to('#hamburger-line-1', { rotation: 0, y: 0, duration: 0.2 }, 0)
-						.to('#hamburger-line-2', { opacity: 1, duration: 0.2 }, 0)
-						.to('#hamburger-line-3', { rotation: 0, y: 0, duration: 0.2 }, 0)
-						.to(
-							menuRef.current,
-							{ height: 0, opacity: 0, duration: 0.2, ease: 'power2.in' },
-							0
-						);
-				}
-
-				tl.fromTo(
-					filterDropdownRef.current,
-					{ height: 0, opacity: 0 },
-					{ height: 'auto', opacity: 1, duration: 0.3, ease: 'power2.out' }
-				);
-			} else {
-				tl.to(filterDropdownRef.current, {
-					height: 0,
-					opacity: 0,
-					duration: 0.3,
-					ease: 'power2.in'
-				});
-			}
-		});
+		if (open && isMenuOpen) {
+			setIsMenuOpen(false);
+			animateHamburger(tl, false);
+			animatePanel(tl, menuRef.current, false);
+		}
 	});
 
-	return {
-		isMenuOpen,
-		isFilterOpen,
-		toggleMenu,
-		toggleFilter
-	};
+	return { isMenuOpen, isFilterOpen, toggleMenu, toggleFilter };
 };

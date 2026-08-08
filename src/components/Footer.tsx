@@ -1,8 +1,8 @@
-import React from 'react';
 import Image from 'next/image';
+import React from 'react';
 
 const Footer = () => (
-	<footer className="h-[100px] w-full bg-[#515151]">
+	<footer className="bg-footer h-[100px] w-full">
 		<div className="mx-auto flex h-full items-center px-6">
 			<div className="flex-1" />
 
@@ -40,7 +40,7 @@ const Footer = () => (
 			</div>
 
 			<div className="flex flex-1 justify-end">
-				<span className="text-sm text-[#c5c5c5]">© PaP design 2018</span>
+				<span className="text-footer-text text-sm">© PaP design 2018</span>
 			</div>
 		</div>
 	</footer>

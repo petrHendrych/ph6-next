@@ -1,258 +1,217 @@
 'use client';
-import React, { useRef } from 'react';
-import Image from 'next/image';
 import { useGSAP } from '@gsap/react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import Image from 'next/image';
+import React, { useRef } from 'react';
 
-import { useScrollTo } from '@/hooks/useScrollTo';
-import { usePreviewFilter } from '@/hooks/usePreviewFilter';
+import { navLinks, previewCategories } from '@/data';
 import { useMobileMenu } from '@/hooks/useMobileMenu';
+import { usePreviewFilter } from '@/hooks/usePreviewFilter';
+import { useScrollTo } from '@/hooks/useScrollTo';
+import { useReducedMotion } from '@/hooks/useReducedMotion';
+import { gsap, ScrollTrigger } from '@/lib/gsap';
 
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+const PREVIEW_SECTION = '#preview-section';
 
 const Header = () => {
-	const headerRef = useRef<HTMLDivElement>(null);
+	const headerRef = useRef<HTMLElement>(null);
 	const menuRef = useRef<HTMLDivElement>(null);
-	const filterDropdownRef = useRef<HTMLDivElement>(null);
-	const { scrollToProjects, scrollToTop, scrollToAtelier, scrollToContact } =
-		useScrollTo();
+	const filterRef = useRef<HTMLDivElement>(null);
+	const hamburgerRef = useRef<HTMLButtonElement>(null);
+
+	const reduced = useReducedMotion();
+	const { scrollTo, scrollToTop } = useScrollTo();
 	const { activeFilter, handleFilterClick } = usePreviewFilter({
-		scopeSelector: '#preview-section'
+		scopeSelector: PREVIEW_SECTION,
+		onFiltered: () => scrollTo(PREVIEW_SECTION)
 	});
-	const { toggleMenu, toggleFilter } = useMobileMenu({
+	const { isMenuOpen, isFilterOpen, toggleMenu, toggleFilter } = useMobileMenu({
 		menuRef,
-		filterDropdownRef
+		hamburgerRef,
+		filterRef
 	});
 
-	useGSAP(() => {
-		const mm = gsap.matchMedia();
+	useGSAP(
+		() => {
+			// Triggers live outside the header, so they are looked up explicitly —
+			// selector strings inside a gsap context resolve against the scope.
+			const previewSection = document.querySelector(PREVIEW_SECTION);
+			const filterControls = gsap.utils.toArray<HTMLElement>(
+				'.filter-control',
+				headerRef.current
+			);
 
-		mm.add('(prefers-reduced-motion: no-preference)', () => {
-			gsap.to(['#filter-container', '#mobile-filter-icon'], {
-				scrollTrigger: {
-					trigger: '#preview-section',
+			if (previewSection && filterControls.length) {
+				ScrollTrigger.create({
+					trigger: previewSection,
 					start: 'top top+=110px',
 					end: 'bottom top+=110px',
-					toggleActions: 'play reverse play reverse'
-				},
-				autoAlpha: 1,
-				duration: 0.2
-			});
-		});
-
-		mm.add('(prefers-reduced-motion: reduce)', () => {
-			gsap.set(['#filter-container', '#mobile-filter-icon'], {
-				scrollTrigger: {
-					trigger: '#preview-section',
-					start: 'top top+=110px',
-					end: 'bottom top+=110px',
-					toggleActions: 'play reverse play reverse'
-				},
-				autoAlpha: 1
-			});
-		});
-
-		ScrollTrigger.create({
-			trigger: 'body',
-			start: '80px top',
-			end: '80px top',
-			onEnter: () => {
-				headerRef.current?.classList.remove('md:bg-white/60');
-				headerRef.current?.classList.add('md:bg-white');
-			},
-			onLeaveBack: () => {
-				headerRef.current?.classList.remove('md:bg-white');
-				headerRef.current?.classList.add('md:bg-white/60');
+					onToggle: self =>
+						gsap.to(filterControls, {
+							autoAlpha: self.isActive ? 1 : 0,
+							duration: reduced ? 0 : 0.2
+						})
+				});
 			}
-		});
-	});
+
+			if (headerRef.current) {
+				// Built-in toggleClass instead of hand-rolled classList juggling.
+				ScrollTrigger.create({
+					trigger: document.body,
+					start: '80px top',
+					end: 'max',
+					toggleClass: { targets: headerRef.current, className: 'is-scrolled' }
+				});
+			}
+
+			// Scroll-linked, so it stays under reduced motion — only the scrub
+			// smoothing is dropped, otherwise the bar lags behind the wheel.
+			gsap.to('.header-progress', {
+				scaleX: 1,
+				transformOrigin: 'left center',
+				ease: 'none',
+				scrollTrigger: {
+					trigger: document.body,
+					start: 'top top',
+					end: 'max',
+					scrub: reduced ? true : 0.3
+				}
+			});
+		},
+		{ scope: headerRef, dependencies: [reduced], revertOnUpdate: true }
+	);
+
+	const goTo = (hash: string) => (event: React.MouseEvent) => {
+		event.preventDefault();
+		scrollTo(hash);
+	};
 
 	return (
-		<header
-			ref={headerRef}
-			className="fixed top-0 z-10 w-full bg-white shadow-sm motion-safe:transition-colors motion-safe:duration-500 md:bg-white/60"
-		>
-			<div className="container mx-auto flex items-center justify-between px-6 py-3 shadow-sm md:shadow-none">
-				<Image
-					src="/logo.png"
-					alt="Logo image"
-					width={30}
-					height={33}
-					priority
-					onClick={scrollToTop}
-					className="cursor-pointer"
-				/>
-
-				<div className="flex flex-row items-center gap-4 md:hidden">
+		<header ref={headerRef} className="site-header fixed top-0 z-10 w-full">
+			<div className="relative">
+				<div className="header-bar container mx-auto flex items-center justify-between px-6">
 					<button
-						id="mobile-filter-icon"
-						className="invisible cursor-pointer text-sm font-medium uppercase opacity-0"
-						onClick={toggleFilter}
+						type="button"
+						onClick={scrollToTop}
+						aria-label="Zpět nahoru"
+						className="header-logo cursor-pointer"
 					>
-						filter
+						<Image src="/logo.png" alt="PH6" width={30} height={33} priority />
 					</button>
-					<button
-						className="flex h-6 w-6 flex-col justify-center gap-1.5"
-						onClick={toggleMenu}
-						aria-label="Toggle menu"
-					>
-						<span id="hamburger-line-1" className="h-0.5 w-full bg-black" />
-						<span id="hamburger-line-2" className="h-0.5 w-full bg-black" />
-						<span id="hamburger-line-3" className="h-0.5 w-full bg-black" />
-					</button>
-				</div>
 
-				<div className="hidden flex-row items-center gap-10 md:flex">
-					<div
-						id="filter-container"
-						className="invisible flex flex-row gap-6 text-sm text-gray-400 opacity-0"
-					>
+					<div className="flex flex-row items-center gap-4 md:hidden">
 						<button
-							className={`cursor-pointer motion-safe:transition-colors motion-safe:duration-75 hover:text-black${
-								activeFilter === 'one' ? ' text-black' : ''
-							}`}
-							onClick={() => handleFilterClick('one')}
+							type="button"
+							className="filter-control invisible cursor-pointer text-sm font-medium uppercase opacity-0"
+							onClick={toggleFilter}
+							aria-expanded={isFilterOpen}
+							aria-controls="mobile-filter-panel"
 						>
-							one
+							filtr
 						</button>
 						<button
-							className={`cursor-pointer motion-safe:transition-colors motion-safe:duration-75 hover:text-black${
-								activeFilter === 'two' ? ' text-black' : ''
-							}`}
-							onClick={() => handleFilterClick('two')}
+							ref={hamburgerRef}
+							type="button"
+							className="flex h-6 w-6 flex-col justify-center gap-1.5"
+							onClick={toggleMenu}
+							aria-expanded={isMenuOpen}
+							aria-controls="mobile-menu-panel"
+							aria-label="Menu"
 						>
-							two
+							<span className="hamburger-line h-0.5 w-full bg-black" />
+							<span className="hamburger-line h-0.5 w-full bg-black" />
+							<span className="hamburger-line h-0.5 w-full bg-black" />
 						</button>
-						<button
-							className={`cursor-pointer motion-safe:transition-colors motion-safe:duration-75 hover:text-black${
-								activeFilter === 'three' ? ' text-black' : ''
-							}`}
-							onClick={() => handleFilterClick('three')}
-						>
-							three
-						</button>
-						<div className="ml-4 h-5 w-px bg-gray-300" />
 					</div>
-					<nav>
-						<ol className="flex select-none flex-row gap-8 uppercase">
-							<li
-								role="presentation"
-								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black hover:after:left-0 hover:after:w-full motion-safe:after:transition-all motion-safe:after:ease-out"
-								onClick={scrollToProjects}
-							>
-								Projekty
-							</li>
-							<li
-								role="presentation"
-								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black hover:after:left-0 hover:after:w-full motion-safe:after:transition-all motion-safe:after:ease-out"
-								onClick={scrollToAtelier}
-							>
-								Ateliér
-							</li>
-							<li
-								role="presentation"
-								className="after:duration-400 relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black hover:after:left-0 hover:after:w-full motion-safe:after:transition-all motion-safe:after:ease-out"
-								onClick={scrollToContact}
-							>
-								Kontakt
-							</li>
-						</ol>
-					</nav>
+
+					<div className="hidden flex-row items-center gap-10 md:flex">
+						<div className="filter-control invisible flex flex-row gap-6 text-sm text-gray-500 opacity-0">
+							{previewCategories.map(({ key, label }) => (
+								<button
+									key={key}
+									type="button"
+									aria-pressed={activeFilter === key}
+									className={`nav-underline cursor-pointer uppercase hover:text-black motion-safe:transition-colors motion-safe:duration-75 ${
+										activeFilter === key ? 'font-medium text-black' : ''
+									}`}
+									onClick={() => handleFilterClick(key)}
+								>
+									{label}
+								</button>
+							))}
+							<div className="ml-4 h-5 w-px bg-gray-300" />
+						</div>
+						<nav>
+							<ol className="flex select-none flex-row gap-8 uppercase">
+								{navLinks.map(({ hash, label }) => (
+									<li key={hash}>
+										<a
+											href={hash}
+											onClick={goTo(hash)}
+											className="nav-underline cursor-pointer"
+										>
+											{label}
+										</a>
+									</li>
+								))}
+							</ol>
+						</nav>
+					</div>
 				</div>
+				<span className="header-progress" aria-hidden="true" />
 			</div>
 
 			<div
+				id="mobile-menu-panel"
 				ref={menuRef}
 				className="overflow-hidden bg-white md:hidden"
 				style={{ height: 0 }}
 			>
 				<nav className="flex flex-col items-center">
-					<button
-						className="w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50"
-						onClick={() => {
-							scrollToProjects();
-							toggleMenu();
-						}}
-					>
-						Projekty
-					</button>
-					<button
-						className="w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50"
-						onClick={() => {
-							scrollToAtelier();
-							toggleMenu();
-						}}
-					>
-						Ateliér
-					</button>
-					<button
-						className="w-full py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50"
-						onClick={() => {
-							scrollToContact();
-							toggleMenu();
-						}}
-					>
-						Kontakt
-					</button>
+					{navLinks.map(({ hash, label }, index) => (
+						<a
+							key={hash}
+							href={hash}
+							onClick={event => {
+								goTo(hash)(event);
+								toggleMenu();
+							}}
+							className={`w-full py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
+								index < navLinks.length - 1 ? 'border-b border-gray-100' : ''
+							}`}
+						>
+							{label}
+						</a>
+					))}
 				</nav>
 			</div>
 
 			<div
-				ref={filterDropdownRef}
+				id="mobile-filter-panel"
+				ref={filterRef}
 				className="overflow-hidden bg-white md:hidden"
 				style={{ height: 0 }}
 			>
 				<div className="flex flex-col items-center">
-					<button
-						className={`w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
-							activeFilter === 'one' ? 'font-bold text-black' : 'text-gray-400'
-						}`}
-						onClick={() => {
-							handleFilterClick('one');
-							toggleFilter();
-						}}
-					>
-						interiéry
-					</button>
-					<button
-						className={`w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
-							activeFilter === 'two' ? 'font-bold text-black' : 'text-gray-400'
-						}`}
-						onClick={() => {
-							handleFilterClick('two');
-							toggleFilter();
-						}}
-					>
-						rodinné domy
-					</button>
-					<button
-						className={`w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
-							activeFilter === 'three'
-								? 'font-bold text-black'
-								: 'text-gray-400'
-						}`}
-						onClick={() => {
-							handleFilterClick('three');
-							toggleFilter();
-						}}
-					>
-						bytové domy
-					</button>
-					<button
-						className={`w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
-							activeFilter === 'three'
-								? 'font-bold text-black'
-								: 'text-gray-400'
-						}`}
-						onClick={() => {
-							handleFilterClick('three');
-							toggleFilter();
-						}}
-					>
-						veřejné stavby
-					</button>
+					{previewCategories.map(({ key, label }, index) => (
+						<button
+							key={key}
+							type="button"
+							aria-pressed={activeFilter === key}
+							className={`w-full py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
+								index < previewCategories.length - 1
+									? 'border-b border-gray-100'
+									: ''
+							} ${
+								activeFilter === key ? 'font-bold text-black' : 'text-gray-500'
+							}`}
+							onClick={() => {
+								handleFilterClick(key);
+								toggleFilter();
+							}}
+						>
+							{label}
+						</button>
+					))}
 				</div>
 			</div>
 		</header>

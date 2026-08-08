@@ -1,9 +1,10 @@
 'use client';
-import React, { useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import React, { useRef } from 'react';
 
+import { navLinks } from '@/data';
 import { useMobileMenu } from '@/hooks/useMobileMenu';
 
 const titles: Record<string, string> = {
@@ -15,20 +16,19 @@ const SubpageHeader = () => {
 	const pathname = usePathname();
 	const title = titles[pathname] || '';
 	const menuRef = useRef<HTMLDivElement>(null);
-	const filterDropdownRef = useRef<HTMLDivElement>(null);
+	const hamburgerRef = useRef<HTMLButtonElement>(null);
 
-	const { toggleMenu } = useMobileMenu({
-		menuRef,
-		filterDropdownRef
-	});
+	const { isMenuOpen, toggleMenu } = useMobileMenu({ menuRef, hamburgerRef });
 
+	// Permanently in the scrolled state — subpages have no hero to sit on, but
+	// the bar should still match the one on the landing page.
 	return (
-		<header className="fixed top-0 z-10 w-full bg-white shadow-sm">
-			<div className="container mx-auto flex items-center justify-between px-6 py-3 shadow-sm md:shadow-none">
-				<Link href="/">
+		<header className="site-header is-scrolled fixed top-0 z-10 w-full">
+			<div className="header-bar container mx-auto flex items-center justify-between px-6">
+				<Link href="/" aria-label="Domů">
 					<Image
 						src="/logo.png"
-						alt="Logo image"
+						alt="PH6"
 						width={30}
 						height={33}
 						priority
@@ -41,13 +41,17 @@ const SubpageHeader = () => {
 						{title}
 					</span>
 					<button
+						ref={hamburgerRef}
+						type="button"
 						className="flex h-6 w-6 flex-col justify-center gap-1.5"
 						onClick={toggleMenu}
-						aria-label="Toggle menu"
+						aria-expanded={isMenuOpen}
+						aria-controls="subpage-menu-panel"
+						aria-label="Menu"
 					>
-						<span id="hamburger-line-1" className="h-0.5 w-full bg-black" />
-						<span id="hamburger-line-2" className="h-0.5 w-full bg-black" />
-						<span id="hamburger-line-3" className="h-0.5 w-full bg-black" />
+						<span className="hamburger-line h-0.5 w-full bg-black" />
+						<span className="hamburger-line h-0.5 w-full bg-black" />
+						<span className="hamburger-line h-0.5 w-full bg-black" />
 					</button>
 				</div>
 
@@ -60,62 +64,40 @@ const SubpageHeader = () => {
 					<div className="h-5 w-px bg-gray-300" />
 					<nav>
 						<ol className="flex select-none flex-row gap-8 uppercase">
-							<li>
-								<Link
-									href="/#preview-section"
-									className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black hover:after:left-0 hover:after:w-full motion-safe:after:transition-all motion-safe:after:ease-out"
-								>
-									Projekty
-								</Link>
-							</li>
-							<li>
-								<Link
-									href="/#atelier-section"
-									className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black hover:after:left-0 hover:after:w-full motion-safe:after:transition-all motion-safe:after:ease-out"
-								>
-									Ateliér
-								</Link>
-							</li>
-							<li>
-								<Link
-									href="/#kontakt-section"
-									className="relative cursor-pointer tracking-wider after:absolute after:bottom-0 after:left-1/2 after:h-px after:w-0 after:bg-black hover:after:left-0 hover:after:w-full motion-safe:after:transition-all motion-safe:after:ease-out"
-								>
-									Kontakt
-								</Link>
-							</li>
+							{navLinks.map(({ hash, label }) => (
+								<li key={hash}>
+									<Link
+										href={`/${hash}`}
+										className="nav-underline cursor-pointer"
+									>
+										{label}
+									</Link>
+								</li>
+							))}
 						</ol>
 					</nav>
 				</div>
 			</div>
 
 			<div
+				id="subpage-menu-panel"
 				ref={menuRef}
 				className="overflow-hidden bg-white md:hidden"
 				style={{ height: 0 }}
 			>
 				<nav className="flex flex-col items-center">
-					<Link
-						href="/#preview-section"
-						className="w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50"
-						onClick={toggleMenu}
-					>
-						Projekty
-					</Link>
-					<Link
-						href="/#atelier-section"
-						className="w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50"
-						onClick={toggleMenu}
-					>
-						Ateliér
-					</Link>
-					<Link
-						href="/#kontakt-section"
-						className="w-full py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50"
-						onClick={toggleMenu}
-					>
-						Kontakt
-					</Link>
+					{navLinks.map(({ hash, label }, index) => (
+						<Link
+							key={hash}
+							href={`/${hash}`}
+							className={`w-full py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
+								index < navLinks.length - 1 ? 'border-b border-gray-100' : ''
+							}`}
+							onClick={toggleMenu}
+						>
+							{label}
+						</Link>
+					))}
 				</nav>
 			</div>
 		</header>

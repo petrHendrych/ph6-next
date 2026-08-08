@@ -3,8 +3,10 @@ import { Raleway } from 'next/font/google';
 import './globals.css';
 
 const ralewayFont = Raleway({
-	subsets: ['latin'],
-	weight: ['400'],
+	subsets: ['latin', 'latin-ext'],
+	// font-medium / font-bold are used across the site; without these the
+	// browser synthesises fake weights.
+	weight: ['400', '500', '700'],
 	variable: '--font-raleway'
 });
 
@@ -18,7 +20,7 @@ const RootLayout = ({
 }: Readonly<{
 	children: React.ReactNode;
 }>) => (
-	<html lang="en" className="">
+	<html lang="cs">
 		<body className={`${ralewayFont.variable} antialiased`}>{children}</body>
 	</html>
 );

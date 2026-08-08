@@ -1,4 +1,28 @@
-import type { Image, Reward } from '@/types';
+import type {
+	Image,
+	NavLink,
+	PreviewCategory,
+	Reward,
+	TeamMember
+} from '@/types';
+
+export const navLinks: NavLink[] = [
+	{ hash: '#preview-section', label: 'Projekty' },
+	{ hash: '#atelier-section', label: 'Ateliér' },
+	{ hash: '#kontakt-section', label: 'Kontakt' }
+];
+
+export const previewCategories: { key: PreviewCategory; label: string }[] = [
+	{ key: 'one', label: 'interiéry' },
+	{ key: 'two', label: 'rodinné domy' },
+	{ key: 'three', label: 'bytové domy' }
+];
+
+export const team: TeamMember[] = [
+	{ src: 'simon', name: 'Ing. arch. Šimon Brnada' },
+	{ src: 'kristina', name: 'Ing. arch. Kristina Hanzlová' },
+	{ src: 'pavel', name: 'Ing. arch. Pavel Hendrych' }
+];
 
 export const mainImages: Image[] = [
 	{
@@ -51,271 +75,271 @@ export const previewImages: Image[] = [
 	{
 		src: 'preview1',
 		title: 'Restaurace Garden&Pub - Brno',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview2',
 		title: 'Restaurace Semmering - Hlubočepy',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview3',
 		title: 'Penzion Kovárna - Český Krumlov',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview4',
 		title: 'Restaurace Modrý dveře',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview5',
 		title: 'Ocean`s bistro - Brno',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview6',
 		title: 'Restaurace Steakgrill - Kralupy',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview7',
 		title: 'Apartmány Harrachov',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview8',
 		title: 'Bistro GOOD FOOD',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview9',
 		title: 'Pizzerie Michalengelo',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview10',
 		title: 'Rodinný dům u Prahy',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview11',
 		title: 'Rodinný dům Albrechtice',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview12',
 		title: 'Srdcovka Spálená',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview13',
 		title: 'Apartmány Albrechtice v Jizerských horách',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview14',
 		title: 'Rodinná vila - Černošice',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview15',
 		title: 'Lokál - Korunní',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview16',
 		title: 'Restaurace Passberg',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview17',
 		title: 'pekárna PANNE NUOVO',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview18',
 		title: 'Restaurace Solnice',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview19',
 		title: 'Food story tržnice',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview20',
 		title: 'Savoy Ambiente',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview21',
 		title: 'Srdcovka Gurmanie = Praha Smíchov',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview22',
 		title: 'Pizzanuova Ambiente',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview23',
 		title: 'Budova společnosti MND',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview24',
 		title: 'Naše maso - řeznictví',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview25',
 		title: 'Lokál Pod Divadlem - Plzeň',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview26',
 		title: 'Bytové domy Jesenice',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview27',
 		title: 'Kampus park Hodkovičky',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview28',
 		title: 'Cantineta Florentina - Pařížská',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview29',
 		title: 'Srdcovka Otrokovice',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview30',
 		title: 'Restaurace Havelák',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview31',
 		title: 'Restaurace GOOD FOOD',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview32',
 		title: 'Areál bydlení a služeb pro seniory Chářovice',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview33',
 		title: 'Lokál U Caipla - Brno',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview34',
 		title: 'Bytové domy Letňany',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview35',
 		title: 'Ambasada Saudské Arabie',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview36',
 		title: 'XL restaurant - Praha',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview37',
 		title: 'Golfový klub - Ropice',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview38',
 		title: 'Wellness Reitenberger',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview39',
 		title: 'Naše maso - prodejna',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview40',
 		title: 'Nádraží Mladá Boleslav',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview41',
 		title: 'Rodinné domy Kunratice',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview42',
 		title: 'Koncept prodejen Gorenje',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview43',
 		title: 'Koncept prodejen Alpine',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview44',
 		title: 'Rodinné domy - Lučany',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview45',
 		title: 'Obytný soubor Hostavice',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview46',
 		title: 'Restaurant La Degustation',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview47',
 		title: 'Bytový dům Stodůlky',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview48',
 		title: 'Bytové domy - Zbraslav',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview49',
 		title: 'Bytový dům - Zbraslav',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview50',
 		title: 'Fresh Gyros - Praha',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview51',
 		title: 'Rodinné domy - Makotřasy',
-		className: 'two'
+		category: 'two'
 	},
 	{
 		src: 'preview52',
 		title: 'Restaurace Klobásovna',
-		className: 'one'
+		category: 'one'
 	},
 	{
 		src: 'preview53',
 		title: 'Restaurace Zvonařka - Praha',
-		className: 'three'
+		category: 'three'
 	},
 	{
 		src: 'preview54',
 		title: 'T-Mobile administrativní objekt',
-		className: 'one'
+		category: 'one'
 	}
 ];
