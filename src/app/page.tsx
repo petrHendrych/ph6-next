@@ -6,7 +6,11 @@ import RewardsContent from '@/components/RewardsContent';
 import ContactContent from '@/components/ContactContent';
 import SectionHeading from '@/components/SectionHeading';
 import Footer from '@/components/Footer';
-import { HOME_PREVIEW_COUNT, previewImages } from '@/data';
+import {
+	HOME_PREVIEW_COUNT,
+	MOBILE_PREVIEW_COUNT,
+	previewImages
+} from '@/data';
 
 const Home = () => (
 	<>
@@ -17,31 +21,32 @@ const Home = () => (
 
 		<section
 			id="preview-section"
-			className="container mx-auto px-6 py-20 md:py-28"
+			className="container mx-auto px-6 py-12 md:py-28"
 		>
 			<SectionHeading index="01" title="Projekty" note="Výběr realizací" />
 			<PreviewGrid
 				images={previewImages.slice(0, HOME_PREVIEW_COUNT)}
+				mobileLimit={MOBILE_PREVIEW_COUNT}
 				showAllTile
 			/>
 		</section>
 
 		<section
 			id="atelier-section"
-			className="container mx-auto px-6 py-20 md:py-28"
+			className="container mx-auto px-6 py-12 md:py-28"
 		>
 			<SectionHeading index="02" title="Ateliér" note="Od roku 2002" />
 			<AtelierContent />
 		</section>
 
-		<section className="container mx-auto px-6 py-20 md:py-28">
+		<section className="container mx-auto px-6 py-12 md:py-28">
 			<SectionHeading index="03" title="Ocenění" />
 			<RewardsContent />
 		</section>
 
 		<section
 			id="kontakt-section"
-			className="container mx-auto px-6 py-20 md:py-28"
+			className="container mx-auto px-6 py-12 md:py-28"
 		>
 			<SectionHeading index="04" title="Kontakt" note="Praha 6" />
 			<ContactContent />

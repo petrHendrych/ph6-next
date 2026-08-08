@@ -25,7 +25,7 @@ const sections = previewCategories
 	.sort((a, b) => b.images.length - a.images.length);
 
 const Page = () => (
-	<div className="container mx-auto px-6 py-14 md:py-20">
+	<div className="container mx-auto px-6 py-10 md:py-20">
 		<Reveal className="max-w-4xl">
 			<h1 className="text-3xl uppercase leading-none tracking-[0.24em] text-neutral-900 sm:text-4xl md:text-5xl md:tracking-[0.2em]">
 				Projekty
@@ -38,7 +38,7 @@ const Page = () => (
 		</Reveal>
 
 		{sections.map((section, index) => (
-			<section key={section.key} className="pt-20 md:pt-28">
+			<section key={section.key} className="pt-14 md:pt-28">
 				<SectionHeading
 					index={String(index + 1).padStart(2, '0')}
 					title={section.label}

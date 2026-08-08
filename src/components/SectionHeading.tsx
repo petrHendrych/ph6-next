@@ -11,7 +11,7 @@ type Props = {
 };
 
 const SectionHeading = ({ index, title, note }: Props) => (
-	<Reveal className="mb-12 md:mb-20">
+	<Reveal className="mb-8 md:mb-20">
 		<div className="flex items-center gap-5">
 			<span className="label-micro text-neutral-500">{index}</span>
 			<span className="h-px flex-1 bg-neutral-300" />

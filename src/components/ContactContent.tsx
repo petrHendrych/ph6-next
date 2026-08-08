@@ -5,7 +5,7 @@ import Reveal from '@/components/Reveal';
 import { contact } from '@/data';
 
 const ContactContent = () => (
-	<div className="flex flex-col gap-12 md:gap-16">
+	<div className="flex flex-col gap-8 md:gap-16">
 		<Reveal className="grid gap-10 sm:grid-cols-3 sm:gap-8" stagger>
 			<div className="border-t border-neutral-900/80 pt-4">
 				<p className="label-micro text-neutral-500">Adresa</p>

@@ -21,9 +21,15 @@ type Props = {
 	images: ProjectImage[];
 	/** Append the overview tile after the images. */
 	showAllTile?: boolean;
+	/**
+	 * Show only this many tiles below `md`, leaving the rest to the wider
+	 * layouts. Not a layout workaround — the overview tile that follows is the
+	 * way to the ones held back, so nothing becomes unreachable on a phone.
+	 */
+	mobileLimit?: number;
 };
 
-const PreviewGrid = ({ images, showAllTile }: Props) => {
+const PreviewGrid = ({ images, showAllTile, mobileLimit }: Props) => {
 	const gridRef = useRef<HTMLDivElement>(null);
 	const reduced = useReducedMotion();
 
@@ -57,7 +63,7 @@ const PreviewGrid = ({ images, showAllTile }: Props) => {
 			ref={gridRef}
 			className="xs:grid-cols-2 grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
 		>
-			{images.map(image => {
+			{images.map((image, index) => {
 				const tile = (
 					<>
 						{/* Every source is square (350² or 300²), so the frame reserves
@@ -87,7 +93,14 @@ const PreviewGrid = ({ images, showAllTile }: Props) => {
 					</>
 				);
 
-				const className = `group ${image.href ? 'cursor-pointer' : ''}`;
+				// Complete literals — Tailwind never sees a composed class name.
+				const beyondMobile =
+					mobileLimit !== undefined && index >= mobileLimit
+						? 'hidden md:block'
+						: '';
+				const className = `group ${beyondMobile} ${
+					image.href ? 'cursor-pointer' : ''
+				}`;
 
 				return image.href ? (
 					<Link key={image.src} href={image.href} className={className}>

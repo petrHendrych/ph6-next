@@ -5,7 +5,7 @@ import Reveal from '@/components/Reveal';
 import { atelier, team } from '@/data';
 
 const AtelierContent = () => (
-	<div className="flex flex-col gap-16 md:gap-28">
+	<div className="flex flex-col gap-10 md:gap-28">
 		<Reveal className="max-w-6xl">
 			<p className="text-2xl leading-tight tracking-tight text-neutral-900 sm:text-3xl md:text-5xl md:leading-[1.1]">
 				{atelier.lead}
@@ -49,7 +49,7 @@ const AtelierContent = () => (
 			</div>
 
 			<Reveal
-				className="mt-10 grid grid-cols-1 gap-x-8 gap-y-12 sm:grid-cols-3"
+				className="mt-6 grid grid-cols-1 gap-x-8 gap-y-8 sm:grid-cols-3 sm:gap-y-12 md:mt-10"
 				stagger
 			>
 				{team.map((member, index) => (
@@ -78,12 +78,17 @@ const AtelierContent = () => (
 				))}
 			</Reveal>
 
-			<div className="mt-12 grid gap-8 border-t border-neutral-200 pt-8 sm:grid-cols-3">
-				<div className="sm:col-span-2">
+			<div className="mt-10 grid gap-6 border-t border-neutral-200 pt-6 sm:mt-12 sm:gap-8 sm:pt-8 md:grid-cols-3">
+				<div className="md:col-span-2">
 					<p className="label-micro text-neutral-500">Pracovní tým</p>
-					<ul className="mt-3 flex flex-wrap gap-x-6 gap-y-1.5">
+					{/* One name per row with a hairline between while the column is
+					    narrow; a wrapping row once there is width for it. */}
+					<ul className="mt-3 flex flex-col divide-y divide-neutral-200 md:mt-4 md:flex-row md:flex-wrap md:gap-x-6 md:gap-y-1.5 md:divide-y-0">
 						{atelier.roster.map(name => (
-							<li key={name} className="text-base text-neutral-700">
+							<li
+								key={name}
+								className="py-2 text-base text-neutral-700 md:py-0"
+							>
 								{name}
 							</li>
 						))}
@@ -91,13 +96,13 @@ const AtelierContent = () => (
 				</div>
 				<div>
 					<p className="label-micro text-neutral-500">Vizualizace</p>
-					<p className="mt-3 text-base text-neutral-700">
+					<p className="mt-3 text-base text-neutral-700 md:mt-4">
 						{atelier.visualization}
 					</p>
 				</div>
 			</div>
 
-			<p className="mt-14 text-sm uppercase tracking-[0.3em] text-neutral-900">
+			<p className="mt-10 text-sm uppercase tracking-[0.3em] text-neutral-900 md:mt-14">
 				{atelier.closing}
 			</p>
 		</div>

@@ -92,7 +92,9 @@ There is no filtering anywhere. The header filter and the `[data-category]` attr
 
 ### `PreviewGrid` is shared by both pages
 
-It takes `images: Image[]` and never reaches for `previewImages` itself, so the home page passes `previewImages.slice(0, HOME_PREVIEW_COUNT)` and `/projekty` passes one category at a time. `showAllTile` appends the near-black overview tile that links to `/projekty`; it carries the same square frame and caption row as a project tile so the grid row keeps its baseline. Tiles reveal through one batched `ScrollTrigger` over `:scope > *`.
+It takes `images: Image[]` and never reaches for `previewImages` itself, so the home page passes `previewImages.slice(0, HOME_PREVIEW_COUNT)` and `/projekty` passes one category at a time. `showAllTile` appends the overview tile that links to `/projekty` — a hairline-outlined plate carrying a drawn floor plan (`FloorPlan`), inverting to near-black on hover, with the same square frame and caption row as a project tile so the grid row keeps its baseline. Tiles reveal through one batched `ScrollTrigger` over `:scope > *`.
+
+`mobileLimit` puts `hidden md:block` on every tile past the given index, so a phone gets `MOBILE_PREVIEW_COUNT` (9) of the 19 and the wider layouts get all of them. This is the one sanctioned exception to "never hide content to make a layout work": the overview tile sits immediately after the visible ones, so nothing held back is unreachable, and since every preview image is `loading="lazy"`, a tile that is `display: none` is never intersecting and its image is never fetched on a phone.
 
 ### Cross-component DOM coupling
 

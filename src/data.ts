@@ -127,6 +127,10 @@ export const rewards: Reward[] = [
  *  component importing it would get a proxy, not this number. */
 export const HOME_PREVIEW_COUNT = 19;
 
+/** Of those, how many a phone gets before the overview tile. 19 tiles in one or
+ *  two columns is a very long scroll to reach the rest of the page. */
+export const MOBILE_PREVIEW_COUNT = 9;
+
 export const previewImages: Image[] = [
 	{
 		src: 'preview1',
