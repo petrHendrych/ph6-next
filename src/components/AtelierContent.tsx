@@ -102,7 +102,7 @@ const AtelierContent = () => (
 				</div>
 			</div>
 
-			<p className="mt-10 text-sm uppercase tracking-[0.3em] text-neutral-900 md:mt-14">
+			<p className="mt-10 text-sm tracking-[0.3em] text-neutral-900 uppercase md:mt-14">
 				{atelier.closing}
 			</p>
 		</div>

@@ -95,7 +95,7 @@ const MainPictures = () => {
 			{mainImages.map((image, index) => (
 				<figure
 					key={image.src}
-					className="motiv absolute left-0 top-0 w-full opacity-0 first:relative first:opacity-100"
+					className="motiv absolute top-0 left-0 w-full opacity-0 first:relative first:opacity-100"
 				>
 					{/* Inner wrapper so the caption anchors to the image, not to the
 					    full-bleed track — the image is centred once past 2048px. */}
@@ -118,14 +118,14 @@ const MainPictures = () => {
 
 						{/* Legibility scrim, not decoration: the captions sit on
 						    photographs whose bottom edge is light on some slides. */}
-						<div className="from-black/55 pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t via-black/20 to-transparent" />
+						<div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
 
 						<figcaption className="absolute bottom-0 left-0 flex items-center gap-4 px-6 py-5 md:gap-5 md:px-10 md:py-8">
 							<span className="label-micro text-white/70">
 								{String(index + 1).padStart(2, '0')}
 							</span>
 							<span className="h-px w-6 bg-white/40 md:w-10" />
-							<span className="motiv-title text-xs uppercase tracking-[0.2em] text-white sm:text-sm md:text-lg md:tracking-[0.22em]">
+							<span className="motiv-title text-xs tracking-[0.2em] text-white uppercase sm:text-sm md:text-lg md:tracking-[0.22em]">
 								{image.title}
 							</span>
 						</figcaption>

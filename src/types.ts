@@ -1,10 +1,7 @@
 /** Bucket a project belongs to. The label in `previewCategories` defines what
  *  belongs in each one, and `/projekty` renders one section per bucket. */
 export type PreviewCategory =
-	| 'interiery'
-	| 'bytove-domy'
-	| 'rodinne-domy'
-	| 'verejne';
+	'interiery' | 'bytove-domy' | 'rodinne-domy' | 'verejne';
 
 /**
  * Every project that has a detail page. This union is the source of truth for

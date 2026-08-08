@@ -5,19 +5,35 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev     # dev server on :3000 (Turbopack)
-npm run build   # production build
-npm run start   # serve production build
-npm run lint    # next lint
+npm run dev        # dev server on :3000 (Turbopack)
+npm run build      # production build
+npm run start      # serve production build
+npm run lint       # eslint .
+npm run typecheck  # tsc --noEmit, run through TypeScript 7
 ```
+
+Node 22.13+ is required (`engines`, `.nvmrc` pins 24) — Next 16 and ESLint 9 both refuse older runtimes.
 
 There is no test suite and no test tooling installed.
 
-Lint and format config are declared inline in `package.json` (`eslintConfig` extends `@haaxor1689/eslint-config`, `prettier` uses `@haaxor1689/prettier-config`) — there are no separate `.eslintrc`/`.prettierrc` files. The resulting style is tabs, single quotes, arrow-function components, and `prettier-plugin-tailwindcss` class sorting.
+### Two TypeScript versions, on purpose
+
+`typescript` is **6.0.3** and `typescript-7` is an npm alias for **7.0.2**. Both are needed because they are not interchangeable:
+
+- TypeScript 7 is the native port and no longer ships the JS compiler API, so `typescript-eslint` throws `does not support TS 7.0` on load — and `eslint-config-next` imports it, which takes the whole lint run down. Linting, the WebStorm service and `next build`'s own type pass therefore resolve the bare `typescript` specifier to 6.0.3.
+- `npm run typecheck` calls TypeScript 7 by explicit path (`node node_modules/typescript-7/bin/tsc`) rather than through `node_modules/.bin/tsc`, which is a coin flip between the two packages depending on install order.
+
+Drop the alias and go single-version once typescript-eslint ships TS 7 support (typescript-eslint#10940). Do not raise the bare `typescript` dependency to 7 before then; lint stops running entirely.
+
+### Lint and format config
+
+Flat config in `eslint.config.mjs`, Prettier in `prettier.config.mjs` — the old inline `eslintConfig` / `prettier` keys in `package.json` and the `@haaxor1689/*` shared configs are gone (they pinned ESLint 8, typescript-eslint 5 and Prettier 2, none of which survive this toolchain). The rule set is a direct port of `@haaxor1689/eslint-config`, so the style is unchanged: tabs, single quotes, arrow-function components, and `prettier-plugin-tailwindcss` class sorting.
+
+`eslint-config-next` already registers the `react`, `react-hooks`, `import`, `jsx-a11y` and `@typescript-eslint` plugins. **Registering any of them again is a hard `Cannot redefine plugin` error**, which is why the recommended typescript-eslint rules are spread out of `tseslint.configs.recommended` and applied against next's plugin instance instead of being extended. Rules using the `@typescript-eslint/` prefix must live in a `files: ['**/*.{ts,tsx}']` block — next's TypeScript layer does not cover `.mjs`/`.js`, so a prefixed rule in the wider block fails to find the plugin.
 
 ## What this is
 
-Single-page portfolio site for the Czech architecture studio PH6, plus a small set of per-project subpages. All user-facing copy is Czech. Next.js 15 App Router, React 19, TypeScript strict, Tailwind v4, GSAP for all animation.
+Single-page portfolio site for the Czech architecture studio PH6, plus a small set of per-project subpages. All user-facing copy is Czech. Next.js 16 App Router, React 19, TypeScript strict, Tailwind v4, GSAP for all animation.
 
 The site exists to present the studio's built work — family houses, restaurants and pubs, shops, interiors — alongside the team and its awards. The visitor is a prospective client deciding within a few seconds whether this studio is worth a call. The photography is the product; everything else is framing for it.
 
@@ -74,6 +90,8 @@ Image `src` values are bare names, not paths. The consuming component builds the
 - `MainPictures` → `/main/${src}.avif`
 - `PreviewGrid` → `/preview/${src}.jpg`
 - `ProjectDetail` → `/projects/${slug}/${src}.jpg`
+
+Next 16 only serves the `quality` values listed in `images.qualities` in `next.config.ts` (`[75, 90]` here — 90 is what the team portraits ask for). A `quality` prop outside that list is not an error; the image just silently drops back to the default, so extend the list whenever a new value is used.
 
 Adding an image means adding both the file under `public/` and the entry in `data.ts`. A `previewImages` entry with a `slug` renders as a `<Link>` tile (with a `Detail` tag in its caption) instead of a plain `figure`; `PreviewGrid` builds the route from the slug, so no path is ever written by hand.
 
@@ -154,3 +172,13 @@ Tailwind scans source text, so a class name assembled at runtime is never genera
 `label-micro` is the second `@utility` alongside `nav-underline`: 0.6875rem, uppercase, `0.3em` tracking, used for every section index, field label and caption. It sets type only — colour stays a utility on the element, because the same label appears on white and on the near-black footer.
 
 `--breakpoint-2xl` is widened to 113rem, which is what drives the top step of the `.container` max-width ladder.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->

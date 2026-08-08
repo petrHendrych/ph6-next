@@ -27,7 +27,7 @@ const sections = previewCategories
 const Page = () => (
 	<div className="container mx-auto px-6 py-10 md:py-20">
 		<Reveal className="max-w-4xl">
-			<h1 className="text-3xl uppercase leading-none tracking-[0.24em] text-neutral-900 sm:text-4xl md:text-5xl md:tracking-[0.2em]">
+			<h1 className="text-3xl leading-none tracking-[0.24em] text-neutral-900 uppercase sm:text-4xl md:text-5xl md:tracking-[0.2em]">
 				Projekty
 			</h1>
 			<p className="mt-8 max-w-[70ch] text-base leading-relaxed text-neutral-700 md:text-lg">

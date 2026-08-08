@@ -8,7 +8,7 @@ const SubpageLayout = ({
 }: Readonly<{
 	children: React.ReactNode;
 }>) => (
-	<div className="min-h-dvh flex flex-col">
+	<div className="flex min-h-dvh flex-col">
 		<SubpageHeader />
 		<main className="flex-1 pt-20">{children}</main>
 		<Footer />
