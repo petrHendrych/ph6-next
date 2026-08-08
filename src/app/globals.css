@@ -42,15 +42,14 @@ body {
 	text-transform: uppercase;
 }
 
-/* Drafting hatch for the projects overview tile — the one tile in the grid that
-   holds no photograph, so it needs a surface of its own to read against 19 that
-   do. Diagonal hairlines at 10px pitch, faint enough to stay behind the type. */
-@utility tile-hatch {
-	background-image: repeating-linear-gradient(
-		45deg,
-		rgb(23 23 23 / 0.07) 0 1px,
-		transparent 1px 10px
-	);
+/* The `FloorPlan` drawing scales from a 100-unit viewBox to whatever the tile
+   is, which would multiply its stroke widths with it. Pinning the strokes keeps
+   them hairlines — the widths in that component are therefore in px, and the
+   sub-pixel ones are meant to render as lighter lines. */
+@utility plan-lines {
+	& * {
+		vector-effect: non-scaling-stroke;
+	}
 }
 
 /* Underline-on-hover used by both headers. */
