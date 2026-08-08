@@ -57,7 +57,7 @@ const PreviewGrid = () => {
 					/>
 					<div className="absolute inset-0 bg-black/70 opacity-0 group-hover:opacity-100 motion-safe:transition-opacity motion-safe:duration-200 motion-safe:ease-in">
 						<div className="flex h-full translate-y-4 items-center justify-center group-hover:translate-y-0 motion-safe:transition-transform motion-safe:duration-200 motion-safe:ease-out">
-							<h3 className="text-center text-lg font-bold text-white">
+							<h3 className="px-10 text-center text-lg font-bold text-white">
 								{image.title}
 							</h3>
 						</div>

@@ -214,7 +214,7 @@ const Header = () => {
 							toggleFilter();
 						}}
 					>
-						one
+						interiéry
 					</button>
 					<button
 						className={`w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
@@ -225,7 +225,7 @@ const Header = () => {
 							toggleFilter();
 						}}
 					>
-						two
+						rodinné domy
 					</button>
 					<button
 						className={`w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
@@ -238,7 +238,20 @@ const Header = () => {
 							toggleFilter();
 						}}
 					>
-						three
+						bytové domy
+					</button>
+					<button
+						className={`w-full border-b border-gray-100 py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
+							activeFilter === 'three'
+								? 'font-bold text-black'
+								: 'text-gray-400'
+						}`}
+						onClick={() => {
+							handleFilterClick('three');
+							toggleFilter();
+						}}
+					>
+						veřejné stavby
 					</button>
 				</div>
 			</div>
