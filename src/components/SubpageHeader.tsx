@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import React, { useRef } from 'react';
 
 import HeaderProgress from '@/components/HeaderProgress';
+import ScrollLink from '@/components/ScrollLink';
 import { navLinks } from '@/data';
 import { useMobileMenu } from '@/hooks/useMobileMenu';
 
@@ -40,7 +41,7 @@ const SubpageHeader = () => {
 					</Link>
 
 					<div className="flex flex-row items-center gap-4 md:hidden">
-						<span className="text-sm font-medium uppercase tracking-widest text-gray-500">
+						<span className="nav-label font-medium text-neutral-500">
 							{title}
 						</span>
 						<button
@@ -60,21 +61,21 @@ const SubpageHeader = () => {
 
 					<div className="hidden flex-row items-center gap-10 md:flex">
 						<div className="flex-1 text-right">
-							<span className="text-sm font-medium uppercase tracking-widest text-gray-500">
+							<span className="nav-label font-medium text-neutral-500">
 								{title}
 							</span>
 						</div>
 						<div className="h-5 w-px bg-gray-300" />
 						<nav>
-							<ol className="flex select-none flex-row gap-8 uppercase">
+							<ol className="flex select-none flex-row gap-8">
 								{navLinks.map(({ hash, label }) => (
 									<li key={hash}>
-										<Link
-											href={`/${hash}`}
-											className="nav-underline cursor-pointer"
+										<ScrollLink
+											hash={hash}
+											className="nav-label nav-underline cursor-pointer"
 										>
 											{label}
-										</Link>
+										</ScrollLink>
 									</li>
 								))}
 							</ol>
@@ -92,16 +93,16 @@ const SubpageHeader = () => {
 			>
 				<nav className="flex flex-col items-center">
 					{navLinks.map(({ hash, label }, index) => (
-						<Link
+						<ScrollLink
 							key={hash}
-							href={`/${hash}`}
-							className={`w-full py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
-								index < navLinks.length - 1 ? 'border-b border-gray-100' : ''
+							hash={hash}
+							onNavigate={toggleMenu}
+							className={`nav-label w-full py-4 text-center hover:bg-neutral-50 ${
+								index < navLinks.length - 1 ? 'border-b border-neutral-100' : ''
 							}`}
-							onClick={toggleMenu}
 						>
 							{label}
-						</Link>
+						</ScrollLink>
 					))}
 				</nav>
 			</div>

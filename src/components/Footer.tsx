@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 
+import ScrollLink from '@/components/ScrollLink';
 import { contact, navLinks } from '@/data';
 
 const SOCIAL = [
@@ -27,13 +28,12 @@ const Footer = () => (
 					<ul className="mt-4 flex flex-col gap-2">
 						{navLinks.map(({ hash, label }) => (
 							<li key={hash}>
-								{/* Absolute so the links also work from a subpage. */}
-								<a
-									href={`/${hash}`}
-									className="nav-underline text-sm uppercase tracking-[0.14em] text-white/90 hover:text-white"
+								<ScrollLink
+									hash={hash}
+									className="nav-label nav-underline text-white/90 hover:text-white"
 								>
 									{label}
-								</a>
+								</ScrollLink>
 							</li>
 						))}
 					</ul>

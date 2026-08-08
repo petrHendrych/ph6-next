@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React, { useRef } from 'react';
 
 import HeaderProgress from '@/components/HeaderProgress';
+import ScrollLink from '@/components/ScrollLink';
 import { navLinks } from '@/data';
 import { useMobileMenu } from '@/hooks/useMobileMenu';
 import { useScrollTo } from '@/hooks/useScrollTo';
@@ -14,7 +15,7 @@ const Header = () => {
 	const menuRef = useRef<HTMLDivElement>(null);
 	const hamburgerRef = useRef<HTMLButtonElement>(null);
 
-	const { scrollTo, scrollToTop } = useScrollTo();
+	const { scrollToTop } = useScrollTo();
 	const { isMenuOpen, toggleMenu } = useMobileMenu({
 		menuRef,
 		hamburgerRef
@@ -34,11 +35,6 @@ const Header = () => {
 		},
 		{ scope: headerRef }
 	);
-
-	const goTo = (hash: string) => (event: React.MouseEvent) => {
-		event.preventDefault();
-		scrollTo(hash);
-	};
 
 	return (
 		<header ref={headerRef} className="site-header fixed top-0 z-10 w-full">
@@ -71,16 +67,15 @@ const Header = () => {
 
 					<div className="hidden flex-row items-center gap-10 md:flex">
 						<nav>
-							<ol className="flex select-none flex-row gap-8 uppercase">
+							<ol className="flex select-none flex-row gap-8">
 								{navLinks.map(({ hash, label }) => (
 									<li key={hash}>
-										<a
-											href={hash}
-											onClick={goTo(hash)}
-											className="nav-underline cursor-pointer"
+										<ScrollLink
+											hash={hash}
+											className="nav-label nav-underline cursor-pointer"
 										>
 											{label}
-										</a>
+										</ScrollLink>
 									</li>
 								))}
 							</ol>
@@ -98,19 +93,16 @@ const Header = () => {
 			>
 				<nav className="flex flex-col items-center">
 					{navLinks.map(({ hash, label }, index) => (
-						<a
+						<ScrollLink
 							key={hash}
-							href={hash}
-							onClick={event => {
-								goTo(hash)(event);
-								toggleMenu();
-							}}
-							className={`w-full py-4 text-center text-sm uppercase tracking-widest hover:bg-gray-50 ${
-								index < navLinks.length - 1 ? 'border-b border-gray-100' : ''
+							hash={hash}
+							onNavigate={toggleMenu}
+							className={`nav-label w-full py-4 text-center hover:bg-neutral-50 ${
+								index < navLinks.length - 1 ? 'border-b border-neutral-100' : ''
 							}`}
 						>
 							{label}
-						</a>
+						</ScrollLink>
 					))}
 				</nav>
 			</div>

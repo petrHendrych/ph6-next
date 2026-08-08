@@ -42,6 +42,17 @@ body {
 	text-transform: uppercase;
 }
 
+/* Navigation links: both headers, both mobile panels, and the footer. Uppercase
+   inheriting 16px body text at zero tracking was the one place on the site that
+   set caps with no letter-spacing, and it read cramped next to labels tracked at
+   0.16–0.3em. One utility so all four navigations stay identical. */
+@utility nav-label {
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+}
+
 /* The `FloorPlan` drawing scales from a 100-unit viewBox to whatever the tile
    is, which would multiply its stroke widths with it. Pinning the strokes keeps
    them hairlines — the widths in that component are therefore in px, and the
