@@ -52,6 +52,14 @@ body {
 	}
 }
 
+/* Fades the plan out over its lower third so the tile's label sits on clean
+   ground. A CSS mask rather than an SVG one: no `defs`, and no element ids that
+   could collide if the tile is ever rendered twice on a page. */
+@utility plan-fade {
+	-webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 90%);
+	mask-image: linear-gradient(to bottom, #000 62%, transparent 90%);
+}
+
 /* Underline-on-hover used by both headers. */
 @utility nav-underline {
 	position: relative;
