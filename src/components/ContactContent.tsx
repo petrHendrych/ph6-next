@@ -1,58 +1,72 @@
+import Image from 'next/image';
 import React from 'react';
 
-const MAP_URL =
-	'https://mapy.com/en/zakladni?q=narodni%20obrany%2031&source=firm&id=13622813&x=14.3965261&y=50.1012649&z=16';
+import Reveal from '@/components/Reveal';
+import { contact } from '@/data';
 
 const ContactContent = () => (
-	<div className="relative h-[215px] w-full overflow-hidden">
-		<a
-			href={MAP_URL}
-			target="_blank"
-			rel="noopener noreferrer"
-			aria-label="Otevřít mapu v novém okně"
-			className="absolute inset-0 bg-gray-200 bg-[url(/map.png)] bg-cover bg-right grayscale transition-opacity hover:opacity-90"
-		/>
-
-		<div className="pointer-events-none absolute inset-y-0 left-1/2 flex -translate-x-1/2 items-center justify-center">
-			<div className="pointer-events-auto flex h-full min-w-[300px] flex-col items-center justify-center gap-y-3 bg-white/40 px-12 text-center backdrop-blur-sm">
-				<div className="flex flex-col items-center">
-					<span className="text-xs uppercase tracking-widest text-gray-500">
-						Adresa
-					</span>
-					<a
-						href={MAP_URL}
-						target="_blank"
-						rel="noopener noreferrer"
-						aria-label="Otevřít mapu v novém okně"
-						className="text-sm font-medium text-black"
-					>
-						Národní obrany 31
-						<br />
-						Praha 6<br />
-						160 00, Česká republika
-					</a>
-				</div>
-				<div className="flex flex-col items-center">
-					<span className="text-xs uppercase tracking-widest text-gray-500">
-						Email
-					</span>
-					<a
-						href="mailto:brnada@ph6.cz"
-						className="text-sm font-medium text-black underline underline-offset-4"
-					>
-						brnada@ph6.cz
-					</a>
-				</div>
-				<div className="flex flex-col items-center">
-					<span className="text-xs uppercase tracking-widest text-gray-500">
-						Telefon
-					</span>
-					<span className="text-sm font-medium text-black">
-						+420 602 236 516
-					</span>
-				</div>
+	<div className="flex flex-col gap-12 md:gap-16">
+		<Reveal className="grid gap-10 sm:grid-cols-3 sm:gap-8" stagger>
+			<div className="border-t border-neutral-900/80 pt-4">
+				<p className="label-micro text-neutral-500">Adresa</p>
+				<a
+					href={contact.mapUrl}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="nav-underline mt-3 inline-block text-lg leading-snug tracking-tight text-neutral-900"
+				>
+					{contact.addressLines.map(line => (
+						<span key={line} className="block">
+							{line}
+						</span>
+					))}
+				</a>
 			</div>
-		</div>
+
+			<div className="border-t border-neutral-900/80 pt-4">
+				<p className="label-micro text-neutral-500">Email</p>
+				<a
+					href={`mailto:${contact.email}`}
+					className="nav-underline mt-3 inline-block text-lg tracking-tight text-neutral-900"
+				>
+					{contact.email}
+				</a>
+			</div>
+
+			<div className="border-t border-neutral-900/80 pt-4">
+				<p className="label-micro text-neutral-500">Telefon</p>
+				<a
+					href={`tel:${contact.phone.replace(/\s/g, '')}`}
+					className="nav-underline mt-3 inline-block text-lg tracking-tight text-neutral-900"
+				>
+					{contact.phone}
+				</a>
+			</div>
+		</Reveal>
+
+		<Reveal>
+			<a
+				href={contact.mapUrl}
+				target="_blank"
+				rel="noopener noreferrer"
+				aria-label="Otevřít mapu v novém okně"
+				// The source map is a 2017×377 strip. Its native ratio is only usable
+				// once the viewport is wide — at 360px it collapses to a 67px sliver,
+				// so the phone gets a fixed height and crops to the right instead.
+				className="group relative block h-[220px] w-full overflow-hidden bg-neutral-100 sm:h-[280px] md:aspect-[2017/377] md:h-auto md:max-h-[340px]"
+			>
+				<Image
+					src="/map.png"
+					alt=""
+					fill
+					sizes="100vw"
+					className="object-cover object-right grayscale group-hover:grayscale-0 motion-safe:transition-[filter,scale] motion-safe:duration-700 motion-safe:ease-out motion-safe:will-change-[filter,scale] motion-safe:group-hover:scale-[1.015]"
+				/>
+				<span className="label-micro absolute bottom-0 right-0 bg-white px-4 py-3 text-neutral-900 group-hover:bg-neutral-900 group-hover:text-white motion-safe:transition-colors">
+					Otevřít v mapách
+				</span>
+			</a>
+		</Reveal>
 	</div>
 );
 

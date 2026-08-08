@@ -41,11 +41,31 @@ Treat every change as part of a contemporary architectural portfolio, not a gene
 
 A project subpage should read as: hero image, a short factual block (location, year, scope), then a sequence of images with minimal captions. Copy stays Czech.
 
+## Mobile is the primary target
+
+Most visitors reach this site from a phone — a link in a message, a search result, a Facebook post — and that first screen decides whether the studio gets a call. Treat the phone layout as the design, not as the fallback. Design it at **360 × 780** first and let the desktop layout be the widening of it.
+
+**Every change is checked at 360px before it is called done.** Not "it uses responsive classes" — actually look at the narrow layout. The most common regressions here are horizontal overflow and text that collapses into a two-word-per-line column.
+
+**Hover may never be the only way to reach something.** Touch has no hover: the award row wash, the team portrait desaturation, the preview tile treatments, and the nav underline are all decoration layered on top of information that is already visible. If a state carries meaning, render it, and treat hover as the enhancement.
+
+**Never hide content to make a layout work.** `hidden sm:block` on a whole section is a bug, not a breakpoint — reflow it instead. Multi-column grids start at one column and gain columns from `sm:` or `md:` up; a `grid-cols-2` default with three items is a broken phone layout.
+
+**Tap targets are at least 44 × 44px** with real space between adjacent links. The header hamburger, filter buttons, footer social squares, and mobile panel rows are all sized for a thumb — keep new controls in line.
+
+**Wide tracking is a desktop luxury.** `tracking-[0.3em]` uppercase set on long Czech words overflows a narrow column fast. Micro labels are short by design; if a longer string needs caps, drop the tracking at the small size and only widen it from `md:` up. Body copy stays around `0.95rem`, never the `label-micro` size.
+
+**Images always carry a `sizes` attribute** whose mobile branch reflects the real width (roughly `90vw`, not `30vw`), and only the first hero slide gets `priority` — the phone is where the wasted bytes actually hurt.
+
+**Effects cost more on a phone.** `backdrop-filter` is confined to the header; do not add blurred layers to long scrolling sections. Scroll-triggered work stays cheap and `once: true`.
+
+**Remember the fixed header.** It overlays content at every width, so hash-scroll targets and the `pt-20` offset in the subpage layout have to be re-checked whenever header height changes — the compact `.is-scrolled` bar is what most phone scrolling actually sees. New header items must also work inside the GSAP-animated mobile menu and filter panels, not only in the desktop bar.
+
 ## Architecture
 
 ### Content lives in `src/data.ts`
 
-`src/data.ts` is the single source of site content — `navLinks`, `previewCategories`, `team`, `mainImages`, `rewards`, and `previewImages` (54 entries) — typed by `src/types.ts`. Components import from it and never hardcode content or duplicate markup per item.
+`src/data.ts` is the single source of site content — `navLinks`, `previewCategories`, `team`, `atelier`, `contact`, `mainImages`, `rewards`, and `previewImages` (54 entries) — typed by `src/types.ts`. Components import from it and never hardcode content or duplicate markup per item. That includes prose: the studio text is `atelier.lead` / `atelier.paragraphs` / `atelier.facts` / `atelier.roster`, and the address, email, phone, map URL and Facebook URL all come from `contact` (shared by `ContactContent` and `Footer`).
 
 Image `src` values are bare names, not paths. The consuming component builds the path and extension:
 
@@ -53,6 +73,12 @@ Image `src` values are bare names, not paths. The consuming component builds the
 - `PreviewGrid` → `/preview/${src}.jpg`
 
 Adding an image means adding both the file under `public/` and the entry in `data.ts`. A `previewImages` entry with an `href` renders as a `<Link>` tile instead of a plain `div`.
+
+### Page composition
+
+`page.tsx` stacks four `<section>`s, each opened by `SectionHeading` (numbered index, hairline rule, optional right-hand note). The only `h1` on the page is the `sr-only` one at the top — section titles are `h2`s, so keep it that way when adding a section.
+
+`Reveal` is the shared scroll-in wrapper: a client component that fades and lifts either itself or, with `stagger`, its direct children (`:scope > *`) once through a `ScrollTrigger`. It renders `div | section | ul | dl` via `as`, and passing server-rendered children through it keeps them server components.
 
 ### Preview categories
 
@@ -78,6 +104,25 @@ Filtering snapshots the tiles with `Flip.getState`, sets `display` on each tile,
 - Read reduced motion with `useReducedMotion()` and branch on duration (`duration: reduced ? 0 : x`). Do **not** create `gsap.matchMedia()` inside event handlers — those contexts register media listeners that are never reverted. CSS-driven transitions use the Tailwind `motion-safe:` / `motion-reduce:` variants.
 - Any `useGSAP` that takes `dependencies` must also pass `revertOnUpdate: true`; without it the previous animations are not reverted when a dependency (such as `reduced`) changes, and they stack.
 - Anything created outside the `useGSAP` callback — a `SplitText`, a self-rescheduling `delayedCall` — escapes context cleanup. Prefer a single looping timeline, and revert splits from the callback's returned cleanup function.
+- Elements that may already be on screen at mount must not depend on a `ScrollTrigger` to become visible. `Reveal` checks `getBoundingClientRect().top < innerHeight` and plays immediately in that case — on a tall viewport the start line is already behind the element at load, and it would otherwise sit as an empty box until a scroll that never comes.
+- Images always declare real intrinsic dimensions (or `fill` inside an aspect-ratio box). The `width={0} height={0}` trick reserves no height, which not only shifts the layout but makes every `ScrollTrigger` below measure against a page that is about to move.
+
+### Tailwind v4 transforms do not transition under `transition-transform` alone
+
+In Tailwind v4, `scale-*`, `rotate-*`, and `translate-*` compile to the standalone CSS `scale` / `rotate` / `translate` properties, **not** to `transform`:
+
+```css
+.group-hover\:scale-\[1\.04\]:is(:where(.group):hover *) {
+	scale: 1.04;
+}
+```
+
+So an arbitrary property list that names `transform` — `transition-[transform,filter]` — silently animates nothing, and the utility snaps in a single frame. This already cost the team portraits and the contact map their hover easing once.
+
+- Name the real property: `transition-[filter,scale]`, `transition-[scale]`.
+- The bare `transition-transform` utility is safe — v4 expands it to `transform, translate, scale, rotate`.
+- After changing a hover transition, confirm it in the compiled CSS rather than by eye: `grep -A3 'transition-\[' .next/static/css/*.css`.
+- `filter` transitions (the grayscale-off hovers) repaint the whole bitmap each frame. Pair them with `motion-safe:will-change-[filter,scale]` where there are only a handful of elements; do not do it across the 54-tile preview grid.
 
 ### Routing
 
@@ -87,6 +132,8 @@ Filtering snapshots the tiles with `Flip.getState`, sets `display` on each tile,
 
 Tailwind v4 via `@tailwindcss/postcss`, configured entirely in `src/app/globals.css` — there is no `tailwind.config.ts` and no `@config`. Design tokens (`xs`/`2xl` breakpoints, `gold`/`silver`/`bronze`, footer colors) live in the `@theme` block; `nav-underline` is an `@utility`. The site is light-only by design.
 
-Tailwind scans source text, so a class name assembled at runtime is never generated. Any conditional utility must appear as a complete literal string in the source — see the `Record<RewardHoverColor, string>` maps in `RewardsContent`.
+Tailwind scans source text, so a class name assembled at runtime is never generated. Any conditional utility must appear as a complete literal string in the source — see the `Record<RewardMedal, string>` maps in `RewardsContent`.
+
+`label-micro` is the second `@utility` alongside `nav-underline`: 0.6875rem, uppercase, `0.3em` tracking, used for every section index, field label and caption. It sets type only — colour stays a utility on the element, because the same label appears on white and on the near-black footer.
 
 `--breakpoint-2xl` is widened to 113rem, which is what drives the top step of the `.container` max-width ladder.

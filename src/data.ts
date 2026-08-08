@@ -1,4 +1,6 @@
 import type {
+	Atelier,
+	Contact,
 	Image,
 	NavLink,
 	PreviewCategory,
@@ -24,6 +26,50 @@ export const team: TeamMember[] = [
 	{ src: 'pavel', name: 'Ing. arch. Pavel Hendrych' }
 ];
 
+/** Studio copy. The lead is the sentence that used to open the second half of
+ *  the original single block; the facts restate the same information in a
+ *  scannable column next to the prose. */
+export const atelier: Atelier = {
+	lead: 'Ke každému klientovi přistupujeme individuálně — nepoužíváme zaběhlá schémata, ale hledáme originální a jedinečné řešení.',
+	paragraphs: [
+		'Architektonický ateliér PH6 založil Ing. arch. Šimon Brnada v roce 2002. V současné době se ateliér zabývá širokým spektrem zakázek od interiérové tvorby, přes návrhy rodinných i bytových domů až po objekty administrativní, obchodní, sportovní a školské stavby a je schopen zajistit veškeré přípravné, projektové i průzkumné práce.',
+		'Snahou je poskytovat klientovi komplexní služby od urbanistického řešení až po projekty interiérů. V oboru interiérů se zabýváme hlavně navrhováním gastro provozů – máme za sebou desítky realizovaných restaurací a kaváren a zkušenosti s návrhy konceptových řetězců restaurací.',
+		'V případě větších zakázek spolupracujeme s projekčními kancelářemi ARPLAN s.r.o. a ORTOGONAL s.r.o., které poskytují kvalitní projekční zázemí.'
+	],
+	facts: [
+		{ label: 'Založeno', value: '2002' },
+		{ label: 'Zakladatel', value: 'Ing. arch. Šimon Brnada' },
+		{
+			label: 'Zaměření',
+			value:
+				'Interiéry a gastro provozy, rodinné a bytové domy, administrativní, obchodní, sportovní a školské stavby'
+		},
+		{
+			label: 'Služby',
+			value:
+				'Přípravné, projektové i průzkumné práce — od urbanistického řešení po projekty interiérů'
+		},
+		{ label: 'Spolupráce', value: 'ARPLAN s.r.o., ORTOGONAL s.r.o.' }
+	],
+	roster: [
+		'Ing. arch. Šimon Brnada',
+		'Ing. arch. Jan Mudra',
+		'Ing. arch. Kristina Hanzlová',
+		'Ing. arch. Pavel Hendrych'
+	],
+	visualization: 'Ing. Jan Haspra — 3dvizualizace.cz',
+	closing: 'Těšíme se na spolupráci'
+};
+
+export const contact: Contact = {
+	addressLines: ['Národní obrany 31', 'Praha 6', '160 00, Česká republika'],
+	email: 'brnada@ph6.cz',
+	phone: '+420 602 236 516',
+	mapUrl:
+		'https://mapy.com/en/zakladni?q=narodni%20obrany%2031&source=firm&id=13622813&x=14.3965261&y=50.1012649&z=16',
+	facebookUrl: 'https://www.facebook.com/ph6atelier/?fref=ts'
+};
+
 export const mainImages: Image[] = [
 	{
 		src: 'uvod_1',
@@ -47,27 +93,27 @@ export const rewards: Reward[] = [
 	{
 		title: 'interiér roku 2011',
 		description: 'Návštěvnické centrum pivovaru staropramen',
-		hoverColor: 'gold'
+		medal: 'gold'
 	},
 	{
 		title: 'soutěž 1. místo',
 		description: 'zimní stadion praha letňany',
-		hoverColor: 'gold'
+		medal: 'gold'
 	},
 	{
 		title: 'soutěž 1. místo',
 		description: 'zahradní čtvrť praha-zbraslav',
-		hoverColor: 'gold'
+		medal: 'gold'
 	},
 	{
 		title: 'soutěž 2. místo',
 		description: 'sos dětská vesnička brno mendlánky',
-		hoverColor: 'silver'
+		medal: 'silver'
 	},
 	{
 		title: 'český interiér',
 		description: 'ambiente pizzanuova praha',
-		hoverColor: 'bronze'
+		medal: 'bronze'
 	}
 ];
 

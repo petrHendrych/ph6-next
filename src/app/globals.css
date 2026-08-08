@@ -11,8 +11,10 @@
 	--color-silver: #c0c0c0;
 	--color-bronze: #cd7f32;
 
-	--color-footer: #515151;
-	--color-footer-text: #c5c5c5;
+	/* Near-black rather than mid-grey: the palette is paper white and #171717,
+	   and a grey slab under the contact section read as an unfinished band. */
+	--color-footer: #171717;
+	--color-footer-text: #a8a8a8;
 }
 
 :root {
@@ -27,6 +29,17 @@ body {
 	background-image: url('/crossword.png');
 	background-repeat: repeat;
 	font-family: var(--font-raleway), sans-serif;
+}
+
+/* The small caps-and-tracking label used for section indices, field labels and
+   captions. One utility so the tracking stays identical everywhere. */
+/* Type only — the colour stays a utility on the element so it can differ
+   between the light sections and the footer. */
+@utility label-micro {
+	font-size: 0.6875rem;
+	line-height: 1;
+	letter-spacing: 0.3em;
+	text-transform: uppercase;
 }
 
 /* Underline-on-hover used by both headers. */

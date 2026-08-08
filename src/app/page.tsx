@@ -4,47 +4,43 @@ import PreviewGrid from '@/components/PreviewGrid';
 import AtelierContent from '@/components/AtelierContent';
 import RewardsContent from '@/components/RewardsContent';
 import ContactContent from '@/components/ContactContent';
+import SectionHeading from '@/components/SectionHeading';
 import Footer from '@/components/Footer';
 
 const Home = () => (
 	<>
 		<Header />
+		{/* The section titles are h2s, so the page still needs one h1. */}
+		<h1 className="sr-only">PH6 — architektonický ateliér</h1>
 		<MainPictures />
 
 		<section
 			id="preview-section"
-			className="container mx-auto my-10 px-6 md:my-16"
+			className="container mx-auto px-6 py-20 md:py-28"
 		>
-			<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
-				PROJEKTY
-			</h1>
+			<SectionHeading index="01" title="Projekty" note="Výběr realizací" />
 			<PreviewGrid />
 		</section>
 
 		<section
 			id="atelier-section"
-			className="container mx-auto my-10 px-6 md:my-16"
+			className="container mx-auto px-6 py-20 md:py-28"
 		>
-			<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
-				ATELIÉR
-			</h1>
+			<SectionHeading index="02" title="Ateliér" note="Od roku 2002" />
 			<AtelierContent />
 		</section>
 
-		<section className="container mx-auto mt-10 hidden px-6 sm:block md:mt-16">
-			<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
-				OCENĚNÍ
-			</h1>
+		<section className="container mx-auto px-6 py-20 md:py-28">
+			<SectionHeading index="03" title="Ocenění" />
 			<RewardsContent />
 		</section>
 
-		<section id="kontakt-section">
-			<div className="container mx-auto px-6">
-				<h1 className="mb-6 border-b border-gray-300 text-center text-lg tracking-wide text-gray-500">
-					KONTAKT
-				</h1>
-				<ContactContent />
-			</div>
+		<section
+			id="kontakt-section"
+			className="container mx-auto px-6 py-20 md:py-28"
+		>
+			<SectionHeading index="04" title="Kontakt" note="Praha 6" />
+			<ContactContent />
 		</section>
 
 		<Footer />

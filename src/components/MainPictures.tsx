@@ -22,7 +22,9 @@ const MainPictures = () => {
 			// Split once per slide. The previous version re-split on every cycle
 			// without reverting, nesting char spans forever.
 			const splits = slides.map(slide => {
-				const caption = slide.querySelector('p');
+				// Only the title splits — the index and the rule beside it are not
+				// part of the stagger.
+				const caption = slide.querySelector('.motiv-title');
 				return caption ? new SplitText(caption, { type: 'chars' }) : null;
 			});
 
@@ -42,10 +44,12 @@ const MainPictures = () => {
 					chars,
 					{
 						autoAlpha: 0,
-						x: -10,
-						duration: 0.1,
-						ease: 'power2.inOut',
-						stagger: 0.035
+						x: -12,
+						// Slower per character than the old 0.1s snap, to sit with the
+						// 700ms hover easings used everywhere else.
+						duration: 0.45,
+						ease: 'power2.out',
+						stagger: 0.03
 					},
 					position
 				);
@@ -89,26 +93,44 @@ const MainPictures = () => {
 			className="relative mt-14 w-full overflow-hidden xl:mt-0"
 		>
 			{mainImages.map((image, index) => (
-				<div
+				<figure
 					key={image.src}
 					className="motiv absolute left-0 top-0 w-full opacity-0 first:relative first:opacity-100"
 				>
-					<Image
-						src={`/main/${image.src}.avif`}
-						alt={image.title}
-						width={0}
-						height={0}
-						sizes="100vw"
-						className="mx-auto h-auto w-full max-w-[2048px]"
-						// Only the first slide is above the fold; preloading all four
-						// pushed ~2.3 MB in front of first paint.
-						priority={index === 0}
-						style={{ width: '100%', height: 'auto' }}
-					/>
-					<p className="text-shadow-lg xs:text-base absolute bottom-1 left-1 px-6 py-3 text-xs font-bold uppercase tracking-widest text-gray-50 sm:text-lg lg:bottom-5 lg:left-2 lg:text-2xl">
-						{image.title}
-					</p>
-				</div>
+					{/* Inner wrapper so the caption anchors to the image, not to the
+					    full-bleed track — the image is centred once past 2048px. */}
+					<div className="relative mx-auto w-full max-w-[2048px]">
+						{/* Real intrinsic dimensions, not the width/height 0 trick: without
+						    them the hero reserves no height, the whole page sits collapsed
+						    until the AVIF decodes, and every ScrollTrigger below is measured
+						    against a layout that is about to move 900px. */}
+						<Image
+							src={`/main/${image.src}.avif`}
+							alt={image.title}
+							width={1920}
+							height={900}
+							sizes="100vw"
+							className="h-auto w-full"
+							// Only the first slide is above the fold; preloading all four
+							// pushed ~2.3 MB in front of first paint.
+							priority={index === 0}
+						/>
+
+						{/* Legibility scrim, not decoration: the captions sit on
+						    photographs whose bottom edge is light on some slides. */}
+						<div className="from-black/55 pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t via-black/20 to-transparent" />
+
+						<figcaption className="absolute bottom-0 left-0 flex items-center gap-4 px-6 py-5 md:gap-5 md:px-10 md:py-8">
+							<span className="label-micro text-white/70">
+								{String(index + 1).padStart(2, '0')}
+							</span>
+							<span className="h-px w-6 bg-white/40 md:w-10" />
+							<span className="motiv-title text-xs uppercase tracking-[0.2em] text-white sm:text-sm md:text-lg md:tracking-[0.22em]">
+								{image.title}
+							</span>
+						</figcaption>
+					</div>
+				</figure>
 			))}
 		</div>
 	);

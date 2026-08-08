@@ -1,46 +1,61 @@
 import React from 'react';
 
+import Reveal from '@/components/Reveal';
 import { rewards } from '@/data';
-import { type RewardHoverColor } from '@/types';
+import { type RewardMedal } from '@/types';
 
 // Full class names — Tailwind scans source text, so a composed
-// `motion-reduce:group-hover:${x}` string is never generated.
-const RING_BORDER: Record<RewardHoverColor, string> = {
-	gold: 'border-gold',
-	silver: 'border-silver',
-	bronze: 'border-bronze'
+// `bg-${medal}` string is never generated.
+const MEDAL_MARK: Record<RewardMedal, string> = {
+	gold: 'bg-gold',
+	silver: 'bg-silver',
+	bronze: 'bg-bronze'
 };
 
-const REDUCED_HOVER_BORDER: Record<RewardHoverColor, string> = {
-	gold: 'motion-reduce:hover:border-gold',
-	silver: 'motion-reduce:hover:border-silver',
-	bronze: 'motion-reduce:hover:border-bronze'
+const MEDAL_WASH: Record<RewardMedal, string> = {
+	gold: 'bg-gold/12',
+	silver: 'bg-silver/20',
+	bronze: 'bg-bronze/12'
 };
 
 const RewardsContent = () => (
-	<div className="container mx-auto my-14 flex flex-wrap justify-center gap-12 lg:mb-20">
-		{rewards.map(reward => (
-			<div
+	<Reveal as="ul" className="border-b border-neutral-200" stagger>
+		{rewards.map((reward, index) => (
+			<li
 				key={`${reward.title}-${reward.description}`}
-				className={`group relative flex h-[180px] w-[180px] flex-col items-center justify-center gap-2 rounded-full border-4 border-gray-200 text-center uppercase transition-colors duration-500 lg:h-[220px] lg:w-[220px] lg:gap-4 ${
-					REDUCED_HOVER_BORDER[reward.hoverColor]
-				}`}
+				className="group relative border-t border-neutral-200"
 			>
-				{/* Ring wipes in on hover; a child element, so group-hover applies. */}
-				<div
-					className={`motion-safe:absolute motion-safe:-inset-1 motion-safe:rounded-full motion-safe:border-4 ${
-						RING_BORDER[reward.hoverColor]
-					} motion-safe:opacity-0 motion-safe:transition-all motion-safe:duration-500 motion-safe:ease-in-out motion-safe:[clip-path:inset(100%_0_0_0)] group-hover:motion-safe:opacity-100 group-hover:motion-safe:[clip-path:inset(0_0_0_0)]`}
+				{/* Placement wash. Wipes across the row from the left on hover, so
+				    the medal colour reads as a fill rather than a border. */}
+				<span
+					className={`pointer-events-none absolute inset-0 origin-left scale-x-0 group-hover:scale-x-100 motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${
+						MEDAL_WASH[reward.medal]
+					}`}
+					aria-hidden="true"
 				/>
-				<span className="relative z-10 text-sm lg:text-base">
-					{reward.title}
-				</span>
-				<span className="relative z-10 mx-4 text-xs text-gray-400 lg:text-sm">
-					{reward.description}
-				</span>
-			</div>
+
+				<div className="relative flex flex-col gap-2 px-1 py-6 sm:flex-row sm:items-baseline sm:gap-8 md:py-8">
+					<span className="label-micro w-8 shrink-0 text-neutral-500">
+						{String(index + 1).padStart(2, '0')}
+					</span>
+					<h3 className="text-base uppercase tracking-[0.16em] text-neutral-900 sm:w-2/5 sm:shrink-0 md:text-lg">
+						{reward.title}
+					</h3>
+					<p className="flex-1 text-sm text-neutral-600 sm:text-right">
+						{reward.description}
+					</p>
+					{/* Colour alone carries no information the title does not already
+					    state, so it is decorative. */}
+					<span
+						className={`h-2.5 w-2.5 shrink-0 self-start sm:self-center ${
+							MEDAL_MARK[reward.medal]
+						}`}
+						aria-hidden="true"
+					/>
+				</div>
+			</li>
 		))}
-	</div>
+	</Reveal>
 );
 
 export default RewardsContent;
