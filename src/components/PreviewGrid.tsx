@@ -105,11 +105,22 @@ const PreviewGrid = ({ images, showAllTile }: Props) => {
 					    sits in keeps its baseline. A quiet outline at rest so it does not
 					    compete with the photographs, inverting on hover to read as the
 					    link it is. */}
-					<div className="flex aspect-square flex-col justify-between border border-neutral-900 p-5 text-neutral-900 group-hover:bg-neutral-900 group-hover:text-white motion-safe:transition-colors motion-safe:duration-500 motion-safe:ease-out md:p-6">
-						<span className="label-micro text-neutral-500 group-hover:text-white/60 motion-safe:transition-colors motion-safe:duration-500">
+					<div className="relative flex aspect-square flex-col justify-between border border-neutral-900 p-5 text-neutral-900 group-hover:bg-neutral-900 group-hover:text-white motion-safe:transition-colors motion-safe:duration-500 motion-safe:ease-out md:p-6">
+						{/* Two layers of depth behind the type: the drafting hatch, and an
+						    inset second frame. Both recede as the plate inverts. */}
+						<span
+							className="tile-hatch pointer-events-none absolute inset-0 group-hover:opacity-0 motion-safe:transition-opacity motion-safe:duration-500 motion-safe:ease-out"
+							aria-hidden="true"
+						/>
+						<span
+							className="pointer-events-none absolute inset-2.5 border border-neutral-300 group-hover:border-white/20 motion-safe:transition-colors motion-safe:duration-500 motion-safe:ease-out md:inset-3"
+							aria-hidden="true"
+						/>
+
+						<span className="label-micro relative text-neutral-500 group-hover:text-white/60 motion-safe:transition-colors motion-safe:duration-500">
 							Přehled
 						</span>
-						<div className="flex items-center justify-between gap-4">
+						<div className="relative flex items-center justify-between gap-4">
 							<span className="text-sm uppercase leading-tight tracking-[0.18em] md:text-base">
 								Všechny
 								<br />
