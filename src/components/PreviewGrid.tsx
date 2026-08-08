@@ -64,6 +64,10 @@ const PreviewGrid = ({ images, showAllTile, mobileLimit }: Props) => {
 			className="xs:grid-cols-2 grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
 		>
 			{images.map((image, index) => {
+				// The slug in `data.ts` is the source of truth for where a tile goes;
+				// the route is built here, the same way the image paths are.
+				const href = image.slug ? `/${image.slug}` : undefined;
+
 				const tile = (
 					<>
 						{/* Every source is square (350² or 300²), so the frame reserves
@@ -84,7 +88,7 @@ const PreviewGrid = ({ images, showAllTile, mobileLimit }: Props) => {
 							<span className="text-xs leading-snug tracking-[0.03em] text-neutral-600 group-hover:text-neutral-900 motion-safe:transition-colors">
 								{image.title}
 							</span>
-							{image.href ? (
+							{href ? (
 								<span className="label-micro shrink-0 text-neutral-400 group-hover:text-neutral-900 motion-safe:transition-colors">
 									Detail
 								</span>
@@ -99,11 +103,11 @@ const PreviewGrid = ({ images, showAllTile, mobileLimit }: Props) => {
 						? 'hidden md:block'
 						: '';
 				const className = `group ${beyondMobile} ${
-					image.href ? 'cursor-pointer' : ''
+					href ? 'cursor-pointer' : ''
 				}`;
 
-				return image.href ? (
-					<Link key={image.src} href={image.href} className={className}>
+				return href ? (
+					<Link key={image.src} href={href} className={className}>
 						<figure>{tile}</figure>
 					</Link>
 				) : (

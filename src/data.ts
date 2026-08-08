@@ -4,6 +4,7 @@ import type {
 	Image,
 	NavLink,
 	PreviewCategory,
+	Project,
 	Reward,
 	TeamMember
 } from '@/types';
@@ -63,6 +64,84 @@ export const atelier: Atelier = {
 	],
 	visualization: 'Ing. Jan Haspra — 3dvizualizace.cz',
 	closing: 'Těšíme se na spolupráci'
+};
+
+/**
+ * Projects with a detail page. Each one needs an entry here and a directory of
+ * the same name under `public/projects/` — the `[slug]` route and
+ * `subpageTitles` are both derived from this array.
+ *
+ * TODO: every value marked below is a placeholder. Only the location is known,
+ * taken from the project's title in `previewImages`. Fill in the year, the
+ * scope and the description before this goes live.
+ */
+export const projects: Project[] = [
+	{
+		slug: 'restaurace-garden',
+		title: 'Restaurace Garden & Pub',
+		location: 'Brno',
+		year: 'TODO',
+		facts: [
+			{ label: 'Místo', value: 'Brno' },
+			{ label: 'Rok', value: 'TODO' },
+			{ label: 'Rozsah', value: 'TODO — rozsah prací' },
+			{ label: 'Typ', value: 'Interiér, gastro provoz' }
+		],
+		paragraphs: ['TODO: popis projektu.'],
+		photos: [
+			{
+				src: 'gr1',
+				alt: 'Restaurace Garden & Pub — interiér',
+				width: 1440,
+				height: 900
+			},
+			{
+				src: 'gr2',
+				alt: 'Restaurace Garden & Pub — interiér',
+				width: 1440,
+				height: 900
+			},
+			{
+				src: 'gr3',
+				alt: 'Restaurace Garden & Pub — detail interiéru',
+				width: 600,
+				height: 900,
+				span: 'half'
+			},
+			{
+				src: 'gr4',
+				alt: 'Restaurace Garden & Pub — detail interiéru',
+				width: 542,
+				height: 900,
+				span: 'half'
+			},
+			{
+				src: 'gr5',
+				alt: 'Restaurace Garden & Pub — interiér',
+				width: 1440,
+				height: 900
+			},
+			{
+				src: 'gr6',
+				alt: 'Restaurace Garden & Pub — interiér',
+				width: 1350,
+				height: 900
+			},
+			{
+				src: 'gr7',
+				alt: 'Restaurace Garden & Pub — interiér',
+				width: 1600,
+				height: 900
+			}
+		]
+	}
+];
+
+/** Title shown in `SubpageHeader`, derived so a new project needs no second
+ *  edit. Natural case — the header uppercases it. */
+export const subpageTitles: Record<string, string> = {
+	'/projekty': 'Projekty',
+	...Object.fromEntries(projects.map(({ slug, title }) => [`/${slug}`, title]))
 };
 
 export const contact: Contact = {
@@ -135,7 +214,8 @@ export const previewImages: Image[] = [
 	{
 		src: 'preview1',
 		title: 'Restaurace Garden&Pub - Brno',
-		category: 'interiery'
+		category: 'interiery',
+		slug: 'restaurace-garden'
 	},
 	{
 		src: 'preview2',

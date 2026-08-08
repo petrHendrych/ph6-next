@@ -65,7 +65,7 @@ Most visitors reach this site from a phone — a link in a message, a search res
 
 ### Content lives in `src/data.ts`
 
-`src/data.ts` is the single source of site content — `navLinks`, `previewCategories`, `team`, `atelier`, `contact`, `mainImages`, `rewards`, and `previewImages` (54 entries) — typed by `src/types.ts`. Components import from it and never hardcode content or duplicate markup per item. That includes prose: the studio text is `atelier.lead` / `atelier.paragraphs` / `atelier.facts` / `atelier.roster`, and the address, email, phone, map URL and Facebook URL all come from `contact` (shared by `ContactContent` and `Footer`).
+`src/data.ts` is the single source of site content — `navLinks`, `previewCategories`, `team`, `atelier`, `contact`, `projects`, `mainImages`, `rewards`, and `previewImages` (54 entries) — typed by `src/types.ts`. Components import from it and never hardcode content or duplicate markup per item. That includes prose: the studio text is `atelier.lead` / `atelier.paragraphs` / `atelier.facts` / `atelier.roster`, and the address, email, phone, map URL and Facebook URL all come from `contact` (shared by `ContactContent` and `Footer`).
 
 Constants a server component needs also belong here, not in a component — `HOME_PREVIEW_COUNT` is the example. Every export of a `'use client'` module is a client reference on the server, so a server component importing a plain number from one silently receives a proxy: `previewImages.slice(0, HOME_PREVIEW_COUNT)` returned an empty array with no type error until the constant moved into `data.ts`.
 
@@ -73,8 +73,9 @@ Image `src` values are bare names, not paths. The consuming component builds the
 
 - `MainPictures` → `/main/${src}.avif`
 - `PreviewGrid` → `/preview/${src}.jpg`
+- `ProjectDetail` → `/projects/${slug}/${src}.jpg`
 
-Adding an image means adding both the file under `public/` and the entry in `data.ts`. A `previewImages` entry with an `href` renders as a `<Link>` tile instead of a plain `div`.
+Adding an image means adding both the file under `public/` and the entry in `data.ts`. A `previewImages` entry with a `slug` renders as a `<Link>` tile (with a `Detail` tag in its caption) instead of a plain `figure`; `PreviewGrid` builds the route from the slug, so no path is ever written by hand.
 
 ### Page composition
 
@@ -133,9 +134,16 @@ So an arbitrary property list that names `transform` — `transition-[transform,
 
 ### Routing
 
-`src/app/page.tsx` is a server component composing client components into one scrolling page. Subpages live under the `(subpages)` route group, which supplies its own layout (`SubpageHeader` + `Footer`, fixed header offset via `pt-20`). `SubpageHeader` maps pathname to display title through a local `titles` record — adding a subpage requires adding an entry there too.
+`src/app/page.tsx` is a server component composing client components into one scrolling page. Subpages live under the `(subpages)` route group, which supplies its own layout (`SubpageHeader` + `Footer`, fixed header offset via `pt-20`). The group holds two routes:
 
-`/projekty` is the one built-out subpage: page title, one-sentence intro, then a `SectionHeading` + `PreviewGrid` per category. `/bistro-hlubocepy` and `/restaurace-garden` are still stubs and nothing links to them — a `previewImages` entry with an `href` is what turns a tile into a `<Link>` to one.
+- `projekty/` — page title, one-sentence intro, then a `SectionHeading` + `PreviewGrid` per category.
+- `[slug]/` — every project detail page, from the `projects` array in `data.ts` via `generateStaticParams`. `dynamicParams = false`, so an unlisted slug 404s instead of trying to render at request time.
+
+**Adding a project page: extend the `ProjectSlug` union in `types.ts`, add the `projects` entry, drop the images in `public/projects/<slug>/`, and put that slug on the matching `previewImages` entry.** `ProjectSlug` is the source of truth tying the three together — `projects` is keyed by it and a tile points at a page by slug, so a tile linking to a project that does not exist is a type error rather than a 404. `SubpageHeader` reads `subpageTitles`, derived from `projects`, so it needs no edit.
+
+Static segments outrank dynamic ones in the App Router, which is why `/projekty` still resolves to its own page and not to `[slug]`. Do not re-add a static per-project route file; it would shadow `[slug]` for that project.
+
+`ProjectDetail` is the two-column read: a sticky left column (title, fact list, prose) beside a scrolling column of photographs, collapsing to one column below `lg` with the description first. The sticky column needs `lg:self-start` alongside `lg:sticky lg:top-24` — without it the grid item stretches to the row height and has nowhere to stick. A photo with `span: 'half'` gets `col-span-2 sm:col-span-1`, which pairs the portrait shots two-up on wider screens and stacks them on a phone.
 
 ### Styling
 

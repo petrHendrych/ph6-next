@@ -6,18 +6,12 @@ import React, { useRef } from 'react';
 
 import HeaderProgress from '@/components/HeaderProgress';
 import ScrollLink from '@/components/ScrollLink';
-import { navLinks } from '@/data';
+import { navLinks, subpageTitles } from '@/data';
 import { useMobileMenu } from '@/hooks/useMobileMenu';
-
-const titles: Record<string, string> = {
-	'/projekty': 'PROJEKTY',
-	'/bistro-hlubocepy': 'BISTRO HLUBOCEPY',
-	'/restaurace-garden': 'RESTAURACE GARDEN'
-};
 
 const SubpageHeader = () => {
 	const pathname = usePathname();
-	const title = titles[pathname] || '';
+	const title = subpageTitles[pathname] ?? '';
 	const menuRef = useRef<HTMLDivElement>(null);
 	const hamburgerRef = useRef<HTMLButtonElement>(null);
 
