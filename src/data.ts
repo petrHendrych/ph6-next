@@ -14,10 +14,14 @@ export const navLinks: NavLink[] = [
 	{ hash: '#kontakt-section', label: 'Kontakt' }
 ];
 
+// The label defines what belongs in the bucket — a project is tagged by what
+// its label describes, not the other way round. `/projekty` orders its sections
+// by how many projects each bucket holds, so this order is only a fallback.
 export const previewCategories: { key: PreviewCategory; label: string }[] = [
-	{ key: 'one', label: 'interiéry' },
-	{ key: 'two', label: 'rodinné domy' },
-	{ key: 'three', label: 'bytové domy' }
+	{ key: 'interiery', label: 'Interiéry a gastro' },
+	{ key: 'bytove-domy', label: 'Bytové domy a apartmány' },
+	{ key: 'rodinne-domy', label: 'Rodinné domy' },
+	{ key: 'verejne', label: 'Veřejné a administrativní' }
 ];
 
 export const team: TeamMember[] = [
@@ -117,275 +121,281 @@ export const rewards: Reward[] = [
 	}
 ];
 
+/** Projects shown on the landing page; the 20th tile links to `/projekty`.
+ *  Lives here rather than in `PreviewGrid` because every export of a
+ *  `'use client'` module is a client reference on the server — a server
+ *  component importing it would get a proxy, not this number. */
+export const HOME_PREVIEW_COUNT = 19;
+
 export const previewImages: Image[] = [
 	{
 		src: 'preview1',
 		title: 'Restaurace Garden&Pub - Brno',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview2',
 		title: 'Restaurace Semmering - Hlubočepy',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview3',
 		title: 'Penzion Kovárna - Český Krumlov',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview4',
 		title: 'Restaurace Modrý dveře',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview5',
 		title: 'Ocean`s bistro - Brno',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview6',
 		title: 'Restaurace Steakgrill - Kralupy',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview7',
 		title: 'Apartmány Harrachov',
-		category: 'three'
+		category: 'bytove-domy'
 	},
 	{
 		src: 'preview8',
 		title: 'Bistro GOOD FOOD',
-		category: 'three'
+		category: 'interiery'
 	},
 	{
 		src: 'preview9',
 		title: 'Pizzerie Michalengelo',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview10',
 		title: 'Rodinný dům u Prahy',
-		category: 'one'
+		category: 'rodinne-domy'
 	},
 	{
 		src: 'preview11',
 		title: 'Rodinný dům Albrechtice',
-		category: 'one'
+		category: 'rodinne-domy'
 	},
 	{
 		src: 'preview12',
 		title: 'Srdcovka Spálená',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview13',
 		title: 'Apartmány Albrechtice v Jizerských horách',
-		category: 'two'
+		category: 'bytove-domy'
 	},
 	{
 		src: 'preview14',
 		title: 'Rodinná vila - Černošice',
-		category: 'one'
+		category: 'rodinne-domy'
 	},
 	{
 		src: 'preview15',
 		title: 'Lokál - Korunní',
-		category: 'three'
+		category: 'interiery'
 	},
 	{
 		src: 'preview16',
 		title: 'Restaurace Passberg',
-		category: 'three'
+		category: 'interiery'
 	},
 	{
 		src: 'preview17',
 		title: 'pekárna PANNE NUOVO',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview18',
 		title: 'Restaurace Solnice',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview19',
 		title: 'Food story tržnice',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview20',
 		title: 'Savoy Ambiente',
-		category: 'three'
+		category: 'interiery'
 	},
 	{
 		src: 'preview21',
 		title: 'Srdcovka Gurmanie = Praha Smíchov',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview22',
 		title: 'Pizzanuova Ambiente',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview23',
 		title: 'Budova společnosti MND',
-		category: 'one'
+		category: 'verejne'
 	},
 	{
 		src: 'preview24',
 		title: 'Naše maso - řeznictví',
-		category: 'three'
+		category: 'interiery'
 	},
 	{
 		src: 'preview25',
 		title: 'Lokál Pod Divadlem - Plzeň',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview26',
 		title: 'Bytové domy Jesenice',
-		category: 'three'
+		category: 'bytove-domy'
 	},
 	{
 		src: 'preview27',
 		title: 'Kampus park Hodkovičky',
-		category: 'one'
+		category: 'verejne'
 	},
 	{
 		src: 'preview28',
 		title: 'Cantineta Florentina - Pařížská',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview29',
 		title: 'Srdcovka Otrokovice',
-		category: 'three'
+		category: 'interiery'
 	},
 	{
 		src: 'preview30',
 		title: 'Restaurace Havelák',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview31',
 		title: 'Restaurace GOOD FOOD',
-		category: 'three'
+		category: 'interiery'
 	},
 	{
 		src: 'preview32',
 		title: 'Areál bydlení a služeb pro seniory Chářovice',
-		category: 'two'
+		category: 'bytove-domy'
 	},
 	{
 		src: 'preview33',
 		title: 'Lokál U Caipla - Brno',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview34',
 		title: 'Bytové domy Letňany',
-		category: 'three'
+		category: 'bytove-domy'
 	},
 	{
 		src: 'preview35',
 		title: 'Ambasada Saudské Arabie',
-		category: 'three'
+		category: 'verejne'
 	},
 	{
 		src: 'preview36',
 		title: 'XL restaurant - Praha',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview37',
 		title: 'Golfový klub - Ropice',
-		category: 'one'
+		category: 'verejne'
 	},
 	{
 		src: 'preview38',
 		title: 'Wellness Reitenberger',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview39',
 		title: 'Naše maso - prodejna',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview40',
 		title: 'Nádraží Mladá Boleslav',
-		category: 'one'
+		category: 'verejne'
 	},
 	{
 		src: 'preview41',
 		title: 'Rodinné domy Kunratice',
-		category: 'two'
+		category: 'rodinne-domy'
 	},
 	{
 		src: 'preview42',
 		title: 'Koncept prodejen Gorenje',
-		category: 'two'
+		category: 'interiery'
 	},
 	{
 		src: 'preview43',
 		title: 'Koncept prodejen Alpine',
-		category: 'three'
+		category: 'interiery'
 	},
 	{
 		src: 'preview44',
 		title: 'Rodinné domy - Lučany',
-		category: 'three'
+		category: 'rodinne-domy'
 	},
 	{
 		src: 'preview45',
 		title: 'Obytný soubor Hostavice',
-		category: 'one'
+		category: 'bytove-domy'
 	},
 	{
 		src: 'preview46',
 		title: 'Restaurant La Degustation',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview47',
 		title: 'Bytový dům Stodůlky',
-		category: 'one'
+		category: 'bytove-domy'
 	},
 	{
 		src: 'preview48',
 		title: 'Bytové domy - Zbraslav',
-		category: 'three'
+		category: 'bytove-domy'
 	},
 	{
 		src: 'preview49',
 		title: 'Bytový dům - Zbraslav',
-		category: 'two'
+		category: 'bytove-domy'
 	},
 	{
 		src: 'preview50',
 		title: 'Fresh Gyros - Praha',
-		category: 'three'
+		category: 'interiery'
 	},
 	{
 		src: 'preview51',
 		title: 'Rodinné domy - Makotřasy',
-		category: 'two'
+		category: 'rodinne-domy'
 	},
 	{
 		src: 'preview52',
 		title: 'Restaurace Klobásovna',
-		category: 'one'
+		category: 'interiery'
 	},
 	{
 		src: 'preview53',
 		title: 'Restaurace Zvonařka - Praha',
-		category: 'three'
+		category: 'interiery'
 	},
 	{
 		src: 'preview54',
 		title: 'T-Mobile administrativní objekt',
-		category: 'one'
+		category: 'verejne'
 	}
 ];

@@ -8,6 +8,7 @@ import { navLinks } from '@/data';
 import { useMobileMenu } from '@/hooks/useMobileMenu';
 
 const titles: Record<string, string> = {
+	'/projekty': 'PROJEKTY',
 	'/bistro-hlubocepy': 'BISTRO HLUBOCEPY',
 	'/restaurace-garden': 'RESTAURACE GARDEN'
 };

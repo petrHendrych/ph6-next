@@ -7,13 +7,22 @@ import React, { useRef } from 'react';
 import { previewImages } from '@/data';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
+import type { Image as ProjectImage } from '@/types';
 
 // Grid is 1/2/3/4/5 columns — tell the browser so it stops downloading
 // full-width sources for ~300px slots.
 const IMAGE_SIZES =
 	'(min-width: 1808px) 19vw, (min-width: 1280px) 23vw, (min-width: 768px) 31vw, (min-width: 480px) 48vw, 100vw';
 
-const PreviewGrid = () => {
+const PROJECTS_HREF = '/projekty';
+
+type Props = {
+	images: ProjectImage[];
+	/** Append the overview tile after the images. */
+	showAllTile?: boolean;
+};
+
+const PreviewGrid = ({ images, showAllTile }: Props) => {
 	const gridRef = useRef<HTMLDivElement>(null);
 	const reduced = useReducedMotion();
 
@@ -22,7 +31,7 @@ const PreviewGrid = () => {
 			if (reduced) return;
 
 			const tiles = gsap.utils.toArray<HTMLElement>(
-				'[data-category]',
+				':scope > *',
 				gridRef.current
 			);
 
@@ -40,16 +49,14 @@ const PreviewGrid = () => {
 		{ scope: gridRef, dependencies: [reduced], revertOnUpdate: true }
 	);
 
-	// `relative` positions the tiles Flip lifts out of flow while filtering;
-	// `content-start` stops auto rows stretching while the height is tweened.
 	// The column count tops out at five: the sources are 350² and a wider column
 	// in the 113rem container would only upscale them.
 	return (
 		<div
 			ref={gridRef}
-			className="xs:grid-cols-2 relative grid grid-cols-1 content-start gap-x-5 gap-y-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
+			className="xs:grid-cols-2 grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
 		>
-			{previewImages.map(image => {
+			{images.map(image => {
 				const tile = (
 					<>
 						{/* Every source is square (350² or 300²), so the frame reserves
@@ -82,24 +89,51 @@ const PreviewGrid = () => {
 				const className = `group ${image.href ? 'cursor-pointer' : ''}`;
 
 				return image.href ? (
-					<Link
-						key={image.src}
-						href={image.href}
-						data-category={image.category}
-						className={className}
-					>
+					<Link key={image.src} href={image.href} className={className}>
 						<figure>{tile}</figure>
 					</Link>
 				) : (
-					<figure
-						key={image.src}
-						data-category={image.category}
-						className={className}
-					>
+					<figure key={image.src} className={className}>
 						{tile}
 					</figure>
 				);
 			})}
+
+			{showAllTile ? (
+				<Link href={PROJECTS_HREF} className="group cursor-pointer">
+					{/* Same square frame and caption row as a project tile, so the row it
+					    sits in keeps its baseline. A quiet outline at rest so it does not
+					    compete with the photographs, inverting on hover to read as the
+					    link it is. */}
+					<div className="flex aspect-square flex-col justify-between border border-neutral-900 p-5 text-neutral-900 group-hover:bg-neutral-900 group-hover:text-white motion-safe:transition-colors motion-safe:duration-500 motion-safe:ease-out md:p-6">
+						<span className="label-micro text-neutral-500 group-hover:text-white/60 motion-safe:transition-colors motion-safe:duration-500">
+							Přehled
+						</span>
+						<div className="flex items-center justify-between gap-4">
+							<span className="text-sm uppercase leading-tight tracking-[0.18em] md:text-base">
+								Všechny
+								<br />
+								projekty
+							</span>
+							<svg
+								viewBox="0 0 32 12"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth="1"
+								aria-hidden="true"
+								className="h-3 w-8 shrink-0 motion-safe:transition-[translate] motion-safe:duration-500 motion-safe:ease-out motion-safe:group-hover:translate-x-1.5"
+							>
+								<path d="M0 6h30M25 1l5 5-5 5" />
+							</svg>
+						</div>
+					</div>
+					<div className="mt-3 border-t border-neutral-900/80 pt-2.5">
+						<span className="text-xs leading-snug tracking-[0.03em] text-neutral-600 group-hover:text-neutral-900 motion-safe:transition-colors">
+							{previewImages.length} realizací
+						</span>
+					</div>
+				</Link>
+			) : null}
 		</div>
 	);
 };

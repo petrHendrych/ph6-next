@@ -6,6 +6,7 @@ import RewardsContent from '@/components/RewardsContent';
 import ContactContent from '@/components/ContactContent';
 import SectionHeading from '@/components/SectionHeading';
 import Footer from '@/components/Footer';
+import { HOME_PREVIEW_COUNT, previewImages } from '@/data';
 
 const Home = () => (
 	<>
@@ -19,7 +20,10 @@ const Home = () => (
 			className="container mx-auto px-6 py-20 md:py-28"
 		>
 			<SectionHeading index="01" title="Projekty" note="Výběr realizací" />
-			<PreviewGrid />
+			<PreviewGrid
+				images={previewImages.slice(0, HOME_PREVIEW_COUNT)}
+				showAllTile
+			/>
 		</section>
 
 		<section

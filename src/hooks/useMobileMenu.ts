@@ -10,19 +10,15 @@ type UseMobileMenuProps = {
 	menuRef: RefObject<HTMLDivElement | null>;
 	/** Button holding the three `.hamburger-line` bars. */
 	hamburgerRef: RefObject<HTMLButtonElement | null>;
-	/** Optional — subpages have no filter dropdown. */
-	filterRef?: RefObject<HTMLDivElement | null>;
 };
 
 const PANEL_DURATION = 0.3;
 
 export const useMobileMenu = ({
 	menuRef,
-	hamburgerRef,
-	filterRef
+	hamburgerRef
 }: UseMobileMenuProps) => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const [isFilterOpen, setIsFilterOpen] = useState(false);
 	const reduced = useReducedMotion();
 	const { contextSafe } = useGSAP();
 
@@ -78,26 +74,7 @@ export const useMobileMenu = ({
 		setIsMenuOpen(open);
 		animateHamburger(tl, open);
 		animatePanel(tl, menuRef.current, open);
-
-		if (open && isFilterOpen) {
-			setIsFilterOpen(false);
-			animatePanel(tl, filterRef?.current, false);
-		}
 	});
 
-	const toggleFilter = contextSafe(() => {
-		const open = !isFilterOpen;
-		const tl = gsap.timeline();
-
-		setIsFilterOpen(open);
-		animatePanel(tl, filterRef?.current, open);
-
-		if (open && isMenuOpen) {
-			setIsMenuOpen(false);
-			animateHamburger(tl, false);
-			animatePanel(tl, menuRef.current, false);
-		}
-	});
-
-	return { isMenuOpen, isFilterOpen, toggleMenu, toggleFilter };
+	return { isMenuOpen, toggleMenu };
 };

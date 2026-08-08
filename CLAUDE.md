@@ -67,6 +67,8 @@ Most visitors reach this site from a phone — a link in a message, a search res
 
 `src/data.ts` is the single source of site content — `navLinks`, `previewCategories`, `team`, `atelier`, `contact`, `mainImages`, `rewards`, and `previewImages` (54 entries) — typed by `src/types.ts`. Components import from it and never hardcode content or duplicate markup per item. That includes prose: the studio text is `atelier.lead` / `atelier.paragraphs` / `atelier.facts` / `atelier.roster`, and the address, email, phone, map URL and Facebook URL all come from `contact` (shared by `ContactContent` and `Footer`).
 
+Constants a server component needs also belong here, not in a component — `HOME_PREVIEW_COUNT` is the example. Every export of a `'use client'` module is a client reference on the server, so a server component importing a plain number from one silently receives a proxy: `previewImages.slice(0, HOME_PREVIEW_COUNT)` returned an empty array with no type error until the constant moved into `data.ts`.
+
 Image `src` values are bare names, not paths. The consuming component builds the path and extension:
 
 - `MainPictures` → `/main/${src}.avif`
@@ -80,22 +82,25 @@ Adding an image means adding both the file under `public/` and the entry in `dat
 
 `Reveal` is the shared scroll-in wrapper: a client component that fades and lifts either itself or, with `stagger`, its direct children (`:scope > *`) once through a `ScrollTrigger`. It renders `div | section | ul | dl` via `as`, and passing server-rendered children through it keeps them server components.
 
-### Preview categories
+### Preview categories and the projects page
 
-`previewImages[].category` is `one | two | three`, rendered onto the tile as `data-category`. `usePreviewFilter` queries `#preview-section [data-category]`, and `previewCategories` in `data.ts` supplies the button labels for both the desktop bar and the mobile dropdown. Adding a category means extending `PreviewCategory` and `previewCategories` — the header markup needs no change.
+`previewImages[].category` is one of four slugs — `interiery`, `bytove-domy`, `rodinne-domy`, `verejne` — and the label in `previewCategories` **defines what belongs in the bucket**. Tag a project by what its label describes; the keys were once opaque (`one | two | three`) and the data drifted so far that houses were filed under interiors.
+
+`/projekty` builds one section per bucket, ordered by how many projects each holds, so the largest body of work opens the page. Both the grouping and the order are derived at render time — re-tagging a project in `data.ts` reorders the page by itself, and the array order in `previewCategories` is only a fallback. Adding a category means extending `PreviewCategory` and `previewCategories`; nothing else needs touching.
+
+There is no filtering anywhere. The header filter and the `[data-category]` attribute it queried are gone, along with `usePreviewFilter` and the `Flip` plugin registration — the grid is plain markup again.
+
+### `PreviewGrid` is shared by both pages
+
+It takes `images: Image[]` and never reaches for `previewImages` itself, so the home page passes `previewImages.slice(0, HOME_PREVIEW_COUNT)` and `/projekty` passes one category at a time. `showAllTile` appends the near-black overview tile that links to `/projekty`; it carries the same square frame and caption row as a project tile so the grid row keeps its baseline. Tiles reveal through one batched `ScrollTrigger` over `:scope > *`.
 
 ### Cross-component DOM coupling
 
 Most GSAP work is now ref-scoped, but a few globals remain load-bearing:
 
-- `#preview-section`, `#atelier-section`, `#kontakt-section` — defined in `src/app/page.tsx`; scroll targets for `navLinks` hashes and the header's filter-visibility trigger.
-- `[data-category]` — the filter contract between `PreviewGrid` and `usePreviewFilter`.
-- `.hamburger-line` (3 per header) and `.filter-control` — queried within the owning ref, not document-wide.
+- `#preview-section`, `#atelier-section`, `#kontakt-section` — defined in `src/app/page.tsx`; scroll targets for the `navLinks` hashes.
+- `.hamburger-line` (3 per header) — queried within the owning ref, not document-wide.
 - `.site-header` / `.is-scrolled` — the two header states, toggled by ScrollTrigger and styled in `globals.css`. `.header-bar`, `.header-logo`, and `.header-progress` read the `--header-py` / `--header-logo` custom properties those states set, so the whole bar animates from one class flip. `SubpageHeader` wears `is-scrolled` permanently.
-
-### `usePreviewFilter` uses the Flip plugin
-
-Filtering snapshots the tiles with `Flip.getState`, sets `display` on each tile, then lets `Flip.from({ absolute: true, onEnter, onLeave })` tween the layout difference and fade tiles in/out. It calls `ScrollTrigger.refresh()` on completion because the grid height changes. React does not own tile visibility — converting this to conditional rendering means rewriting the hook.
 
 ### Animation conventions
 
@@ -126,7 +131,9 @@ So an arbitrary property list that names `transform` — `transition-[transform,
 
 ### Routing
 
-`src/app/page.tsx` is a server component composing client components into one scrolling page. Subpages live under the `(subpages)` route group, which supplies its own layout (`SubpageHeader` + `Footer`, fixed header offset via `pt-20`). `SubpageHeader` maps pathname to display title through a local `titles` record — adding a subpage requires adding an entry there too. The existing subpages are stubs.
+`src/app/page.tsx` is a server component composing client components into one scrolling page. Subpages live under the `(subpages)` route group, which supplies its own layout (`SubpageHeader` + `Footer`, fixed header offset via `pt-20`). `SubpageHeader` maps pathname to display title through a local `titles` record — adding a subpage requires adding an entry there too.
+
+`/projekty` is the one built-out subpage: page title, one-sentence intro, then a `SectionHeading` + `PreviewGrid` per category. `/bistro-hlubocepy` and `/restaurace-garden` are still stubs and nothing links to them — a `previewImages` entry with an `href` is what turns a tile into a `<Link>` to one.
 
 ### Styling
 
