@@ -8,17 +8,27 @@ export const HEADER_OFFSET = 100;
 
 const SCROLL_DURATION = 0.8;
 
+type ScrollOptions = {
+	/** Jump instead of easing — for correcting a position the reader is on. */
+	immediate?: boolean;
+	onComplete?: () => void;
+};
+
 export const useScrollTo = () => {
 	const reduced = useReducedMotion();
 
-	const scrollTo = (target: string | number) => {
+	const scrollTo = (
+		target: string | number | Element,
+		{ immediate, onComplete }: ScrollOptions = {}
+	) => {
 		gsap.to(window, {
-			duration: reduced ? 0 : SCROLL_DURATION,
+			duration: reduced || immediate ? 0 : SCROLL_DURATION,
 			scrollTo:
 				typeof target === 'number'
 					? target
 					: { y: target, offsetY: HEADER_OFFSET },
-			ease: 'power2.inOut'
+			ease: 'power2.inOut',
+			onComplete
 		});
 	};
 

@@ -6,6 +6,7 @@ import RewardsContent from '@/components/RewardsContent';
 import ContactContent from '@/components/ContactContent';
 import SectionHeading from '@/components/SectionHeading';
 import Footer from '@/components/Footer';
+import PendingScroll from '@/components/PendingScroll';
 import {
 	HOME_PREVIEW_COUNT,
 	MOBILE_PREVIEW_COUNT,
@@ -15,6 +16,9 @@ import {
 const Home = () => (
 	<>
 		<Header />
+		{/* Lands the reader on the section a subpage link asked for, then drops
+		    the `#section` from the URL. */}
+		<PendingScroll />
 		{/* The section titles are h2s, so the page still needs one h1. */}
 		<h1 className="sr-only">PH6 — architektonický ateliér</h1>
 		<MainPictures />

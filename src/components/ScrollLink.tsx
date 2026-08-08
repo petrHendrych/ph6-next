@@ -32,6 +32,8 @@ type Props = {
  * From a subpage it stays an ordinary cross-page link: the hash is what carries
  * the target through the navigation. Handing it over through `sessionStorage`
  * instead was tried and landed at the top of the page rather than the section.
+ * `PendingScroll` on the landing page then re-seats the section below the fixed
+ * header and strips the hash back out of the URL.
  */
 const ScrollLink = ({ hash, className, children, onNavigate }: Props) => {
 	const pathname = usePathname();
