@@ -1,11 +1,11 @@
 'use client';
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import React, { useRef } from 'react';
 
 import HeaderProgress from '@/components/HeaderProgress';
 import ScrollLink from '@/components/ScrollLink';
+import Wordmark from '@/components/Wordmark';
 import { navLinks, subpageTitles } from '@/data';
 import { useMobileMenu } from '@/hooks/useMobileMenu';
 
@@ -23,15 +23,12 @@ const SubpageHeader = () => {
 		<header className="site-header is-scrolled fixed top-0 z-10 w-full">
 			<div className="relative">
 				<div className="header-bar container mx-auto flex items-center justify-between px-6">
-					<Link href="/" aria-label="Domů">
-						<Image
-							src="/logo.png"
-							alt="PH6"
-							width={30}
-							height={33}
-							priority
-							className="cursor-pointer"
-						/>
+					<Link
+						href="/"
+						aria-label="Domů"
+						className="header-logo cursor-pointer"
+					>
+						<Wordmark className="text-xl text-neutral-900 md:text-2xl" />
 					</Link>
 
 					<div className="flex flex-row items-center gap-4 md:hidden">
@@ -61,7 +58,7 @@ const SubpageHeader = () => {
 						</div>
 						<div className="h-5 w-px bg-gray-300" />
 						<nav>
-							<ol className="flex select-none flex-row gap-8">
+							<ol className="flex flex-row gap-8 select-none">
 								{navLinks.map(({ hash, label }) => (
 									<li key={hash}>
 										<ScrollLink
