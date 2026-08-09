@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+	<!-- PH6 — the studio numeral reversed out of a solid plate, in the same
+	     Raleway as the wordmark. The plate is what makes the mark hold at 16px
+	     and keeps it visible whatever colour the tab strip is; the two roles swap
+	     under prefers-color-scheme so it reads on light and dark alike. -->
+	<style>
+		.plate { fill: #171717; }
+		.mark { fill: #ffffff; }
+		@media (prefers-color-scheme: dark) {
+			.plate { fill: #ffffff; }
+			.mark { fill: #171717; }
+		}
+	</style>
+	<rect class="plate" width="64" height="64"/>
+	<path class="mark" d="M44.29 37.55Q44.29 34.36 42.74 31.80Q41.19 29.24 38.54 27.73Q35.88 26.23 32.56 26.23Q30.78 26.23 29.21 26.79Q27.64 27.36 26.47 28.38Q25.31 29.40 24.61 30.84Q24.67 27.18 25.64 24.60Q26.62 22.03 28.39 20.66Q30.17 19.28 32.52 19.28Q34.86 19.28 36.79 20.46Q38.73 21.63 39.82 23.65L42.91 20.42Q41.24 17.73 38.54 16.22Q35.84 14.72 32.59 14.72Q28.69 14.72 25.79 16.92Q22.89 19.12 21.30 23.47Q19.71 27.81 19.71 34.25Q19.71 38.93 21.25 42.31Q22.79 45.70 25.57 47.49Q28.35 49.28 32.06 49.28Q35.52 49.28 38.29 47.70Q41.07 46.12 42.68 43.46Q44.29 40.81 44.29 37.55ZM32.09 44.81Q30.16 44.81 28.52 43.81Q26.88 42.82 25.90 41.17Q24.91 39.52 24.91 37.57Q24.91 35.59 25.88 33.97Q26.86 32.35 28.51 31.38Q30.15 30.41 32.10 30.41Q34.06 30.41 35.70 31.38Q37.33 32.36 38.31 33.98Q39.29 35.60 39.29 37.55Q39.29 39.51 38.30 41.17Q37.31 42.83 35.68 43.82Q34.05 44.81 32.09 44.81Z"/>
+</svg>
