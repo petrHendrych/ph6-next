@@ -93,9 +93,11 @@ Most visitors reach this site from a phone — a link in a message, a search res
 
 ## Architecture
 
-### Content lives in `src/data.ts`
+### Content lives in `src/data.ts` and `src/projects.ts`
 
-`src/data.ts` is the single source of site content — `navLinks`, `previewCategories`, `team`, `atelier`, `contact`, `projects`, `mainImages`, `rewards`, and `previewImages` (54 entries) — typed by `src/types.ts`. Components import from it and never hardcode content or duplicate markup per item. That includes prose: the studio text is `atelier.lead` / `atelier.paragraphs` / `atelier.facts` / `atelier.roster`, and the address, email, phone, map URL and Facebook URL all come from `contact` (shared by `ContactContent` and `Footer`).
+`src/data.ts` is the single source of site content — `navLinks`, `previewCategories`, `team`, `atelier`, `contact`, `mainImages`, `rewards`, and `previewImages` (54 entries) — typed by `src/types.ts`. Components import from it and never hardcode content or duplicate markup per item. That includes prose: the studio text is `atelier.lead` / `atelier.paragraphs` / `atelier.facts` / `atelier.roster`, and the address, email, phone, map URL and Facebook URL all come from `contact` (shared by `ContactContent` and `Footer`).
+
+**`projects` lives apart, in `src/projects.ts`, and that split is load-bearing.** Turbopack puts an imported module into the browser bundle whole, unused exports and all, and `data.ts` is imported by client components (`Header`, `PreviewGrid`, `MainPictures`) — so the 54 projects with their 353 photo entries were being downloaded on the landing page, where none of them render. Moving them out took the shared data chunk from ~60 kB to ~23 kB. **Nothing under `'use client'` may import `@/projects`**; its consumers are the `[slug]` route, the sitemap, `lib/schema.ts` and the subpages layout, all server-side. `subpageTitles` moved with it, which is why the layout hands the map to `SubpageHeader` as a prop (~1 kB gzipped per subpage) instead of the header importing it.
 
 Constants a server component needs also belong here, not in a component — `HOME_PREVIEW_COUNT` is the example. Every export of a `'use client'` module is a client reference on the server, so a server component importing a plain number from one silently receives a proxy: `previewImages.slice(0, HOME_PREVIEW_COUNT)` returned an empty array with no type error until the constant moved into `data.ts`.
 
@@ -113,7 +115,9 @@ Adding an image means adding both the file under `public/` and the entry in `dat
 
 **A stacked slide at `opacity: 0` is still inside the viewport, so lazy loading fetches it.** All four hero photographs used to arrive at once — a megabyte on desktop — even though three of them were invisible and none had `priority`. `MainPictures` therefore renders slide one alone and mounts the rest from its `onLoad` (with a 4s fallback, since a failed request fires no load event). `armed` is a `useGSAP` dependency because the timeline cannot be built before the slides exist. Any future carousel has the same trap.
 
-Only the hero carries `placeholder="blur"`; the `blurDataURL` on each `mainImages` entry is a 20×9 JPEG, about half a kilobyte. Worth it for the photograph the page opens on, not for 54 thumbnails, which would put ~25 kB of base64 into the bundle to save nothing.
+**`placeholder="blur"` goes on the photographs a visitor waits on, and nowhere else.** The four `mainImages` entries carry a `blurDataURL` inline (a 20×9 JPEG, ~0.5 kB each), and the first three photographs of every project get one from `src/lib/projectBlur.generated.ts`. Not the 54 preview thumbnails — they are small, lazy, and 25 kB of base64 in the bundle would buy nothing.
+
+The project map is ~86 kB and **must only ever be imported from a server component**. `ProjectDetail` is one, so only the handful of strings a given page renders are serialised into its HTML (~2 kB gzipped per project page); importing it from a `'use client'` module would ship the whole thing to every visitor. It is a separate file rather than a field next to `color` in `projects.ts` for the same reason that file exists at all: keep bulk out of any module a client component can reach.
 
 Everything else carries **`color`** instead — the photograph's average colour as a hex string, painted as the `backgroundColor` of the box the image fills (`PreviewGrid` tiles, `ProjectDetail` photos, the team portraits). Seven bytes an entry against ~500 for a blur, and on a slow connection the grid reads as pictures arriving rather than a wall of grey. It has to be an inline style: Tailwind scans source text, so `bg-[#93907a]` assembled at runtime would never be generated.
 
@@ -189,9 +193,9 @@ So an arbitrary property list that names `transform` — `transition-[transform,
 `src/app/page.tsx` is a server component composing client components into one scrolling page. Subpages live under the `(subpages)` route group, which supplies its own layout (`SubpageHeader` + `Footer`, fixed header offset via `pt-20`). The group holds two routes:
 
 - `projekty/` — page title, one-sentence intro, then a `SectionHeading` + `PreviewGrid` per category.
-- `[slug]/` — every project detail page, from the `projects` array in `data.ts` via `generateStaticParams`. `dynamicParams = false`, so an unlisted slug 404s instead of trying to render at request time.
+- `[slug]/` — every project detail page, from the `projects` array in `src/projects.ts` via `generateStaticParams`. `dynamicParams = false`, so an unlisted slug 404s instead of trying to render at request time.
 
-**Adding a project page: extend the `ProjectSlug` union in `types.ts`, add the `projects` entry, drop the images in `public/projects/<slug>/`, and put that slug on the matching `previewImages` entry.** `ProjectSlug` is the source of truth tying the three together — `projects` is keyed by it and a tile points at a page by slug, so a tile linking to a project that does not exist is a type error rather than a 404. `SubpageHeader` reads `subpageTitles`, derived from `projects`, so it needs no edit.
+**Adding a project page: extend the `ProjectSlug` union in `types.ts`, add the `projects` entry in `src/projects.ts`, drop the images in `public/projects/<slug>/`, and put that slug on the matching `previewImages` entry in `data.ts`.** `ProjectSlug` is the source of truth tying the three together — `projects` is keyed by it and a tile points at a page by slug, so a tile linking to a project that does not exist is a type error rather than a 404. `SubpageHeader` reads `subpageTitles`, derived from `projects`, so it needs no edit.
 
 Static segments outrank dynamic ones in the App Router, which is why `/projekty` still resolves to its own page and not to `[slug]`. Do not re-add a static per-project route file; it would shadow `[slug]` for that project.
 

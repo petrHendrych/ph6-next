@@ -3,6 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 
 import Reveal from '@/components/Reveal';
+import { projectBlur } from '@/lib/projectBlur.generated';
 import type { Project, ProjectPhoto, ProjectSlug } from '@/types';
 
 // The right column is 7 of 12 from `lg` up, and a half-span photo takes half of
@@ -23,12 +24,8 @@ const toRows = (photos: ProjectPhoto[]) =>
 		return rows;
 	}, []);
 
-/**
- * Grid tracks in proportion to each photo's aspect ratio. Give a 2:3 photo more
- * width than a 0.6:1 one and both come out the same height, which is how a row
- * of mixed shapes lines up without a crop. `fr` distributes what is left after
- * the gutter, so the row still fills the column exactly.
- */
+/** Tracks proportional to each photo's aspect ratio, so a row of mixed shapes
+ *  comes out one height with nothing cropped. */
 const trackList = (row: ProjectPhoto[]) =>
 	row.map(({ width, height }) => `${(width / height).toFixed(4)}fr`).join(' ');
 
@@ -42,28 +39,31 @@ const Photo = ({
 	photo: ProjectPhoto;
 	sizes: string;
 	priority?: boolean;
-}) => (
-	<figure>
-		<Image
-			src={`/projects/${slug}/${photo.src}.jpg`}
-			alt={photo.alt}
-			width={photo.width}
-			height={photo.height}
-			sizes={sizes}
-			priority={priority}
-			className="h-auto w-full bg-neutral-100"
-			// The photograph's average colour fills the reserved box until the
-			// jpg paints over it — a long column of grey rectangles is the worst
-			// version of this page on a slow connection.
-			style={photo.color ? { backgroundColor: photo.color } : undefined}
-		/>
-	</figure>
-);
+}) => {
+	// Only the top photographs carry one; further down the average colour does.
+	const blurDataURL = projectBlur[slug]?.[photo.src];
+
+	return (
+		<figure>
+			<Image
+				src={`/projects/${slug}/${photo.src}.jpg`}
+				alt={photo.alt}
+				width={photo.width}
+				height={photo.height}
+				sizes={sizes}
+				priority={priority}
+				className="h-auto w-full bg-neutral-100"
+				style={photo.color ? { backgroundColor: photo.color } : undefined}
+				{...(blurDataURL ? { placeholder: 'blur' as const, blurDataURL } : {})}
+			/>
+		</figure>
+	);
+};
 
 const ProjectDetail = ({ project }: { project: Project }) => (
 	<div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
-		{/* `self-start` is what makes the sticky work — without it the grid item
-		    stretches to the row height and never has anywhere to stick. */}
+		{/* `self-start` makes the sticky work — without it the grid item stretches
+		    to the row height and has nowhere to stick. */}
 		<Reveal className="lg:sticky lg:top-24 lg:col-span-4 lg:self-start">
 			<Link
 				href="/projekty"
@@ -131,11 +131,9 @@ const ProjectDetail = ({ project }: { project: Project }) => (
 					);
 				}
 
-				// Columns sized by aspect ratio, so a row of photos of differing
-				// shapes ends up exactly the same height with nothing cropped. The
-				// track list rides in a custom property because it is per-row data,
-				// and an inline `grid-template-columns` would also apply on a phone,
-				// where the row is meant to stack.
+				// The track list rides in a custom property: an inline
+				// `grid-template-columns` would also apply on a phone, where the row
+				// is meant to stack.
 				return (
 					<div
 						key={photo.src}

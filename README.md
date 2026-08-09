@@ -41,7 +41,9 @@ src/
   components/             Header, PreviewGrid, ProjectDetail, Reveal, …
   hooks/                  reduced motion, scroll, mobile menu
   lib/gsap.ts             the one place GSAP plugins are registered
-  data.ts                 all site content
+  data.ts                 site content — everything but the project pages
+  projects.ts             the 54 project detail pages; server-only, never imported
+                          from a 'use client' module
   types.ts                the content types
 public/
   main/ preview/ projects/<slug>/ people/ icons/
@@ -49,14 +51,14 @@ public/
 
 ## Content
 
-**`src/data.ts` is the single source of site content** — navigation, categories, team, studio copy, contact details, awards, the 54 preview tiles and the 54 project detail pages. Components import from it and never hardcode copy.
+**`src/data.ts` is the single source of site content** — navigation, categories, team, studio copy, contact details, awards and the 54 preview tiles. Components import from it and never hardcode copy. The 54 project detail pages sit in **`src/projects.ts`** instead, because a module imported by a client component ships to the browser whole, and 353 photo entries have no business on the landing page.
 
 Image `src` values are bare names; the consuming component builds the path (`/main/….avif`, `/preview/….jpg`, `/projects/<slug>/….jpg`).
 
 **Adding a project page**
 
 1. Add the slug to the `ProjectSlug` union in `src/types.ts` — it ties the three places together, so a tile can never link to a page that does not exist.
-2. Add the `projects` entry: title, location, year, facts, prose, and the photo list with real `width`/`height`.
+2. Add the `projects` entry in `src/projects.ts`: title, location, year, facts, prose, and the photo list with real `width`/`height`.
 3. Drop the photographs in `public/projects/<slug>/`.
 4. Put the slug on the matching `previewImages` entry, which turns its tile into a link.
 

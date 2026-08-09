@@ -4,7 +4,7 @@ import React from 'react';
 
 import JsonLd from '@/components/JsonLd';
 import ProjectDetail from '@/components/ProjectDetail';
-import { projects } from '@/data';
+import { projects } from '@/projects';
 import {
 	breadcrumbSchema,
 	projectDescription,
@@ -13,8 +13,7 @@ import {
 
 type Params = { params: Promise<{ slug: string }> };
 
-// Every project page is known at build time, so an unlisted slug is a 404
-// rather than an attempt to render one on demand.
+// Every page is known at build time, so an unlisted slug 404s.
 export const dynamicParams = false;
 
 export const generateStaticParams = () =>
@@ -39,8 +38,7 @@ export const generateMetadata = async ({
 			url: `/${project.slug}`,
 			title: project.title,
 			description,
-			// The project's own opening photograph, not the site-wide OG image —
-			// a shared link should show the building it is about.
+			// The project's own opening photograph, not the site-wide OG image.
 			images: cover
 				? [
 						{

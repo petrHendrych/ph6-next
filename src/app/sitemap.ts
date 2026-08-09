@@ -1,21 +1,16 @@
 import type { MetadataRoute } from 'next';
 
-import { projects, siteUrl } from '@/data';
+import { siteUrl } from '@/data';
+import { projects } from '@/projects';
 
-/**
- * Every indexable URL on the site. The project pages are derived from
- * `projects`, so adding one to `data.ts` adds it here too.
- *
- * `lastModified` is the build time — the site is fully static, so a deploy is
- * the only moment anything can have changed.
- */
+/** Every indexable URL, project pages derived from `projects`. `lastModified`
+ *  is the build time — the site is static, so a deploy is the only change. */
 const sitemap = (): MetadataRoute.Sitemap => {
 	const lastModified = new Date();
 
 	return [
 		{
-			// No trailing slash — this has to be byte-identical to the canonical
-			// the home page declares, or the two disagree about the same URL.
+			// No trailing slash — byte-identical to the home page's canonical.
 			url: siteUrl,
 			lastModified,
 			changeFrequency: 'monthly',

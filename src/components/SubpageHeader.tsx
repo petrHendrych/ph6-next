@@ -6,19 +6,20 @@ import React, { useRef } from 'react';
 import HeaderProgress from '@/components/HeaderProgress';
 import ScrollLink from '@/components/ScrollLink';
 import Wordmark from '@/components/Wordmark';
-import { navLinks, subpageTitles } from '@/data';
+import { navLinks } from '@/data';
 import { useMobileMenu } from '@/hooks/useMobileMenu';
 
-const SubpageHeader = () => {
+/** `titles` is handed down by the layout: it derives from `projects`, and
+ *  importing that here would pull all 54 into the browser bundle. */
+const SubpageHeader = ({ titles }: { titles: Record<string, string> }) => {
 	const pathname = usePathname();
-	const title = subpageTitles[pathname] ?? '';
+	const title = titles[pathname] ?? '';
 	const menuRef = useRef<HTMLDivElement>(null);
 	const hamburgerRef = useRef<HTMLButtonElement>(null);
 
 	const { isMenuOpen, toggleMenu } = useMobileMenu({ menuRef, hamburgerRef });
 
-	// Permanently in the scrolled state — subpages have no hero to sit on, but
-	// the bar should still match the one on the landing page.
+	// Permanently `is-scrolled` — subpages have no hero for the bar to sit on.
 	return (
 		<header className="site-header is-scrolled fixed top-0 z-10 w-full">
 			<div className="relative">
