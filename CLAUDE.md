@@ -109,6 +109,26 @@ Next 16 only serves the `quality` values listed in `images.qualities` in `next.c
 
 Adding an image means adding both the file under `public/` and the entry in `data.ts`. A `previewImages` entry with a `slug` renders as a `<Link>` tile (with a `Detail` tag in its caption) instead of a plain `figure`; `PreviewGrid` builds the route from the slug, so no path is ever written by hand.
 
+`images.formats` puts **AVIF ahead of WebP**: the 1920px hero is ~124 kB instead of ~273 kB, and every tile roughly halves. The cost is one slower encode the first time a given variant is requested, which `minimumCacheTTL` (30 days) then keeps. Do not reorder those formats to "speed up the build" — the encode is per variant, once, and the bytes are what visitors actually wait for.
+
+**A stacked slide at `opacity: 0` is still inside the viewport, so lazy loading fetches it.** All four hero photographs used to arrive at once — a megabyte on desktop — even though three of them were invisible and none had `priority`. `MainPictures` therefore renders slide one alone and mounts the rest from its `onLoad` (with a 4s fallback, since a failed request fires no load event). `armed` is a `useGSAP` dependency because the timeline cannot be built before the slides exist. Any future carousel has the same trap.
+
+Only the hero carries `placeholder="blur"`; the `blurDataURL` on each `mainImages` entry is a 20×9 JPEG, about half a kilobyte. Worth it for the photograph the page opens on, not for 54 thumbnails, which would put ~25 kB of base64 into the bundle to save nothing.
+
+Everything else carries **`color`** instead — the photograph's average colour as a hex string, painted as the `backgroundColor` of the box the image fills (`PreviewGrid` tiles, `ProjectDetail` photos, the team portraits). Seven bytes an entry against ~500 for a blur, and on a slow connection the grid reads as pictures arriving rather than a wall of grey. It has to be an inline style: Tailwind scans source text, so `bg-[#93907a]` assembled at runtime would never be generated.
+
+Regenerate a `color` the same way it was made — the average of the image scaled to a single pixel:
+
+```js
+const { data } = await sharp(file)
+	.resize(1, 1, { fit: 'fill' })
+	.removeAlpha()
+	.raw()
+	.toBuffer({ resolveWithObject: true });
+```
+
+`sharp` is already present as a Next dependency, so this needs no install; it does need Node 24 (`nvm use`), not the system Node 18.
+
 ### Page composition
 
 `page.tsx` stacks four `<section>`s, each opened by `SectionHeading` (numbered index, hairline rule, optional right-hand note). The only `h1` on the page is the `sr-only` one at the top — section titles are `h2`s, so keep it that way when adding a section.

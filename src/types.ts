@@ -75,6 +75,21 @@ export type Image = {
 	category?: PreviewCategory;
 	/** When set, the tile links to that project's detail page. */
 	slug?: ProjectSlug;
+	/**
+	 * The photograph's average colour, painted behind it. A tile then holds the
+	 * shape of the picture in its own colour while the file is still on the
+	 * wire, instead of a grey box. Generated, not chosen — see the note in
+	 * `CLAUDE.md` on regenerating it.
+	 */
+	color?: string;
+	/**
+	 * A 20×9 JPEG of the photograph, inlined. `next/image` paints it scaled up
+	 * and blurred while the real file is still arriving, so the hero is the
+	 * photograph's own colours from the first frame instead of a grey band.
+	 * Only the hero carries one — half a kilobyte each is worth it for the
+	 * image the page opens on, not for 54 thumbnails.
+	 */
+	blurDataURL?: string;
 };
 
 /** Placement the award represents; drives the accent colour of its row. */
@@ -97,6 +112,8 @@ export type NavLink = {
 export type TeamMember = {
 	src: string;
 	name: string;
+	/** Average colour of the portrait; see `Image['color']`. */
+	color?: string;
 };
 
 /** Label/value pair in the studio fact column. */
@@ -123,6 +140,8 @@ export type ProjectPhoto = {
 	height: number;
 	/** Sits two-up in a row instead of spanning the column. */
 	span?: 'half';
+	/** Average colour of the photograph; see `Image['color']`. */
+	color?: string;
 };
 
 export type Project = {

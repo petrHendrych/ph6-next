@@ -61,8 +61,15 @@ const AtelierContent = () => (
 				{team.map((member, index) => (
 					<figure key={member.src} className="group">
 						{/* Square crop: the source portraits are 350×350, so any other
-						    ratio would cut into them blindly. */}
-						<div className="relative aspect-square overflow-hidden bg-neutral-100">
+						    ratio would cut into them blindly. The average colour holds
+						    the frame until the jpg lands — near-grey here anyway, since
+						    the portraits are shown desaturated. */}
+						<div
+							className="relative aspect-square overflow-hidden bg-neutral-100"
+							style={
+								member.color ? { backgroundColor: member.color } : undefined
+							}
+						>
 							<Image
 								src={`/people/${member.src}.jpg`}
 								alt={member.name}

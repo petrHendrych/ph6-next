@@ -52,6 +52,10 @@ const Photo = ({
 			sizes={sizes}
 			priority={priority}
 			className="h-auto w-full bg-neutral-100"
+			// The photograph's average colour fills the reserved box until the
+			// jpg paints over it — a long column of grey rectangles is the worst
+			// version of this page on a slow connection.
+			style={photo.color ? { backgroundColor: photo.color } : undefined}
 		/>
 	</figure>
 );

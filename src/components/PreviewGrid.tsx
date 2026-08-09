@@ -71,8 +71,14 @@ const PreviewGrid = ({ images, showAllTile, mobileLimit }: Props) => {
 				const tile = (
 					<>
 						{/* Every source is square (350² or 300²), so the frame reserves
-						    its box up front instead of collapsing until the jpg lands. */}
-						<div className="relative aspect-square overflow-hidden bg-neutral-100">
+						    its box up front instead of collapsing until the jpg lands.
+						    It holds the photograph's own average colour while it does,
+						    so a slow grid reads as pictures arriving rather than as a
+						    wall of grey boxes. */}
+						<div
+							className="relative aspect-square overflow-hidden bg-neutral-100"
+							style={image.color ? { backgroundColor: image.color } : undefined}
+						>
 							<Image
 								src={`/preview/${image.src}.jpg`}
 								alt={image.title}

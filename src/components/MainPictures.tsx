@@ -1,7 +1,7 @@
 'use client';
 import { useGSAP } from '@gsap/react';
 import Image from 'next/image';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { mainImages } from '@/data';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
@@ -10,9 +10,32 @@ import { gsap, SplitText } from '@/lib/gsap';
 const HOLD = 5; // seconds a slide stays up
 const FADE = 1.5; // crossfade length
 
+/** How long to wait for the first slide before mounting the rest anyway. The
+ *  slideshow must not depend on a `load` event that a failed request never
+ *  fires. */
+const ARM_FALLBACK = 4000;
+
 const MainPictures = () => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const reduced = useReducedMotion();
+
+	/**
+	 * Slides two to four are not rendered until the first one has arrived.
+	 *
+	 * They are stacked on top of it at `opacity: 0`, which leaves them inside
+	 * the viewport — so `next/image`'s lazy loading considers them visible and
+	 * fetches all four at once. On a desktop that is four full-width
+	 * photographs competing with the one the visitor is actually looking at,
+	 * on the connection where it matters least.
+	 */
+	const [armed, setArmed] = useState(false);
+	const slides = armed ? mainImages : mainImages.slice(0, 1);
+
+	useEffect(() => {
+		if (armed) return;
+		const timer = window.setTimeout(() => setArmed(true), ARM_FALLBACK);
+		return () => window.clearTimeout(timer);
+	}, [armed]);
 
 	useGSAP(
 		() => {
@@ -83,7 +106,14 @@ const MainPictures = () => {
 
 			return () => splits.forEach(split => split?.revert());
 		},
-		{ scope: containerRef, dependencies: [reduced], revertOnUpdate: true }
+		// `armed` is a dependency because the timeline can only be built once
+		// every slide is in the DOM — before that there is one slide and the
+		// effect bails out.
+		{
+			scope: containerRef,
+			dependencies: [reduced, armed],
+			revertOnUpdate: true
+		}
 	);
 
 	return (
@@ -92,7 +122,7 @@ const MainPictures = () => {
 			id="imgContainer"
 			className="relative mt-14 w-full overflow-hidden xl:mt-0"
 		>
-			{mainImages.map((image, index) => (
+			{slides.map((image, index) => (
 				<figure
 					key={image.src}
 					className="motiv absolute top-0 left-0 w-full opacity-0 first:relative first:opacity-100"
@@ -114,6 +144,17 @@ const MainPictures = () => {
 							// Only the first slide is above the fold; preloading all four
 							// pushed ~2.3 MB in front of first paint.
 							priority={index === 0}
+							// The photograph's own colours, blurred, from the first frame
+							// — the alternative is a 900px grey band while it downloads.
+							{...(image.blurDataURL
+								? {
+										placeholder: 'blur' as const,
+										blurDataURL: image.blurDataURL
+									}
+								: {})}
+							// The rest of the slideshow follows once this one is on
+							// screen, so it never competes with it for bandwidth.
+							onLoad={index === 0 ? () => setArmed(true) : undefined}
 						/>
 
 						{/* Legibility scrim, not decoration: the captions sit on
