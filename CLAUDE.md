@@ -177,6 +177,13 @@ Static segments outrank dynamic ones in the App Router, which is why `/projekty`
 
 `ProjectDetail` is the two-column read: a sticky left column (title, fact list, prose) beside a scrolling column of photographs, collapsing to one column below `lg` with the description first. The sticky column needs `lg:self-start` alongside `lg:sticky lg:top-24` — without it the grid item stretches to the row height and has nowhere to stick. A photo with `span: 'half'` gets `col-span-2 sm:col-span-1`, which pairs the portrait shots two-up on wider screens and stacks them on a phone.
 
+**The order of `photos` is a layout decision, not the order the files came in.** A `span: 'half'` photo only reads as intentional when it has a partner beside it, so:
+
+- A project never opens on a portrait — the first photo is always landscape.
+- Portraits are ordered into adjacent pairs, even when their file names are nowhere near each other. An even number of portraits means every one of them is paired; four in a row is two clean rows and is fine.
+- An odd count leaves exactly one lone portrait. It sits third at the earliest, and never directly against a pair — keep a landscape between them. Only when a project has no landscape left to spare (`budova-mnd`) may the lone one touch a pair.
+- `alt` carries the position (`— fotografie 4`), so re-ordering means renumbering.
+
 ### Styling
 
 Tailwind v4 via `@tailwindcss/postcss`, configured entirely in `src/app/globals.css` — there is no `tailwind.config.ts` and no `@config`. Design tokens (`xs`/`2xl` breakpoints, `gold`/`silver`/`bronze`, footer colors) live in the `@theme` block; `nav-underline` is an `@utility`. The site is light-only by design.
