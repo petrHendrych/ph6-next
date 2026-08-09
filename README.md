@@ -62,6 +62,16 @@ Image `src` values are bare names; the consuming component builds the path (`/ma
 
 Photo order in a project is a layout decision, not the order the files arrived in — never open on a portrait, and pair portraits up. The rules are written out in `CLAUDE.md`.
 
+## SEO
+
+Every page carries a Czech title, description and canonical URL, an Open Graph image (the project's own opening photograph on a detail page), and JSON-LD: the studio as one `ArchitecturalService` with its address, founder, team and awards, an `ItemList` of all projects on `/projekty`, and a `CreativeWork` plus breadcrumbs on each detail page. `robots.txt` and `sitemap.xml` are generated from the same data.
+
+**Indexing is opt-in, and that is deliberate.** The studio's previous site is still live on `ph6.cz`. A staging deployment that lets itself be crawled becomes a second site answering the same Czech queries, so a build only allows crawling when `NEXT_PUBLIC_INDEXABLE=true`; without it every page serves `noindex` and `robots.txt` is `Disallow: /`. Set the flag on the deployment that takes over the domain, and not before. See `.env.example`.
+
+`siteUrl` in `src/data.ts` defaults to `https://ph6.cz` — the apex, since `www` is a CNAME onto it. Every canonical, sitemap entry and absolute image URL is built from it; `NEXT_PUBLIC_SITE_URL` overrides it per environment.
+
+At cutover the hosting still has to 301 `www` → apex and `http` → `https` (today both hosts answer 200 and HTTPS redirects _down_ to HTTP), and the old `/projects/*.html` URLs need redirects to the new slugs or their ranking is thrown away.
+
 ## Status
 
 The photographs and the project structure are in place. The written content is not: `year`, the scope fact and the description are placeholders on every project, `location` is filled only where the project title names a place, and the photo alt texts are indexed rather than descriptive. The old site carried no per-project copy to import, so all of it has to be written.

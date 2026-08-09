@@ -1,9 +1,26 @@
+import type { Metadata } from 'next';
 import React from 'react';
 
+import JsonLd from '@/components/JsonLd';
 import PreviewGrid from '@/components/PreviewGrid';
 import Reveal from '@/components/Reveal';
 import SectionHeading from '@/components/SectionHeading';
 import { previewCategories, previewImages } from '@/data';
+import { breadcrumbSchema, projectListSchema } from '@/lib/schema';
+
+export const metadata: Metadata = {
+	title: 'Projekty — realizace a návrhy',
+	description: `Přehled ${previewImages.length} realizací a návrhů architektonického ateliéru PH6 od roku 2002 — interiéry restaurací a prodejen, rodinné a bytové domy, veřejné a administrativní stavby.`,
+	alternates: { canonical: '/projekty' },
+	openGraph: {
+		type: 'website',
+		url: '/projekty',
+		title: 'Projekty — realizace a návrhy ateliéru PH6',
+		// Declaring `openGraph` replaces the inherited object wholesale, so the
+		// site-wide `opengraph-image.jpg` has to be named again here.
+		images: '/opengraph-image.jpg'
+	}
+};
 
 /** `1 realizace`, `2–4 realizace`, `5+ realizací`. */
 const countLabel = (count: number) => {
@@ -26,6 +43,12 @@ const sections = previewCategories
 
 const Page = () => (
 	<div className="container mx-auto px-6 py-10 md:py-20">
+		{/* The list is what a crawler follows to reach all 54 detail pages. */}
+		<JsonLd data={projectListSchema()} />
+		<JsonLd
+			data={breadcrumbSchema([{ name: 'Projekty', path: '/projekty' }])}
+		/>
+
 		<Reveal className="max-w-4xl">
 			<h1 className="text-3xl leading-none tracking-[0.24em] text-neutral-900 uppercase sm:text-4xl md:text-5xl md:tracking-[0.2em]">
 				Projekty

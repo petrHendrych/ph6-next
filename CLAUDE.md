@@ -184,6 +184,22 @@ Static segments outrank dynamic ones in the App Router, which is why `/projekty`
 - An odd count leaves exactly one lone portrait. It sits third at the earliest, and never directly against a pair — keep a landscape between them. Only when a project has no landscape left to spare (`budova-mnd`) may the lone one touch a pair.
 - `alt` carries the position (`— fotografie 4`), so re-ordering means renumbering.
 
+### SEO
+
+The site is one business trying to rank locally for a handful of Czech phrases, so the markup carries the facts a crawler needs and nothing invented.
+
+`siteUrl` in `data.ts` is the origin every canonical, sitemap entry and absolute image URL is built from — `NEXT_PUBLIC_SITE_URL` overrides it so a preview deploy does not claim the production URLs. `metadataBase` in the root layout is what lets every page below write relative paths.
+
+**Indexing is opt-in and must stay that way until this site owns the domain.** The studio's previous site is still live on `ph6.cz`; a crawlable staging copy is a second site answering the same Czech queries. `isIndexable` (`NEXT_PUBLIC_INDEXABLE === 'true'`) gates both the `robots` metadata and `robots.ts`, which otherwise serve `noindex, nofollow, nocache` and `Disallow: /`. Do not flip the default to allow-by-default "just to test something".
+
+- **Metadata cascades from `src/app/layout.tsx`.** A page overrides `title`, `description` and `alternates.canonical` and inherits the rest. Note that `openGraph` is _replaced_, not merged — a page that declares its own `openGraph` and wants the site-wide picture has to name `images: '/opengraph-image.jpg'` again, which is why `/projekty` does.
+- **No `icons` entry, ever.** `icon.svg` and `favicon.ico` are file conventions; declaring icons in `metadata` overrides them.
+- `src/app/opengraph-image.jpg` is the 1200×630 share image, cut from `public/main/uvod_1.avif`. Project pages override it with their own opening photograph.
+- **Structured data lives in `src/lib/schema.ts`** and is rendered through `JsonLd`. The studio is one `ArchitecturalService` node with a fixed `@id`; the project and collection nodes reference that `@id` rather than restating the address. Built from `data.ts`, so the markup cannot drift from the page.
+- **Placeholders must never reach the markup.** `written()` drops any value still starting with `TODO`, and `projectDescription()` skips a place or a building type the title already states. Check a rebuilt page for the string `TODO` after touching either.
+- `sitemap.ts` and `robots.ts` derive from `projects`, so a new project appears in both by itself. The home entry has no trailing slash, matching the canonical byte for byte.
+- Keep the `max-image-preview: large` robots directive — the photography is the product and this is what lets Google show it full size.
+
 ### Styling
 
 Tailwind v4 via `@tailwindcss/postcss`, configured entirely in `src/app/globals.css` — there is no `tailwind.config.ts` and no `@config`. Design tokens (`xs`/`2xl` breakpoints, `gold`/`silver`/`bronze`, footer colors) live in the `@theme` block; `nav-underline` is an `@utility`. The site is light-only by design.

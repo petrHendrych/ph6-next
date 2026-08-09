@@ -9,6 +9,34 @@ import type {
 	TeamMember
 } from '@/types';
 
+/**
+ * Origin every canonical URL, sitemap entry and absolute OG image is built
+ * from. A preview deployment sets `NEXT_PUBLIC_SITE_URL` to its own origin so
+ * it does not advertise the production URLs as its own.
+ *
+ * The apex is the canonical host: `www.ph6.cz` is a CNAME onto it and today
+ * both answer 200, which is a duplicate the new hosting should settle with a
+ * 301 from `www` to the apex, and from `http` to `https`.
+ */
+export const siteUrl = (
+	process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ph6.cz'
+).replace(/\/$/, '');
+
+/**
+ * Whether this deployment may be indexed. **Opt-in on purpose**: the studio's
+ * old site is live on the domain, and a staging build that indexes itself
+ * competes with it for the same Czech queries under a URL nobody should land
+ * on. Only the deployment that sets `NEXT_PUBLIC_INDEXABLE=true` is crawlable;
+ * everything else serves `noindex` and a `Disallow: /` robots file.
+ *
+ * Set it when the new site takes over the domain — not before.
+ */
+export const isIndexable = process.env.NEXT_PUBLIC_INDEXABLE === 'true';
+
+/** The one-sentence pitch: search result snippet, OG description, JSON-LD. */
+export const siteDescription =
+	'Architektonický ateliér PH6 z Prahy — návrhy interiérů a gastro provozů, rodinných a bytových domů i veřejných a administrativních staveb. Od roku 2002.';
+
 export const navLinks: NavLink[] = [
 	{ hash: '#preview-section', label: 'Projekty' },
 	{ hash: '#atelier-section', label: 'Ateliér' },

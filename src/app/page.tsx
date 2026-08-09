@@ -1,5 +1,6 @@
 import MainPictures from '@/components/MainPictures';
 import Header from '@/components/Header';
+import JsonLd from '@/components/JsonLd';
 import PreviewGrid from '@/components/PreviewGrid';
 import AtelierContent from '@/components/AtelierContent';
 import RewardsContent from '@/components/RewardsContent';
@@ -12,6 +13,7 @@ import {
 	MOBILE_PREVIEW_COUNT,
 	previewImages
 } from '@/data';
+import { studioSchema } from '@/lib/schema';
 
 const Home = () => (
 	<>
@@ -19,42 +21,52 @@ const Home = () => (
 		{/* Lands the reader on the section a subpage link asked for, then drops
 		    the `#section` from the URL. */}
 		<PendingScroll />
-		{/* The section titles are h2s, so the page still needs one h1. */}
-		<h1 className="sr-only">PH6 — architektonický ateliér</h1>
-		<MainPictures />
+		{/* The studio itself — address, phone, founder, awards — as one business
+		    a search engine can read without parsing the contact section. */}
+		<JsonLd data={studioSchema()} />
 
-		<section
-			id="preview-section"
-			className="container mx-auto px-6 py-12 md:py-28"
-		>
-			<SectionHeading index="01" title="Projekty" note="Výběr realizací" />
-			<PreviewGrid
-				images={previewImages.slice(0, HOME_PREVIEW_COUNT)}
-				mobileLimit={MOBILE_PREVIEW_COUNT}
-				showAllTile
-			/>
-		</section>
+		<main>
+			{/* The section titles are h2s, so the page still needs one h1. It names
+			    the studio, the trade and the city, which is what the page is for. */}
+			<h1 className="sr-only">
+				PH6 — architektonický ateliér v Praze: interiéry, gastro provozy,
+				rodinné a bytové domy
+			</h1>
+			<MainPictures />
 
-		<section
-			id="atelier-section"
-			className="container mx-auto px-6 py-12 md:py-28"
-		>
-			<SectionHeading index="02" title="Ateliér" note="Od roku 2002" />
-			<AtelierContent />
-		</section>
+			<section
+				id="preview-section"
+				className="container mx-auto px-6 py-12 md:py-28"
+			>
+				<SectionHeading index="01" title="Projekty" note="Výběr realizací" />
+				<PreviewGrid
+					images={previewImages.slice(0, HOME_PREVIEW_COUNT)}
+					mobileLimit={MOBILE_PREVIEW_COUNT}
+					showAllTile
+				/>
+			</section>
 
-		<section className="container mx-auto px-6 py-12 md:py-28">
-			<SectionHeading index="03" title="Ocenění" />
-			<RewardsContent />
-		</section>
+			<section
+				id="atelier-section"
+				className="container mx-auto px-6 py-12 md:py-28"
+			>
+				<SectionHeading index="02" title="Ateliér" note="Od roku 2002" />
+				<AtelierContent />
+			</section>
 
-		<section
-			id="kontakt-section"
-			className="container mx-auto px-6 py-12 md:py-28"
-		>
-			<SectionHeading index="04" title="Kontakt" note="Praha 6" />
-			<ContactContent />
-		</section>
+			<section className="container mx-auto px-6 py-12 md:py-28">
+				<SectionHeading index="03" title="Ocenění" />
+				<RewardsContent />
+			</section>
+
+			<section
+				id="kontakt-section"
+				className="container mx-auto px-6 py-12 md:py-28"
+			>
+				<SectionHeading index="04" title="Kontakt" note="Praha 6" />
+				<ContactContent />
+			</section>
+		</main>
 
 		<Footer />
 	</>
