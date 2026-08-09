@@ -51,6 +51,18 @@ Treat every change as part of a contemporary architectural portfolio, not a gene
 
 The PH6 lettermark is type, not a bitmap: `Wordmark` renders it at `0.42em` tracking and inherits its colour, so `Header`, `SubpageHeader` and `Footer` all show the same mark — near-black at `text-xl md:text-2xl` in the bars, white at `text-3xl md:text-4xl` in the footer. Size and colour are the only things a caller passes. The negative right margin inside it cancels the trailing letter-space wide tracking leaves after the final glyph; without it the mark hangs a third of a character inside the gutter.
 
+### The favicon
+
+`src/app/icon.svg` and `src/app/favicon.ico` are both picked up by the App Router from those filenames alone — there is no `icons` entry in `metadata`, and adding one would override them. Next emits a `<link>` for each; browsers that understand SVG take `icon.svg`, the rest fall back to the `.ico`.
+
+The mark is the numeral **6** reversed out of a solid near-black plate, cut from the same Raleway as the wordmark. Three constraints drove that and are worth keeping in mind before redrawing it:
+
+- **16px is the design size.** The wide-tracked `PH6` wordmark was tried first and turns to a grey smear at 16px — three glyphs cannot survive a 16px box. Anything with more than one glyph, or a hairline frame, fails the same way.
+- **The plate is structural, not decorative.** It gives the mark a square silhouette that stays visible on any tab colour, and it is what keeps the `.ico` legible on a dark strip, since an `.ico` carries no media query.
+- **`icon.svg` swaps its two colours under `prefers-color-scheme`**, so the plate goes paper-white and the numeral near-black in dark UI. The site itself stays light-only; this is the one place a dark variant exists.
+
+The numeral is a **baked outline, not live text** — an SVG favicon cannot load a webfont, so the path was exported from the Raleway woff2 that `next/font` had already downloaded, instantiated at `wght 600`. Editing the `d` attribute by hand is not sensible; re-export it if the typeface or weight ever changes. The `.ico` is rasterised from the same SVG at 16/24/32/48/64/128/256 so the two can never drift.
+
 **Motion is calm.** Slow crossfades, small offsets, character staggers, scroll-linked reveals. `power2`-family easings only — no bounce, no elastic, no attention-seeking loops. Motion should feel like a slow pan across a model, and must always degrade cleanly under `useReducedMotion()`.
 
 **Contrast is non-negotiable.** Body and label text hits 4.5:1 against its background — `text-gray-400` on white does not qualify, `text-gray-500` is the floor for small text. State must never be communicated by color alone (pair it with weight or an underline).
