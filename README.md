@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PH6
 
-## Getting Started
+Portfolio site for **PH6**, a Czech architecture studio (Praha 6) founded in 2002 by Ing. arch. Šimon Brnada. The studio designs interiors and gastro venues, family and apartment houses, and public and administrative buildings.
 
-First, run the development server:
+The site is one scrolling landing page — hero slideshow, project grid, studio, awards, contact — plus a project overview at `/projekty` and a detail page per project. All user-facing copy is Czech.
+
+This is a rewrite of the studio's original static site; the photography was carried over from it.
+
+## Stack
+
+Next.js 16 (App Router) · React 19 · TypeScript strict · Tailwind v4 · GSAP.
+
+Node **22.13+** is required — Next 16 and ESLint 9 both refuse older runtimes. `.nvmrc` pins 24.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # dev server on :3000 (Turbopack)
+npm run build      # production build
+npm run start      # serve the production build
+npm run lint       # eslint .
+npm run typecheck  # tsc --noEmit, run through TypeScript 7
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+There is no test suite.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+The repo depends on **two TypeScript versions on purpose** — 6.0.3 under the bare `typescript` specifier, 7.0.2 aliased as `typescript-7` — because typescript-eslint cannot load under TS 7 yet and `eslint-config-next` imports it. Raising the bare dependency to 7 stops lint from running at all. See `CLAUDE.md` for the details and the condition for going single-version.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Layout
 
-## Learn More
+```
+src/
+  app/
+    page.tsx              landing page — four sections, server component
+    layout.tsx            fonts, metadata, Header + Footer
+    icon.svg favicon.ico  the mark, picked up by filename alone
+    globals.css           Tailwind v4 config lives here — no tailwind.config.ts
+    (subpages)/
+      layout.tsx          SubpageHeader + Footer, fixed-header offset
+      projekty/page.tsx   all projects, one section per category
+      [slug]/page.tsx     project detail, statically generated per project
+  components/             Header, PreviewGrid, ProjectDetail, Reveal, …
+  hooks/                  reduced motion, scroll, mobile menu
+  lib/gsap.ts             the one place GSAP plugins are registered
+  data.ts                 all site content
+  types.ts                the content types
+public/
+  main/ preview/ projects/<slug>/ people/ icons/
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Content
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**`src/data.ts` is the single source of site content** — navigation, categories, team, studio copy, contact details, awards, the 54 preview tiles and the 54 project detail pages. Components import from it and never hardcode copy.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Image `src` values are bare names; the consuming component builds the path (`/main/….avif`, `/preview/….jpg`, `/projects/<slug>/….jpg`).
 
-## Deploy on Vercel
+**Adding a project page**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Add the slug to the `ProjectSlug` union in `src/types.ts` — it ties the three places together, so a tile can never link to a page that does not exist.
+2. Add the `projects` entry: title, location, year, facts, prose, and the photo list with real `width`/`height`.
+3. Drop the photographs in `public/projects/<slug>/`.
+4. Put the slug on the matching `previewImages` entry, which turns its tile into a link.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Photo order in a project is a layout decision, not the order the files arrived in — never open on a portrait, and pair portraits up. The rules are written out in `CLAUDE.md`.
+
+## Status
+
+The photographs and the project structure are in place. The written content is not: `year`, the scope fact and the description are placeholders on every project, `location` is filled only where the project title names a place, and the photo alt texts are indexed rather than descriptive. The old site carried no per-project copy to import, so all of it has to be written.
+
+## Conventions
+
+`CLAUDE.md` is the working reference for this repo and is worth reading before a first change. It covers the design direction, the mobile-first rules the layout is held to, the animation conventions (all GSAP goes through `useGSAP` and `@/lib/gsap`), the Tailwind v4 transform gotcha, and the toolchain notes above.
