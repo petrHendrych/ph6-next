@@ -84,6 +84,9 @@ export type Reward = {
 	title: string;
 	description: string;
 	medal: RewardMedal;
+	/** Set when the awarded building has a detail page; the row links to it.
+	 *  Most awards predate the projects that are online, so this is rare. */
+	slug?: ProjectSlug;
 };
 
 export type NavLink = {

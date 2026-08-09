@@ -3097,31 +3097,38 @@ export const mainImages: Image[] = [
 	}
 ];
 
+/** The title is set uppercase by `RewardsContent`, the description is not —
+ *  so the description carries normal Czech sentence case with the proper
+ *  nouns capitalised, and both are stored in natural case here. */
 export const rewards: Reward[] = [
 	{
-		title: 'interiér roku 2011',
-		description: 'Návštěvnické centrum pivovaru staropramen',
+		title: 'Interiér roku 2011',
+		description: 'Návštěvnické centrum pivovaru Staropramen',
 		medal: 'gold'
 	},
 	{
-		title: 'soutěž 1. místo',
-		description: 'zimní stadion praha letňany',
+		title: 'Soutěž 1. místo',
+		description: 'Zimní stadion Praha-Letňany',
 		medal: 'gold'
 	},
 	{
-		title: 'soutěž 1. místo',
-		description: 'zahradní čtvrť praha-zbraslav',
-		medal: 'gold'
+		title: 'Soutěž 1. místo',
+		description: 'Zahradní čtvrť Praha-Zbraslav',
+		medal: 'gold',
+		// The Zbraslav garden quarter, not the single block filed under
+		// `bytove-domy-zbraslav` — this is the row of low houses with gardens.
+		slug: 'bytovy-dum-zbraslav'
 	},
 	{
-		title: 'soutěž 2. místo',
-		description: 'sos dětská vesnička brno mendlánky',
+		title: 'Soutěž 2. místo',
+		description: 'SOS dětská vesnička Brno-Medlánky',
 		medal: 'silver'
 	},
 	{
-		title: 'český interiér',
-		description: 'ambiente pizzanuova praha',
-		medal: 'bronze'
+		title: 'Český interiér',
+		description: 'Ambiente Pizzanuova Praha',
+		medal: 'bronze',
+		slug: 'pizzanuova-ambiente'
 	}
 ];
 
