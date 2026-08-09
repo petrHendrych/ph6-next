@@ -53,9 +53,7 @@ export type Atelier = {
 	lead: string;
 	paragraphs: string[];
 	facts: Fact[];
-	/** Everyone on the team, including the members without a portrait. */
-	roster: string[];
-	visualization: string;
+	/** Sign-off, set below the body copy. */
 	closing: string;
 };
 

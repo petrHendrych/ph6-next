@@ -54,15 +54,9 @@ export const atelier: Atelier = {
 			value:
 				'Přípravné, projektové i průzkumné práce — od urbanistického řešení po projekty interiérů'
 		},
-		{ label: 'Spolupráce', value: 'ARPLAN s.r.o., ORTOGONAL s.r.o.' }
+		{ label: 'Spolupráce', value: 'ARPLAN s.r.o., ORTOGONAL s.r.o.' },
+		{ label: '3D vizualizace', value: 'Ing. Jan Haspra — 3dvizualizace.cz' }
 	],
-	roster: [
-		'Ing. arch. Šimon Brnada',
-		'Ing. arch. Jan Mudra',
-		'Ing. arch. Kristina Hanzlová',
-		'Ing. arch. Pavel Hendrych'
-	],
-	visualization: 'Ing. Jan Haspra — 3dvizualizace.cz',
 	closing: 'Těšíme se na spolupráci'
 };
 
