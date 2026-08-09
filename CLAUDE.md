@@ -31,6 +31,18 @@ Flat config in `eslint.config.mjs`, Prettier in `prettier.config.mjs` — the ol
 
 `eslint-config-next` already registers the `react`, `react-hooks`, `import`, `jsx-a11y` and `@typescript-eslint` plugins. **Registering any of them again is a hard `Cannot redefine plugin` error**, which is why the recommended typescript-eslint rules are spread out of `tseslint.configs.recommended` and applied against next's plugin instance instead of being extended. Rules using the `@typescript-eslint/` prefix must live in a `files: ['**/*.{ts,tsx}']` block — next's TypeScript layer does not cover `.mjs`/`.js`, so a prefixed rule in the wider block fails to find the plugin.
 
+### Comments earn their place
+
+The code is expected to read on its own — names, types and structure carry the intent, and a comment that restates them is deleted rather than maintained. What stays is the thing the code cannot say: why an obvious approach was rejected, a constraint from outside the file, a trap that looks like a bug.
+
+- **One or two lines.** A paragraph belongs in this file, not above a function. Multi-line block comments are reserved for a module's own header, and even then only for the constraint that governs the whole file (`projects.ts` may not be imported from a client module; `projectBlur.generated.ts` is generated).
+- **Write the constraint, not the story.** "Preloading all four pushes ~2.3 MB in front of first paint" — not the history of how that was discovered, what was tried first, or how much better it is now.
+- **No narration.** `// One batched trigger instead of one per tile` above a `ScrollTrigger.batch` call says nothing the call does not. The same goes for JSX comments labelling a component by its own name.
+- **A comment that names a file, flag or export must still be true.** Stale pointers are worse than none — the `data-category` note outlived the filter it described by two refactors.
+- Keep the JSDoc one-liners on non-obvious type fields (`color`, `blurDataURL`, `span`), since those are what a caller sees at the call site. Fields whose name and type already explain them (`title`, `width`, `facts`) get nothing.
+
+Long-form design rationale — why AVIF leads the format list, why the sticky column needs `lg:self-start`, why a lone portrait sits third — lives in this file, where it is read once rather than skipped past on every visit to the code.
+
 ## What this is
 
 Single-page portfolio site for the Czech architecture studio PH6, plus a small set of per-project subpages. All user-facing copy is Czech. Next.js 16 App Router, React 19, TypeScript strict, Tailwind v4, GSAP for all animation.
