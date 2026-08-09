@@ -29,9 +29,8 @@ const countLabel = (count: number) => {
 	return `${count} realizací`;
 };
 
-// Sections are ordered by how much work sits in each bucket, so the biggest
-// body of work opens the page. Derived, not hardcoded — re-tagging a project in
-// `data.ts` reorders the page on its own.
+// Ordered by bucket size, so the biggest body of work opens the page —
+// re-tagging a project in `data.ts` reorders it on its own.
 const sections = previewCategories
 	.map(({ key, label }) => ({
 		key,
@@ -43,7 +42,6 @@ const sections = previewCategories
 
 const Page = () => (
 	<div className="container mx-auto px-6 py-10 md:py-20">
-		{/* The list is what a crawler follows to reach all 54 detail pages. */}
 		<JsonLd data={projectListSchema()} />
 		<JsonLd
 			data={breadcrumbSchema([{ name: 'Projekty', path: '/projekty' }])}

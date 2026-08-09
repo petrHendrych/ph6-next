@@ -4,9 +4,8 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitText } from 'gsap/SplitText';
 
-// Single registration point. Import gsap and plugins from here, never from
-// 'gsap/*' directly, so no component can use a plugin that was registered
-// somewhere else by accident.
+// Single registration point — import gsap and plugins from here, never from
+// 'gsap/*' directly.
 gsap.registerPlugin(ScrollToPlugin, ScrollTrigger, SplitText);
 
 export { gsap, ScrollToPlugin, ScrollTrigger, SplitText };

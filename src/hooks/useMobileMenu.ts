@@ -67,9 +67,8 @@ export const useMobileMenu = ({
 		}
 	};
 
-	// `contextSafe` only wraps the handler — it never invokes it during render,
-	// so reading `menuRef.current` inside is safe. `react-hooks/refs` cannot see
-	// through the wrapper and reports it as a render-time ref read.
+	// `contextSafe` only wraps the handler, so reading a ref inside is safe —
+	// `react-hooks/refs` cannot see through the wrapper.
 	// eslint-disable-next-line react-hooks/refs
 	const toggleMenu = contextSafe(() => {
 		const open = !isMenuOpen;

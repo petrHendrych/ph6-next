@@ -5,8 +5,7 @@ import Reveal from '@/components/Reveal';
 import { rewards } from '@/data';
 import { type RewardMedal } from '@/types';
 
-// Full class names — Tailwind scans source text, so a composed
-// `bg-${medal}` string is never generated.
+// Full class names — Tailwind never sees a composed `bg-${medal}` string.
 const MEDAL_MARK: Record<RewardMedal, string> = {
 	gold: 'bg-gold',
 	silver: 'bg-silver',
@@ -33,15 +32,13 @@ const RewardsContent = () => (
 					<p className="flex-1 text-sm text-neutral-600 group-hover:text-neutral-900 motion-safe:transition-colors sm:text-right">
 						{reward.description}
 					</p>
-					{/* Only a handful of awards have a page behind them, so the row
-					    says so in words — hover carries none of that on touch. */}
+					{/* Said in words — hover carries nothing on touch. */}
 					{reward.slug ? (
 						<span className="label-micro shrink-0 text-neutral-500 underline decoration-neutral-300 underline-offset-4 group-hover:text-neutral-900 group-hover:decoration-neutral-900 motion-safe:transition-colors">
 							Detail
 						</span>
 					) : null}
-					{/* Colour alone carries no information the title does not already
-					    state, so it is decorative. */}
+					{/* Decorative — the title already states the placement. */}
 					<span
 						className={`h-2.5 w-2.5 shrink-0 self-start sm:self-center ${
 							MEDAL_MARK[reward.medal]
@@ -56,8 +53,7 @@ const RewardsContent = () => (
 					key={`${reward.title}-${reward.description}`}
 					className="group relative border-t border-neutral-200"
 				>
-					{/* Placement wash. Wipes across the row from the left on hover, so
-					    the medal colour reads as a fill rather than a border. */}
+					{/* Placement wash, wiping in from the left on hover. */}
 					<span
 						className={`pointer-events-none absolute inset-0 origin-left scale-x-0 group-hover:scale-x-100 motion-safe:transition-transform motion-safe:duration-700 motion-safe:ease-out ${
 							MEDAL_WASH[reward.medal]

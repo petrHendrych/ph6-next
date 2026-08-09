@@ -50,9 +50,8 @@ const ContactContent = () => (
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Otevřít mapu v novém okně"
-				// The source map is a 2017×377 strip. Its native ratio is only usable
-				// once the viewport is wide — at 360px it collapses to a 67px sliver,
-				// so the phone gets a fixed height and crops to the right instead.
+				// The source map is a 2017×377 strip: its native ratio collapses to a
+				// 67px sliver at 360px, so narrow screens get a height and a crop.
 				className="group relative block h-[220px] w-full overflow-hidden bg-neutral-100 sm:h-[280px] md:aspect-[2017/377] md:h-auto md:max-h-[340px]"
 			>
 				<Image

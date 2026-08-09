@@ -17,17 +17,15 @@ const AtelierContent = () => (
 				{atelier.paragraphs.map(paragraph => (
 					<p
 						key={paragraph}
-						// Wider than `max-w-prose` but still capped — the 8-column span
-						// is over 1000px at the top container step, which is past a
-						// readable measure at this size.
+						// Capped: the 8-column span is over 1000px at the top container
+						// step, past a readable measure.
 						className="max-w-[78ch] text-base leading-relaxed text-neutral-700 md:text-lg"
 					>
 						{paragraph}
 					</p>
 				))}
 
-				{/* Sign-off, not a label — set in the prose voice and separated from
-				    the body copy by colour rather than caps and tracking. */}
+				{/* Sign-off, not a label — kept in the prose voice. */}
 				<p className="max-w-[78ch] text-base leading-relaxed text-neutral-700 md:text-lg">
 					{atelier.closing}
 				</p>
@@ -60,10 +58,7 @@ const AtelierContent = () => (
 			>
 				{team.map((member, index) => (
 					<figure key={member.src} className="group">
-						{/* Square crop: the source portraits are 350×350, so any other
-						    ratio would cut into them blindly. The average colour holds
-						    the frame until the jpg lands — near-grey here anyway, since
-						    the portraits are shown desaturated. */}
+						{/* Square crop — the source portraits are 350×350. */}
 						<div
 							className="relative aspect-square overflow-hidden bg-neutral-100"
 							style={

@@ -1,22 +1,17 @@
 import React from 'react';
 
-// Stair treads, and the sparse floor tiling in the kitchen.
 const TREADS = [54.9, 57.7, 60.6, 63.4, 66.3, 69.1];
 const TILE_X = [58, 66, 74, 82];
 const TILE_Y = [22, 30, 38];
 
 /**
- * Faint drafting plan behind the projects-overview tile: a two-bedroom flat with
- * a kitchen, a stair and a dining set. It follows the conventions an architect
- * actually draws with — walls as paired lines with the exterior heavier than the
- * partitions, openings as breaks in those lines, a quarter-circle arc per door
- * showing which way the leaf swings, three lines across a window, and a
- * dimension line with 45° ticks.
+ * Decorative drafting plan behind the projects-overview tile, drawn to
+ * architectural convention: walls as paired lines with the exterior heavier,
+ * openings as breaks, an arc per door leaf, three lines across a window.
  *
- * Purely decorative. Strokes inherit `currentColor`, so the drawing inverts with
- * the tile it sits in; `plan-lines` holds them to true hairlines at any tile
- * size; and `plan-fade` fades the drawing out over the lower third so it never
- * competes with the label sitting there.
+ * Strokes inherit `currentColor` so the drawing inverts with the tile;
+ * `plan-lines` holds true hairlines at any size and `plan-fade` clears the
+ * lower third for the label.
  */
 const FloorPlan = ({ className }: { className?: string }) => (
 	<svg
@@ -27,8 +22,7 @@ const FloorPlan = ({ className }: { className?: string }) => (
 		aria-hidden="true"
 		className={`plan-lines plan-fade ${className ?? ''}`}
 	>
-		{/* Exterior wall, broken only for the entrance. The wall lines run through
-		    a window opening — they are two of the three lines that draw it. */}
+		{/* Exterior wall, broken only for the entrance. */}
 		<g strokeWidth="0.9" opacity="0.32">
 			<path d="M7 7 H20 M32 7 H89 V76 H7 V7" />
 			<path d="M9 9 H20 M32 9 H87 V74 H9 V9" />

@@ -10,8 +10,7 @@ import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { gsap, ScrollTrigger } from '@/lib/gsap';
 import type { Image as ProjectImage } from '@/types';
 
-// Grid is 1/2/3/4/5 columns — tell the browser so it stops downloading
-// full-width sources for ~300px slots.
+// Matches the 1/2/3/4/5 column ladder below.
 const IMAGE_SIZES =
 	'(min-width: 1808px) 19vw, (min-width: 1280px) 23vw, (min-width: 768px) 31vw, (min-width: 480px) 48vw, 100vw';
 
@@ -21,11 +20,8 @@ type Props = {
 	images: ProjectImage[];
 	/** Append the overview tile after the images. */
 	showAllTile?: boolean;
-	/**
-	 * Show only this many tiles below `md`, leaving the rest to the wider
-	 * layouts. Not a layout workaround — the overview tile that follows is the
-	 * way to the ones held back, so nothing becomes unreachable on a phone.
-	 */
+	/** Show only this many tiles below `md`. The overview tile that follows is
+	 *  the way to the ones held back, so nothing becomes unreachable. */
 	mobileLimit?: number;
 };
 
@@ -45,7 +41,6 @@ const PreviewGrid = ({ images, showAllTile, mobileLimit }: Props) => {
 			// Hidden from JS, not from markup — without JS the grid stays visible.
 			gsap.set(tiles, { autoAlpha: 0 });
 
-			// One batched trigger instead of one per tile.
 			ScrollTrigger.batch(tiles, {
 				once: true,
 				start: 'top bottom-=80',
@@ -56,25 +51,20 @@ const PreviewGrid = ({ images, showAllTile, mobileLimit }: Props) => {
 		{ scope: gridRef, dependencies: [reduced], revertOnUpdate: true }
 	);
 
-	// The column count tops out at five: the sources are 350² and a wider column
-	// in the 113rem container would only upscale them.
+	// Five columns is the cap — the sources are 350² and a wider column would
+	// only upscale them.
 	return (
 		<div
 			ref={gridRef}
 			className="xs:grid-cols-2 grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5"
 		>
 			{images.map((image, index) => {
-				// The slug in `data.ts` is the source of truth for where a tile goes;
-				// the route is built here, the same way the image paths are.
 				const href = image.slug ? `/${image.slug}` : undefined;
 
 				const tile = (
 					<>
-						{/* Every source is square (350² or 300²), so the frame reserves
-						    its box up front instead of collapsing until the jpg lands.
-						    It holds the photograph's own average colour while it does,
-						    so a slow grid reads as pictures arriving rather than as a
-						    wall of grey boxes. */}
+						{/* Every source is square, so the frame reserves its box up front
+						    and holds the photograph's average colour while it loads. */}
 						<div
 							className="relative aspect-square overflow-hidden bg-neutral-100"
 							style={image.color ? { backgroundColor: image.color } : undefined}
@@ -87,9 +77,7 @@ const PreviewGrid = ({ images, showAllTile, mobileLimit }: Props) => {
 								className="object-cover motion-safe:transition-[scale] motion-safe:duration-700 motion-safe:ease-out motion-safe:group-hover:scale-[1.04]"
 							/>
 						</div>
-						{/* The title used to live in a hover overlay, which touch never
-						    reaches. It is a caption now, on the same hairline as the
-						    team and award rows. */}
+						{/* A caption, not a hover overlay — touch never reaches hover. */}
 						<figcaption className="mt-3 flex items-baseline justify-between gap-3 border-t border-neutral-200 pt-2.5 group-hover:border-neutral-900/80 motion-safe:transition-colors">
 							<span className="text-xs leading-snug tracking-[0.03em] text-neutral-600 group-hover:text-neutral-900 motion-safe:transition-colors">
 								{image.title}
@@ -125,14 +113,10 @@ const PreviewGrid = ({ images, showAllTile, mobileLimit }: Props) => {
 
 			{showAllTile ? (
 				<Link href={PROJECTS_HREF} className="group cursor-pointer">
-					{/* Same square frame and caption row as a project tile, so the row it
-					    sits in keeps its baseline. A quiet outline at rest so it does not
-					    compete with the photographs, inverting on hover to read as the
-					    link it is. */}
+					{/* Same square frame and caption row as a project tile, so the row
+					    keeps its baseline. */}
 					<div className="relative flex aspect-square flex-col justify-end border border-neutral-900 p-5 text-neutral-900 group-hover:bg-neutral-900 group-hover:text-white motion-safe:transition-colors motion-safe:duration-500 motion-safe:ease-out md:p-6">
-						{/* A drafting plan gives the one tile with no photograph a subject
-						    of its own. It strokes `currentColor`, so it turns from a pencil
-						    drawing into a white one as the plate inverts. */}
+						{/* Strokes `currentColor`, so it inverts with the plate. */}
 						<FloorPlan className="pointer-events-none absolute inset-0 h-full w-full" />
 
 						<div className="relative flex items-center justify-between gap-4">

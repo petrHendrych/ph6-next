@@ -25,7 +25,6 @@ const Header = () => {
 		() => {
 			if (!headerRef.current) return;
 
-			// Built-in toggleClass instead of hand-rolled classList juggling.
 			ScrollTrigger.create({
 				trigger: document.body,
 				start: '80px top',

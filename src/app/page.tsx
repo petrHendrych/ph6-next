@@ -18,16 +18,11 @@ import { studioSchema } from '@/lib/schema';
 const Home = () => (
 	<>
 		<Header />
-		{/* Lands the reader on the section a subpage link asked for, then drops
-		    the `#section` from the URL. */}
 		<PendingScroll />
-		{/* The studio itself — address, phone, founder, awards — as one business
-		    a search engine can read without parsing the contact section. */}
 		<JsonLd data={studioSchema()} />
 
 		<main>
-			{/* The section titles are h2s, so the page still needs one h1. It names
-			    the studio, the trade and the city, which is what the page is for. */}
+			{/* The section titles are h2s, so the page still needs one h1. */}
 			<h1 className="sr-only">
 				PH6 — architektonický ateliér v Praze: interiéry, gastro provozy,
 				rodinné a bytové domy

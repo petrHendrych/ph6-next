@@ -3,13 +3,8 @@ import { useCallback, useSyncExternalStore } from 'react';
 
 const QUERY = '(prefers-reduced-motion: reduce)';
 
-/**
- * Reads prefers-reduced-motion once and keeps it in sync.
- *
- * Animations should branch on the returned boolean (`duration: reduced ? 0 : x`)
- * instead of creating a `gsap.matchMedia()` per interaction — those contexts
- * register media listeners that are never reverted.
- */
+/** Branch on this (`duration: reduced ? 0 : x`) rather than creating a
+ *  `gsap.matchMedia()` per interaction — those listeners are never reverted. */
 export const useReducedMotion = () => {
 	const subscribe = useCallback((onChange: () => void) => {
 		const mq = window.matchMedia(QUERY);

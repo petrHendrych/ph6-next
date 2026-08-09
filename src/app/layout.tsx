@@ -6,26 +6,22 @@ import { isIndexable, siteDescription, siteUrl } from '@/data';
 
 const ralewayFont = Raleway({
 	subsets: ['latin', 'latin-ext'],
-	// font-medium / font-bold are used across the site; without these the
-	// browser synthesises fake weights.
+	// Without these the browser synthesises fake weights for font-medium/bold.
 	weight: ['400', '500', '700'],
 	variable: '--font-raleway'
 });
 
 /**
- * Site-wide metadata. Every page inherits it and overrides only what differs —
- * a subpage sets `title` and its own `alternates.canonical`, everything else
- * (locale, OG defaults, robots) resolves from here.
+ * Site-wide metadata; every page inherits it and overrides only what differs.
  *
- * There is deliberately no `icons` entry: `icon.svg` and `favicon.ico` are
- * picked up from their filenames, and declaring icons here would override them.
+ * No `icons` entry on purpose — `icon.svg` and `favicon.ico` are picked up from
+ * their filenames, and declaring icons here would override them.
  */
 export const metadata: Metadata = {
 	metadataBase: new URL(siteUrl),
 	title: {
 		default: 'PH6 — architektonický ateliér Praha',
-		// Subpages pass a bare name; the studio is appended for the tab and the
-		// search result, where the page title is often all a reader sees.
+		// Subpages pass a bare name; the studio is appended here.
 		template: '%s | PH6 architektonický ateliér'
 	},
 	description: siteDescription,
@@ -54,15 +50,12 @@ export const metadata: Metadata = {
 		description: siteDescription
 	},
 	twitter: { card: 'summary_large_image' },
-	// A build that has not been told it owns the domain stays out of the index
-	// entirely — the studio's old site is still live there and does not need a
-	// second copy of itself competing under a staging URL.
+	// A build that has not been told it owns the domain stays out of the index.
 	robots: isIndexable
 		? {
 				index: true,
 				follow: true,
-				// The photography is the product, so let Google show it full size
-				// in image results and Discover rather than as a thumbnail.
+				// The photography is the product — let Google show it full size.
 				googleBot: {
 					'index': true,
 					'follow': true,
@@ -71,8 +64,7 @@ export const metadata: Metadata = {
 				}
 			}
 		: { index: false, follow: false, nocache: true },
-	// Czech phone numbers and addresses being auto-linked by iOS rewrites the
-	// colour of copy the layout controls.
+	// iOS auto-linking rewrites the colour of copy the layout controls.
 	formatDetection: { telephone: false, address: false }
 };
 

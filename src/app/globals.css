@@ -2,17 +2,14 @@
 
 @theme {
 	--breakpoint-xs: 30rem;
-	/* Widens only the top container step; the default ladder below it stays
-     intact. The old `container.screens` override in tailwind.config.ts
-     replaced the whole ladder, leaving .container full-bleed under 113rem. */
+	/* Widens only the top container step; the ladder below it stays intact. */
 	--breakpoint-2xl: 113rem;
 
 	--color-gold: #d4af37;
 	--color-silver: #c0c0c0;
 	--color-bronze: #cd7f32;
 
-	/* Near-black rather than mid-grey: the palette is paper white and #171717,
-	   and a grey slab under the contact section read as an unfinished band. */
+	/* Near-black, matching the text — a grey slab read as an unfinished band. */
 	--color-footer: #171717;
 	--color-footer-text: #a8a8a8;
 }
@@ -31,10 +28,8 @@ body {
 	font-family: var(--font-raleway), sans-serif;
 }
 
-/* The small caps-and-tracking label used for section indices, field labels and
-   captions. One utility so the tracking stays identical everywhere. */
-/* Type only — the colour stays a utility on the element so it can differ
-   between the light sections and the footer. */
+/* Section indices, field labels and captions. Type only — the colour stays a
+   utility on the element, since the same label sits on white and on the footer. */
 @utility label-micro {
 	font-size: 0.6875rem;
 	line-height: 1;
@@ -42,10 +37,7 @@ body {
 	text-transform: uppercase;
 }
 
-/* Navigation links: both headers, both mobile panels, and the footer. Uppercase
-   inheriting 16px body text at zero tracking was the one place on the site that
-   set caps with no letter-spacing, and it read cramped next to labels tracked at
-   0.16–0.3em. One utility so all four navigations stay identical. */
+/* Navigation links: both headers, both mobile panels, and the footer. */
 @utility nav-label {
 	font-size: 0.875rem;
 	line-height: 1.25rem;
@@ -53,19 +45,16 @@ body {
 	text-transform: uppercase;
 }
 
-/* The `FloorPlan` drawing scales from a 100-unit viewBox to whatever the tile
-   is, which would multiply its stroke widths with it. Pinning the strokes keeps
-   them hairlines — the widths in that component are therefore in px, and the
-   sub-pixel ones are meant to render as lighter lines. */
+/* `FloorPlan` scales from a 100-unit viewBox, which would multiply its stroke
+   widths with it. Pinned here, so those widths are px and sub-pixel is lighter. */
 @utility plan-lines {
 	& * {
 		vector-effect: non-scaling-stroke;
 	}
 }
 
-/* Fades the plan out over its lower third so the tile's label sits on clean
-   ground. A CSS mask rather than an SVG one: no `defs`, and no element ids that
-   could collide if the tile is ever rendered twice on a page. */
+/* Clears the plan's lower third for the tile's label. A CSS mask, not an SVG
+   one — no ids to collide if the tile renders twice on a page. */
 @utility plan-fade {
 	-webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 90%);
 	mask-image: linear-gradient(to bottom, #000 62%, transparent 90%);
@@ -97,10 +86,9 @@ body {
 	}
 }
 
-/* Header. Glass while the hero sits behind it, then a denser, compressed bar
-   with real elevation once scrolled past; ScrollTrigger toggles .is-scrolled.
-   Deliberately unlayered so it wins over the Tailwind utilities on the same
-   element. Both states are declared here so every property can transition. */
+/* Glass while the hero is behind it, then a denser compressed bar once past it;
+   ScrollTrigger toggles .is-scrolled. Unlayered on purpose, so it wins over the
+   Tailwind utilities on the same element. */
 .site-header {
 	--header-py: 1.1rem;
 	--header-logo: 1;
@@ -110,7 +98,7 @@ body {
 
 @supports (backdrop-filter: blur(1px)) {
 	.site-header {
-		/* Saturation boost keeps the photo behind the bar from going grey. */
+		/* Saturation keeps the photo behind the bar from going grey. */
 		background-color: rgb(255 255 255 / 0.38);
 		backdrop-filter: blur(16px) saturate(180%);
 	}
@@ -135,8 +123,8 @@ body {
 	transform-origin: left center;
 }
 
-/* Scroll-progress hairline. scaleX is driven by a scrubbed ScrollTrigger in
-   Header; it only shows once the bar is opaque, so it never sits on the hero. */
+/* scaleX is scrubbed by `HeaderProgress`; hidden until the bar is opaque, so it
+   never sits on the hero. */
 .header-progress {
 	position: absolute;
 	bottom: -1px;

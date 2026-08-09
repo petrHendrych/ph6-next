@@ -9,14 +9,13 @@ import {
 } from '@/data';
 import type { Project } from '@/types';
 
-/** The studio node. Everything else in the graph points at this `@id` rather
- *  than restating the address, so Google reads one business, not three. */
+/** Everything else in the graph points at this `@id` rather than restating the
+ *  address, so Google reads one business, not three. */
 const STUDIO_ID = `${siteUrl}/#studio`;
 
 const absolute = (path: string) => `${siteUrl}${path}`;
 
-/** Values still carrying the `TODO` placeholder must never reach a search
- *  engine — an unwritten fact is left out of the markup entirely. */
+/** A `TODO` placeholder is left out of the markup rather than published. */
 const written = (value: string) => (value.startsWith('TODO') ? null : value);
 
 export const studioSchema = () => ({
@@ -68,8 +67,7 @@ export const breadcrumbSchema = (trail: { name: string; path: string }[]) => ({
 	)
 });
 
-/** The projects overview, as a list of the pages behind it — this is what a
- *  crawler follows to find all 54 detail pages from one document. */
+/** What a crawler follows to reach all 54 detail pages from one document. */
 export const projectListSchema = () => ({
 	'@context': 'https://schema.org',
 	'@type': 'CollectionPage',
@@ -109,16 +107,14 @@ export const projectSchema = (project: Project) => {
 	};
 };
 
-/** Search-result snippet for a project. Built from the facts that are filled
- *  in, so a page with no copy yet still gets a sentence of its own. */
+/** Search-result snippet, built from whichever facts are filled in. */
 export const projectDescription = (project: Project) => {
 	const title = project.title.toLowerCase();
 	const location = written(project.location);
 	const type = project.facts.find(fact => fact.label === 'Typ')?.value;
 
-	// Neither the place nor the building type earns a repeat when the title
-	// already carries it — `Bytový dům Zbraslav, Praha — Zbraslav — bytový dům`
-	// is three words of snippet spent saying one thing.
+	// Skip a place or type the title already states, so the snippet does not
+	// read `Bytový dům Zbraslav, Praha — Zbraslav — bytový dům`.
 	const town = location?.split('—').at(-1)?.trim().toLowerCase();
 	const place =
 		location && town && !title.includes(town) ? `, ${location}` : '';
