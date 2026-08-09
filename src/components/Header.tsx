@@ -1,10 +1,10 @@
 'use client';
 import { useGSAP } from '@gsap/react';
-import Image from 'next/image';
 import React, { useRef } from 'react';
 
 import HeaderProgress from '@/components/HeaderProgress';
 import ScrollLink from '@/components/ScrollLink';
+import Wordmark from '@/components/Wordmark';
 import { navLinks } from '@/data';
 import { useMobileMenu } from '@/hooks/useMobileMenu';
 import { useScrollTo } from '@/hooks/useScrollTo';
@@ -46,7 +46,7 @@ const Header = () => {
 						aria-label="Zpět nahoru"
 						className="header-logo cursor-pointer"
 					>
-						<Image src="/logo.png" alt="PH6" width={30} height={33} priority />
+						<Wordmark className="text-xl text-neutral-900 md:text-2xl" />
 					</button>
 
 					<div className="flex flex-row items-center gap-4 md:hidden">
@@ -67,7 +67,7 @@ const Header = () => {
 
 					<div className="hidden flex-row items-center gap-10 md:flex">
 						<nav>
-							<ol className="flex select-none flex-row gap-8">
+							<ol className="flex flex-row gap-8 select-none">
 								{navLinks.map(({ hash, label }) => (
 									<li key={hash}>
 										<ScrollLink

@@ -2,6 +2,7 @@ import Image from 'next/image';
 import React from 'react';
 
 import ScrollLink from '@/components/ScrollLink';
+import Wordmark from '@/components/Wordmark';
 import { contact, navLinks } from '@/data';
 
 const SOCIAL = [
@@ -14,9 +15,7 @@ const Footer = () => (
 		<div className="container mx-auto px-6">
 			<div className="grid gap-12 border-b border-white/10 py-14 sm:grid-cols-2 md:py-20 lg:grid-cols-12">
 				<div className="lg:col-span-5">
-					<p className="text-3xl leading-none tracking-[0.42em] text-white md:text-4xl">
-						PH6
-					</p>
+					<Wordmark className="text-3xl text-white md:text-4xl" />
 					<p className="mt-5 max-w-xs text-sm leading-relaxed">
 						Architektonický ateliér — interiéry, gastro provozy a stavby všech
 						měřítek.

@@ -49,6 +49,8 @@ Treat every change as part of a contemporary architectural portfolio, not a gene
 
 **Typography.** Raleway throughout. Uppercase with wide tracking for nav, labels, and captions; normal case for prose. Sizes step deliberately at breakpoints rather than scaling fluidly. No second display face.
 
+The PH6 lettermark is type, not a bitmap: `Wordmark` renders it at `0.42em` tracking and inherits its colour, so `Header`, `SubpageHeader` and `Footer` all show the same mark — near-black at `text-xl md:text-2xl` in the bars, white at `text-3xl md:text-4xl` in the footer. Size and colour are the only things a caller passes. The negative right margin inside it cancels the trailing letter-space wide tracking leaves after the final glyph; without it the mark hangs a third of a character inside the gutter.
+
 **Motion is calm.** Slow crossfades, small offsets, character staggers, scroll-linked reveals. `power2`-family easings only — no bounce, no elastic, no attention-seeking loops. Motion should feel like a slow pan across a model, and must always degrade cleanly under `useReducedMotion()`.
 
 **Contrast is non-negotiable.** Body and label text hits 4.5:1 against its background — `text-gray-400` on white does not qualify, `text-gray-500` is the floor for small text. State must never be communicated by color alone (pair it with weight or an underline).
